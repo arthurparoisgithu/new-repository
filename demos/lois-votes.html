@@ -1,0 +1,3314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votes & Contradictions — Assemblée Nationale 2024-2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161d;
+    --surface2: #1a1e28;
+    --border: #252a38;
+    --text: #e8e4d8;
+    --text-muted: #7a8096;
+    --text-faint: #3f4459;
+    --blue: #1c47b5;
+    --blue-light: #4d7aff;
+    --white: #f5f3ee;
+    --red: #c0392b;
+    --red-light: #e05042;
+    --gold: #c9a84c;
+    --gold-light: #f0c96e;
+    --green: #2d7a4e;
+    --green-light: #4caf72;
+    --accent: #d4a24e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    padding: 60px 48px 48px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .header-flag {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(to right, #002395 33.3%, #fff 33.3%, #fff 66.6%, #ed2939 66.6%);
+  }
+
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(28,71,181,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 30%, rgba(192,57,43,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .header-content {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .header-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-faint);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* LEGEND */
+  .legend-section {
+    padding: 28px 48px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .legend-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .legend-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+
+  .legend-score {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .score-bar-legend {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .score-seg {
+    width: 24px;
+    height: 8px;
+    border-radius: 2px;
+  }
+
+  .legend-votes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .vote-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .vote-pour { background: rgba(77,122,255,0.12); color: #6b9fff; border: 1px solid rgba(77,122,255,0.25); }
+  .vote-contre { background: rgba(224,80,66,0.12); color: #e87060; border: 1px solid rgba(224,80,66,0.25); }
+  .vote-abstention { background: rgba(201,168,76,0.12); color: #d4b060; border: 1px solid rgba(201,168,76,0.25); }
+  .vote-div { background: rgba(122,128,150,0.12); color: #9aa0b8; border: 1px solid rgba(122,128,150,0.2); }
+
+  /* SCORE DEFINITION */
+  .score-def {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .score-range {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .range-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .range-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 48px 80px;
+  }
+
+  /* LAW CARD */
+  .law-card {
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .law-card:nth-child(1) { animation-delay: 0.05s; }
+  .law-card:nth-child(2) { animation-delay: 0.1s; }
+  .law-card:nth-child(3) { animation-delay: 0.15s; }
+  .law-card:nth-child(4) { animation-delay: 0.2s; }
+  .law-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .law-header {
+    padding: 24px 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .law-header:hover {
+    background: var(--surface2);
+  }
+
+  .law-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    padding-top: 4px;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  .law-header-content {
+    flex: 1;
+  }
+
+  .law-theme {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .law-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .law-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .law-header-right {
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .law-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+
+  .law-result {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .result-pour { color: #6b9fff; }
+  .result-contre { color: #e87060; }
+
+  .chevron {
+    font-size: 16px;
+    color: var(--text-faint);
+    padding-top: 4px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .law-card.open .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* LAW BODY */
+  .law-body {
+    display: none;
+    padding: 28px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .law-card.open .law-body {
+    display: block;
+  }
+
+  .law-description {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 720px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .law-description strong {
+    color: var(--text);
+  }
+
+  /* VOTES TABLE */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+
+  .votes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .party-vote-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .party-vote-card:hover {
+    border-color: var(--text-faint);
+  }
+
+  .party-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .party-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  .party-spectrum {
+    font-size: 9px;
+    color: var(--text-faint);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .party-vote-badge {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .party-contradiction {
+    margin-top: 4px;
+  }
+
+  .contradiction-label {
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .contradiction-label span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+  }
+
+  .contradiction-bar {
+    height: 5px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .contradiction-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .party-note {
+    font-size: 11px;
+    color: var(--text-faint);
+    line-height: 1.5;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  /* HIGHLIGHT CONTRADICTION */
+  .top-contradiction {
+    background: var(--surface);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    padding: 16px 18px;
+    margin-top: 20px;
+  }
+
+  .top-contradiction-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .top-contradiction-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .top-contradiction-text em {
+    color: var(--gold-light);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* SCORE COLOR FUNCTIONS */
+  .score-0-2 .contradiction-fill { background: linear-gradient(90deg, #2d7a4e, #4caf72); }
+  .score-3-4 .contradiction-fill { background: linear-gradient(90deg, #4a7a2d, #7ab04c); }
+  .score-5-6 .contradiction-fill { background: linear-gradient(90deg, #7a6a2d, #c9a84c); }
+  .score-7-8 .contradiction-fill { background: linear-gradient(90deg, #7a3a2d, #d46a4c); }
+  .score-9-10 .contradiction-fill { background: linear-gradient(90deg, #8a1a1a, #e04040); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--text-faint);
+    line-height: 1.7;
+  }
+
+  .footer-note strong {
+    color: var(--text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header, .legend-section, main, footer { padding-left: 20px; padding-right: 20px; }
+    .votes-grid { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 32px; }
+    .law-title { font-size: 18px; }
+    .law-header { flex-wrap: wrap; }
+    .law-header-right { width: 100%; text-align: left; }
+  }
+
+  @media (max-width: 480px) {
+    .votes-grid { grid-template-columns: 1fr; }
+    .header-meta { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-flag"></div>
+  <div class="header-bg"></div>
+  <div class="header-content">
+    <div class="header-label">Analyse parlementaire — XVIIe législature</div>
+    <h1>Votes & <em>Contradictions</em><br>Politiques</h1>
+    <p class="header-sub">
+      Analyse des lois les plus impactantes pour la qualité de vie des Français votées à l'Assemblée nationale entre novembre 2024 et juillet 2025. Pour chaque texte : vote par groupe politique et score de contradiction entre le discours officiel du parti et son vote réel.
+    </p>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Période couverte</span>
+        <span class="meta-value">Nov. 2024 — Juil. 2025</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Lois analysées</span>
+        <span class="meta-value">20 textes majeurs</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Groupes étudiés</span>
+        <span class="meta-value">7 partis principaux</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sources</span>
+        <span class="meta-value">Assemblée nationale, LCP, Vie Publique</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="legend-section">
+  <div class="legend-inner">
+    <div class="score-def">
+      <div class="legend-title">Score de contradiction — Définition</div>
+      <div class="score-range">
+        <div class="range-item">
+          <div class="range-dot" style="background:#4caf72"></div>
+          <span>0–3 : Cohérent</span>
+        </div>
+        <div class="range-item">
+          <div class="range-dot" style="background:#c9a84c"></div>
+          <span>4–6 : Notable</span>
+        </div>
+        <div class="range-item">
+          <div class="range-dot" style="background:#d46a4c"></div>
+          <span>7–8 : Fort</span>
+        </div>
+        <div class="range-item">
+          <div class="range-dot" style="background:#e04040"></div>
+          <span>9–10 : Critique</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text-faint);margin-top:10px;max-width:380px;">Mesure l'écart entre les valeurs et promesses affichées du parti et son comportement lors du vote. 0 = parfaitement cohérent, 10 = totale contradiction avec son discours.</p>
+    </div>
+    <div>
+      <div class="legend-title">Légende des votes</div>
+      <div class="legend-votes">
+        <span class="vote-badge vote-pour">● Pour</span>
+        <span class="vote-badge vote-contre">● Contre</span>
+        <span class="vote-badge vote-abstention">● Abstention</span>
+        <span class="vote-badge vote-div">~ Divisé</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ========== LOI 1 ========== -->
+  <div class="law-card open" id="card1">
+    <div class="law-header" onclick="toggleCard('card1')">
+      <div class="law-number">01</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé · Retraites · Protection sociale</div>
+        <div class="law-title">PLFSS 2026 — Budget de la Sécurité Sociale</div>
+        <div class="law-subtitle">Suspension de la réforme des retraites jusqu'en 2028 · Objectif de dépenses maladie à 3% · Limitation des arrêts de travail</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 16 décembre 2025</div>
+        <div class="law-result">
+          <span class="result-pour">247 pour</span> · <span class="result-contre">232 contre</span> · 90 abstentions
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Le PLFSS 2026 est le premier budget de la Sécu adopté sans recours au 49.3 depuis la perte de majorité absolue en 2022. Sa mesure phare : la <strong>suspension de la réforme des retraites portant l'âge à 64 ans jusqu'en janvier 2028</strong>, acquise grâce à une concession aux socialistes. Il prévoit aussi la limitation des arrêts de travail et une hausse de l'ONDAM à 3%. Adopté par 13 voix d'avance seulement, grâce au vote PS et à l'abstention stratégique des écologistes.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-9-10">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>9 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 90%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN avait fait de l'abrogation de la réforme des retraites une promesse centrale depuis 2023. Ce texte réalisait exactement cela — et le RN a voté contre.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>5 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 50%"></div>
+            </div>
+          </div>
+          <p class="party-note">LFI veut abroger la réforme des retraites, mais s'oppose à d'autres mesures du texte (limitation des arrêts maladie). Opposition idéologiquement cohérente sur les points sociaux.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent : le PS avait conditionné son soutien à la suspension des retraites, obtenue. Prise de responsabilité saluée même par ses opposants.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote globalement cohérent. Légère tension : EPR défendait la réforme des retraites à 64 ans qu'il faut maintenant suspendre. Pragmatisme gouvernemental prime.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>7 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 70%"></div>
+            </div>
+          </div>
+          <p class="party-note">LR avait porté la réforme des retraites comme une réforme nécessaire depuis des années. 18 députés LR sauvent le texte en votant Pour malgré la consigne d'abstention.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-abstention party-vote-badge">● Abstention</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">Abstention stratégique obtenue via une concession sur l'ONDAM (3% au lieu de 2%). Le groupe a joué un rôle pivot mais n'a pas voulu approuver un texte comportant des mesures sociales contestées.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote pleinement cohérent avec la ligne pro-gouvernementale et l'objectif de réduire le déficit de la Sécurité sociale.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction majeure du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 9/10)</em> — Depuis 2022, Marine Le Pen et Jordan Bardella ont fait de l'abrogation de la réforme des retraites l'une de leurs promesses les plus répétées, mobilisant des millions d'électeurs sur ce thème. En décembre 2025, lorsque le seul texte permettant cette suspension arrive au vote, le RN choisit de voter <em>contre</em> — préférant laisser la mesure échouer plutôt que d'en attribuer le mérite au gouvernement Lecornu. L'intérêt électoral a pris le dessus sur la promesse faite aux Français.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 2 ========== -->
+  <div class="law-card" id="card2">
+    <div class="law-header" onclick="toggleCard('card2')">
+      <div class="law-number">02</div>
+      <div class="law-header-content">
+        <div class="law-theme">Agriculture · Environnement · Santé publique</div>
+        <div class="law-title">Loi Duplomb — Levée des contraintes agricoles</div>
+        <div class="law-subtitle">Réintroduction de l'acétamipride (néonicotinoïdes) · Assouplissement normes environnementales · Légalisation des mégabassines</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 8 juillet 2025</div>
+        <div class="law-result">
+          <span class="result-pour">316 pour</span> · <span class="result-contre">223 contre</span> · 25 abstentions
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Initiée par le sénateur LR Laurent Duplomb, cette loi controversée vise à alléger les contraintes pesant sur les agriculteurs. Sa mesure la plus clivante : la <strong>réintroduction dérogatoire de l'acétamipride</strong>, insecticide de la famille des néonicotinoïdes interdit depuis 2018 pour ses effets sur les pollinisateurs. Elle inscrit aussi l'intérêt général des <strong>mégabassines</strong> dans la loi. Plus de <strong>2 millions de signatures</strong> ont été recueillies sur la pétition contre ce texte, un record sous la Ve République.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>8 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 80%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN se présente comme défenseur de la santé des Français, de la "vraie nourriture" et de la souveraineté alimentaire. Voter pour la réintroduction d'un pesticide neurotoxique tueur d'abeilles contredit directement ce discours.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote pleinement cohérent avec les positions environnementales et de santé publique de LFI. S'y oppose fermement, au point de déposer une motion de censure contre le gouvernement.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent avec ses engagements environnementaux. Les sénateurs socialistes avaient participé à la commission mixte paritaire et voté contre le compromis final.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (divisé)</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>5 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 50%"></div>
+            </div>
+          </div>
+          <p class="party-note">Macron s'était engagé à "sortir des pesticides". Le gouvernement lui-même était divisé (Genevard pour, Pannier-Runacher contre). Plusieurs députés EPR ont voté contre ou se sont abstenus.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent : LR est historiquement proche du monde agricole (FNSEA) et favorable à la déréglementation. Cette loi est littéralement leur texte (Duplomb est sénateur LR).</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Opposition absolument cohérente. Les écologistes ont déposé des centaines d'amendements contre le texte et ont qualifié la loi de "loi poison".</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (avec réserves)</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le MoDem affiche des valeurs environnementales (Green Deal, transition écologique). Marc Fesneau avait lui-même demandé des "bougés en CMP" avant de finalement voter pour.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction majeure du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 8/10)</em> — Le parti de Marine Le Pen développe depuis des années un discours sur la "nourriture saine", la "défense de la santé des Français", et se réclame même d'un certain écologisme populaire. En juillet 2025, il vote pour la réintroduction d'un insecticide neurotoxique qui décime les pollinisateurs et dont les effets sur la santé humaine (notamment les nourrissons) sont documentés. <em>Plus de 2 millions de citoyens</em> ont signé une pétition contre ce texte que le RN a contribué à faire adopter.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 3 ========== -->
+  <div class="law-card" id="card3">
+    <div class="law-header" onclick="toggleCard('card3')">
+      <div class="law-number">03</div>
+      <div class="law-header-content">
+        <div class="law-theme">Sécurité · Justice · Ordre public</div>
+        <div class="law-title">Loi Narcotrafic — Sortir la France du piège du narcotrafic</div>
+        <div class="law-subtitle">Création du parquet PNACO · Régime "repentis" · Surveillance renforcée · Criminalité organisée</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 29 avril 2025</div>
+        <div class="law-result">
+          <span class="result-pour">396 pour</span> · <span class="result-contre">68 contre</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Face à une <strong>explosion du trafic de stupéfiants</strong> (estimé à 6,8 milliards d'euros en 2025, 3x plus qu'en 2010), ce texte crée un parquet national anti-criminalité organisée (PNACO), un statut de repenti, des pouvoirs de surveillance étendus (activation à distance d'appareils, infiltration civile) et un régime carcéral strict pour les grands trafiquants. Texte transpartisan largement adopté, mais avec des réserves de la gauche sur les libertés civiles.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Pleinement cohérent avec le discours sécuritaire du RN, qui réclame depuis des années une fermeté accrue contre le narcotrafic.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>6 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 60%"></div>
+            </div>
+          </div>
+          <p class="party-note">LFI dit défendre les habitants des quartiers populaires, premières victimes du narcotrafic. Voter contre une loi anti-trafic crée une tension — même si l'opposition repose sur des mesures de surveillance jugées liberticides.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le PS co-rapportait le texte (Roger Vicot). Vote cohérent : les socialistes soutiennent une approche équilibrée sécurité + prévention.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent. EPR co-rapportait également le texte (Vincent Caure). Soutien plein et entier du gouvernement à cette réforme.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent avec le positionnement sécuritaire de la droite classique.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé (abstentions/contre)</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">Groupe divisé : une partie s'oppose aux mesures de surveillance étendue, une autre reconnaît la nécessité d'agir contre les trafics. Tension cohérente avec leur ADN.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent, soutien au texte gouvernemental.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>LFI (score 6/10)</em> — Jean-Luc Mélenchon et ses alliés se présentent comme les défenseurs des quartiers populaires et des "gens d'en bas", premières victimes quotidiennes de la violence liée au narcotrafic. En votant contre ce texte, LFI protège un principe de liberté civile (opposition aux mesures de surveillance) mais s'expose à l'accusation de mettre l'idéologie avant la sécurité concrète des habitants des cités. <em>Nuance importante :</em> les mesures d'activation à distance d'appareils électroniques sont objectivement liberticides et justifient une opposition de principe.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 4 ========== -->
+  <div class="law-card" id="card4">
+    <div class="law-header" onclick="toggleCard('card4')">
+      <div class="law-number">04</div>
+      <div class="law-header-content">
+        <div class="law-theme">Logement · Pouvoir d'achat · Territoires</div>
+        <div class="law-title">Loi Airbnb — Régulation des meublés de tourisme</div>
+        <div class="law-subtitle">Réduction des niches fiscales Airbnb · Pouvoirs renforcés pour les maires · DPE obligatoire · Lutte contre la crise du logement</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 7 novembre 2024</div>
+        <div class="law-result">
+          <span class="result-pour">168 pour</span> · <span class="result-contre">54 contre</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Face à la crise du logement dans les zones tendues (littoral, montagne, grandes villes), cette loi transpartisane réduit les <strong>avantages fiscaux des locations Airbnb</strong> (abattement de 71% → 50% pour les classés, de 50% → 30% pour les non classés), donne aux maires le pouvoir de réduire les quotas de locations touristiques, et impose le DPE aux meublés de tourisme. Elle répond à un phénomène d'éviction des habitants permanents par la location saisonnière.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>8 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 80%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN dit défendre le "peuple", l'accès au logement pour les classes populaires et les gens qui "ne peuvent plus se loger". Il vote pourtant contre la seule loi qui lutte concrètement contre la spéculation locative Airbnb au nom des intérêts des propriétaires-bailleurs.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense du droit au logement et la lutte contre les niches fiscales favorisant les rentiers.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le PS co-initiait le texte (Iñaki Echaniz). Vote absolument cohérent avec les valeurs socialistes de droit au logement.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">EPR co-initiait aussi le texte (Annaïg Le Meur). Légère tension : réduire des niches fiscales contredit un certain libéralisme économique, mais justifié par l'urgence de la crise du logement.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">Opposition cohérente avec la défense de la propriété privée. LR a critiqué une "incohérence législative" et la "punition des propriétaires". Position libérale assumée.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent : les écologistes défendent l'habitat durable, la revitalisation des centres-villes et la limitation de la spéculation immobilière.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la réponse pragmatique à la crise du logement. Tension mineure avec l'attachement libéral à la liberté des propriétaires.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction majeure du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 8/10)</em> — Dans ses discours, le RN accuse régulièrement les "riches propriétaires" et la "spéculation" de priver les familles populaires de logement abordable. Les zones littorales et de montagne les plus touchées par la crise Airbnb (Pays basque, Bretagne, Alpes) sont précisément des bastions de son électorat populaire. Pourtant, lorsqu'une loi concrète pour réguler cette spéculation est soumise au vote, <em>le RN choisit le camp des propriétaires-bailleurs</em> — défendant une niche fiscale que lui-même avait critiquée verbalement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 5 ========== -->
+  <div class="law-card" id="card5">
+    <div class="law-header" onclick="toggleCard('card5')">
+      <div class="law-number">05</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé publique · Hôpital · Soins</div>
+        <div class="law-title">Loi Soignants — Nombre minimum de soignants par patient</div>
+        <div class="law-subtitle">Ratio soignant/patient obligatoire · Réponse à la crise hospitalière · Initiative du Nouveau Front Populaire</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 23 janvier 2025</div>
+        <div class="law-result">
+          <span class="result-pour">Adopté à large majorité</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Dans un contexte de <strong>crise profonde de l'hôpital public</strong> (déserts médicaux, burn-out, sous-effectifs chroniques), cette proposition de loi du Nouveau Front Populaire instaure un <strong>nombre minimum de soignants par patient hospitalisé</strong>. Elle répond aux demandes des syndicats infirmiers et des soignants depuis des années. Texte adopté dans le cadre d'une niche parlementaire du NFP, il a recueilli un soutien plus large qu'attendu, témoignant d'un consensus sur la crise hospitalière.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Partiellement contre</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>6 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 60%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN se dit champion de "l'hôpital public" et des soignants. Mais voter contre ou se diviser sur un texte qui protège concrètement les patients révèle une priorité donnée à l'opposition au NFP sur l'intérêt des soignants.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">LFI portait ce texte. Vote absolument cohérent avec ses engagements pour le service public hospitalier.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote pleinement cohérent. La défense du service public et des travailleurs est au cœur du projet socialiste.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>5 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 50%"></div>
+            </div>
+          </div>
+          <p class="party-note">EPR affiche un engagement fort pour "sauver l'hôpital" mais résiste aux mesures contraignantes sur les effectifs, jugées trop coûteuses ou rigides pour les établissements. Tension entre discours et pragmatisme budgétaire.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Mitigé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">LR se préoccupe aussi de l'hôpital mais préfère des solutions de marché ou de gestion. Réserves sur le coût budgétaire et la rigidité d'un ratio légal.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent avec la défense du service public et du bien-être des travailleurs hospitaliers.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Mitigé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le MoDem soutient l'amélioration des conditions hospitalières mais préfère des approches contractuelles aux obligations légales contraignantes.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">Le <em>RN et EPR (score 6/10 et 5/10)</em> — Ces deux formations politiques communiquent massivement sur "la crise de l'hôpital", "sauver les soignants" et "redonner des moyens à la santé publique". Face à un texte concret qui répond exactement à ces demandes, les réflexes partisans et budgétaires l'emportent. Le résultat concret pour les patients et les soignants reste secondaire face aux <em>considérations tactiques et financières</em>.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== PAGE 2 DIVIDER ===== -->
+  <!-- NOTE: vote counts added inline to result lines where data is confirmed -->
+  <div style="display:flex;align-items:center;gap:20px;margin:40px 0 48px;">
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding:6px 16px;border:1px solid rgba(201,168,76,0.25);border-radius:2px;">Page 2 — Lois complémentaires</div>
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+  </div>
+
+  <!-- ========== LOI 6 ========== -->
+  <div class="law-card" id="card6">
+    <div class="law-header" onclick="toggleCard('card6')">
+      <div class="law-number">06</div>
+      <div class="law-header-content">
+        <div class="law-theme">Droits des femmes · Justice · Société</div>
+        <div class="law-title">Loi Consentement — Définition pénale du viol</div>
+        <div class="law-subtitle">Intégration du non-consentement dans le code pénal · Silence ne vaut plus consentement · Conformité avec la Convention d'Istanbul</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 6 novembre 2025</div>
+        <div class="law-result">
+          <span class="result-pour">155 pour</span> · <span class="result-contre">31 contre</span> · 5 abstentions
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Portée par les députées Marie-Charlotte Garin (ECOS) et Véronique Riotton (EPR), cette loi inscrit explicitement dans le code pénal que le viol et les agressions sexuelles sont des <strong>actes sexuels non consentis</strong>. Le consentement est désormais défini comme libre, éclairé, spécifique, préalable et révocable — <strong>le silence ne vaut plus consentement</strong>. Texte cosigné par Gabriel Attal et Cyrielle Chatelain, il aligne la France sur la Convention d'Istanbul. Catalysé par le retentissement mondial du procès des viols de Mazan et Gisèle Pélicot.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre (majorité)</span>
+          <div class="party-contradiction score-9-10">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>10 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 100%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN se présente comme défenseur des femmes, de la sécurité, et porte un discours sur la violence des "étrangers" contre elles. Voter contre la seule loi qui améliore concrètement la protection des victimes de viol est une contradiction absolue, documentée par 27 votes "contre" au sein du groupe.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">UDR</span>
+            <span class="party-spectrum">Droite nationale-conservatrice</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-9-10">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>9 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 90%"></div>
+            </div>
+          </div>
+          <p class="party-note">4 votes contre au sein du petit groupe UDR. Même contradiction que le RN : un discours de protection des Français qui exclut les victimes de violences sexuelles.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote pleinement cohérent avec le féminisme affiché de LFI. Sarah Legrain a exhibé des sous-vêtements à la tribune en signe de soutien.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec les valeurs socialistes d'égalité femmes-hommes et de défense des droits fondamentaux.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">EPR co-initiait le texte (Véronique Riotton, cosigné par Gabriel Attal). Vote parfaitement cohérent.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent et courageux : LR/DR a affirmé son attachement à la protection des femmes, se distinguant nettement du RN sur ce texte symbolique.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">ECOS co-initiait le texte (Marie-Charlotte Garin). Vote absolument cohérent avec le féminisme et les droits fondamentaux défendus par les écologistes.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (avec nuances)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Erwan Balanant a exprimé des "doutes" techniques sur l'effectivité du texte, mais a finalement voté pour. Cohérent avec les valeurs libérales de défense des droits individuels.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction absolue du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 10/10)</em> — C'est la contradiction la plus totale du document. Marine Le Pen et Jordan Bardella ont construit une large part de leur discours sur la "protection des femmes françaises", notamment contre les violences sexuelles attribuées à l'immigration. Mais quand vient le moment de voter une loi qui améliore concrètement la protection de <em>toutes les victimes de viol</em>, sans distinction, le RN choisit le camp des agresseurs. Sophie Blanc (RN) justifie en séance : "l'amour devient un formulaire". 27 députés RN votent contre — les seuls dans tout l'hémicycle avec 4 élus UDR — dans un vote où même les sénateurs communistes n'ont eu que des abstentions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 7 ========== -->
+  <div class="law-card" id="card7">
+    <div class="law-header" onclick="toggleCard('card7')">
+      <div class="law-number">07</div>
+      <div class="law-header-content">
+        <div class="law-theme">Justice · Sécurité routière · Victimes</div>
+        <div class="law-title">Loi Homicide routier — Création d'un délit autonome</div>
+        <div class="law-subtitle">Suppression de "l'involontaire" · Nouveau délit de blessures routières · Reconnaissance des familles de victimes</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 9 juillet 2025</div>
+        <div class="law-result">
+          <span class="result-pour">194 pour</span> · <span class="result-contre">6 contre</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Réclamée par des associations de victimes depuis des années, cette loi crée dans le code pénal le délit <strong>d'homicide routier</strong> — supprimant le terme "involontaire" jugé injurieux par les familles des 3 200 tués par an sur les routes françaises. Elle crée également un délit de <strong>blessures routières</strong> et renforce les sanctions pour conduite sous alcool, stupéfiants ou vitesse excessive. Catalysée par l'affaire Pierre Palmade (2023) et la mort d'Antoine Alléno (fils du chef étoilé). Texte transpartisan mais critiqué par la gauche pour son caractère "symbolique" sans hausse de peine.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec le discours sécuritaire et la fermeté pénale prônée par le RN.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-abstention party-vote-badge">● Abstention</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>5 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 50%"></div>
+            </div>
+          </div>
+          <p class="party-note">LFI dit défendre les "gens d'en bas" et les victimes ordinaires, premières victimes des accidents mortels. S'abstenir sur un texte réclamé par des familles de victimes au nom d'une critique juridique crée une tension réelle, même si l'argument sur la "surenchère pénale" est intellectuellement défendable.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé (3 pour, reste abstention)</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">Marietta Karamanli critique un texte au "manque d'efficience" qui "ne changera pas grand chose". Tension entre critique juridique légitime et symbolisme fort pour les familles de victimes que le PS dit représenter.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">EPR co-initiait le texte (Anne Brugnera). Vote cohérent avec la volonté affichée de renforcer la reconnaissance des victimes.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (avec frustration)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">LR co-portait le texte (Éric Pauget). Mais le sénateur Francis Szpiner a qualifié le texte final d'"imparfait", regrettant l'absence de peines planchers. Vote cohérent mais insatisfait.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-abstention party-vote-badge">● Abstention</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">Réserves sur la "surenchère pénale" — position intellectuellement cohérente avec l'hostilité écologiste à l'inflation carcérale, mais difficile à défendre face aux familles de victimes.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent, soutien au texte transpartisan.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>gauche (LFI + ECOS + une partie du PS, score 4-5/10)</em> — Ces partis se présentent systématiquement comme les défenseurs des victimes ordinaires, des "gens ordinaires" qui meurent sur des routes mal entretenues ou tués par des chauffards. S'abstenir sur un texte réclamé à corps et à cris par des familles de victimes de toutes origines sociales — au nom d'une argumentation juridique sur "l'utilité réelle" du changement sémantique — illustre parfois une déconnexion entre <em>la sophistication intellectuelle des élus</em> et la demande symbolique légitime des citoyens ordinaires.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 8 ========== -->
+  <div class="law-card" id="card8">
+    <div class="law-header" onclick="toggleCard('card8')">
+      <div class="law-number">08</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé publique · Environnement · Eau</div>
+        <div class="law-title">Loi PFAS — Protection contre les "polluants éternels"</div>
+        <div class="law-subtitle">Interdiction des PFAS dans les emballages alimentaires · Restrictions industrielles · Surveillance renforcée de l'eau potable</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 20 février 2025</div>
+        <div class="law-result">
+          <span class="result-pour">Large majorité</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Les substances per- et polyfluoroalkylées (PFAS), surnommées <strong>"polluants éternels"</strong>, sont des composés chimiques présents dans les emballages alimentaires, les poêles antiadhésives, les vêtements imperméables et de nombreux produits industriels. Bioaccumulables et liés à des cancers, perturbations hormonales et maladies rénales, ils contaminent durablement les sols et l'eau. Cette loi interdit progressivement les PFAS dans les emballages alimentaires et les ustensiles de cuisine, renforce la surveillance de l'eau potable, et oblige les industriels à déclarer leurs rejets.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé / Réserves</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>7 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 70%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN promeut la "nourriture saine", la protection de la santé des Français et la souveraineté alimentaire. Voter avec tiédeur ou réserves sur une loi qui protège concrètement la population de polluants cancérigènes dans la nourriture quotidienne révèle une priorité donnée aux industriels sur les consommateurs.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense de la santé publique, de l'environnement et la lutte contre la pollution industrielle portée par LFI.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense de la santé publique et la lutte contre les pollutions industrielles.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote globalement cohérent. Légère tension avec la tradition macroniste de ménager les acteurs industriels, mais le texte est suffisamment progressif pour être acceptable.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">LR est partagé entre protection de la santé (valeur conservatrice) et défense des intérêts industriels. Position compréhensible mais révèle la dépendance aux lobbies chimiques.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Parfaitement cohérent : les écologistes militent depuis des années pour l'interdiction des PFAS en Europe et ont largement contribué à l'émergence de ce texte.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent. Le MoDem soutient la protection de la santé publique face aux polluants documentés.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 7/10)</em> — Le parti promeut la "bouffe saine", dénonce l'"alimentation industrielle" et se réclame d'une vision écologiste populaire ("notre terroir", "notre nature"). Pourtant, face à une loi qui retire des molécules cancérigènes des poêles et emballages alimentaires de millions de Français, le groupe vote avec tiédeur ou réserves — <em>préférant protéger les intérêts industriels</em> plutôt qu'honorer son discours de santé publique. Le paradoxe : le RN vote pour la réintroduction de pesticides (loi Duplomb) ET avec réserves sur les PFAS, tout en se présentant comme le parti de la "nourriture saine".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 9 ========== -->
+  <div class="law-card" id="card9">
+    <div class="law-header" onclick="toggleCard('card9')">
+      <div class="law-number">09</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé · Déserts médicaux · Accès aux soins</div>
+        <div class="law-title">Loi Accès aux soins — Territorialisation et formation médicale</div>
+        <div class="law-subtitle">Lutte contre les déserts médicaux · Nouvelles compétences infirmières · Médecins à diplôme étranger · Maisons de santé</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 18 juin 2025</div>
+        <div class="law-result">
+          <span class="result-pour">Large majorité transpartisane</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Face à l'explosion des <strong>déserts médicaux</strong> (11 millions de Français sans médecin traitant en 2025), cette loi améliore l'accès aux soins par plusieurs leviers : extension des compétences des infirmiers et pharmaciens pour des actes de premier recours, accélération de la reconnaissance des <strong>diplômes médicaux étrangers</strong>, renforcement des maisons de santé pluriprofessionnelles, et incitations à l'installation dans les zones sous-dotées. Elle répond à une urgence sanitaire qui touche particulièrement les zones rurales et périurbaines.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Contre (mesures diplômes)</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>8 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 80%"></div>
+            </div>
+          </div>
+          <p class="party-note">Le RN dit se battre pour les Français des campagnes qui n'ont plus de médecin. Il s'oppose pourtant aux mesures d'accélération de reconnaissance des diplômes étrangers — principal levier court terme contre les déserts médicaux — au nom de l'identité nationale. Des milliers de Français ruraux paient concrètement ce refus.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense du service public de santé et l'égalité d'accès aux soins sur tout le territoire.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Pleinement cohérent avec l'engagement historique du PS pour un système de santé universel et territorialement équitable.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent. La lutte contre les déserts médicaux est un engagement central du macronisme depuis 2017.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>3 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 30%"></div>
+            </div>
+          </div>
+          <p class="party-note">LR est partagé entre la défense du numerus clausus et des professions réglementées (lobbies médicaux) et la réalité des déserts dans ses bastions ruraux. Tension assumée.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Cohérent avec les valeurs d'égalité d'accès aux services publics défendues par les écologistes.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent, le MoDem soutient l'accès aux soins et la flexibilisation des professions médicales.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction majeure du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 8/10)</em> — Aucun autre parti ne parle autant des "oubliés de la République", des "campagnes abandonnées" et des Français ruraux qui "n'ont plus de médecin". Pourtant, la seule mesure efficace à court terme pour résoudre les déserts médicaux — la reconnaissance rapide des diplômes de médecins formés à l'étranger — est combattue par le RN au nom d'une vision identitaire. Le résultat concret : <em>des millions d'électeurs RN en zone rurale continuent d'attendre des mois un rendez-vous</em>, tandis que leur parti préfère la cohérence idéologique à leur bien-être médical immédiat.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 10 ========== -->
+  <div class="law-card" id="card10">
+    <div class="law-header" onclick="toggleCard('card10')">
+      <div class="law-number">10</div>
+      <div class="law-header-content">
+        <div class="law-theme">Justice · Mineurs · Famille</div>
+        <div class="law-title">Loi Mineurs — Autorité de la justice sur les délinquants mineurs</div>
+        <div class="law-subtitle">Responsabilisation des parents · Sanctions renforcées · Bracelet électronique · Centres de placement</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 19 mai 2025</div>
+        <div class="law-result">
+          <span class="result-pour">Adopté à large majorité droite-centre</span>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Face à la <strong>hausse de la délinquance juvénile</strong> et aux attaques à l'arme blanche dans les établissements scolaires, cette loi renforce l'autorité de la justice sur les mineurs délinquants et leurs parents. Elle crée de nouvelles obligations parentales assorties de sanctions, facilite le recours aux bracelets électroniques pour les mineurs, et renforce les centres éducatifs fermés (CEF). Texte défendu par les groupes de droite et du centre, rejeté par la gauche qui dénonce une approche uniquement répressive sans mesures préventives ni sociales.
+      </div>
+
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">RN</span>
+            <span class="party-spectrum">Droite nationale</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote parfaitement cohérent avec le discours sécuritaire et la fermeté envers la délinquance juvénile portés depuis des années par le RN.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LFI</span>
+            <span class="party-spectrum">Gauche radicale</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>4 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 40%"></div>
+            </div>
+          </div>
+          <p class="party-note">LFI dit défendre les jeunes des quartiers populaires et leurs familles. S'opposer à toute forme de responsabilisation parentale peut être perçu comme une protection des causes (pauvreté, éducation) mais fragilise le discours sur la sécurité des mêmes quartiers.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">PS</span>
+            <span class="party-spectrum">Centre-gauche</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Opposition cohérente : le PS défend une approche préventive, éducative et sociale de la délinquance juvénile plutôt que purement répressive.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">EPR</span>
+            <span class="party-spectrum">Centre / Macronisme</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote globalement cohérent. Légère tension : le macronisme a longtemps prôné une justice réparatrice des mineurs, mais le contexte sécuritaire pousse vers plus de fermeté.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">LR / DR</span>
+            <span class="party-spectrum">Droite classique</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote pleinement cohérent avec le positionnement historique de LR sur l'autorité, la responsabilité parentale et la fermeté judiciaire.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">ECOS</span>
+            <span class="party-spectrum">Gauche écologiste</span>
+          </div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>2 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 20%"></div>
+            </div>
+          </div>
+          <p class="party-note">Opposition cohérente avec la vision écologiste d'une justice restaurative, axée sur la réinsertion et l'éducation plutôt que la répression.</p>
+        </div>
+
+        <div class="party-vote-card">
+          <div class="party-header">
+            <span class="party-name">MoDem</span>
+            <span class="party-spectrum">Centre libéral</span>
+          </div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label">
+              <span>Score de contradiction</span>
+              <span>1 / 10</span>
+            </div>
+            <div class="contradiction-bar">
+              <div class="contradiction-fill" style="width: 10%"></div>
+            </div>
+          </div>
+          <p class="party-note">Vote cohérent avec la ligne de responsabilisation et de respect de l'autorité défendue par le MoDem.</p>
+        </div>
+
+      </div>
+
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>LFI (score 4/10)</em> — Le parti de Jean-Luc Mélenchon est historiquement attaché à "la sécurité dans les quartiers" et à la protection des habitants des zones populaires, premières victimes des violences entre bandes. Sur ce texte, le réflexe anti-sécuritaire prend le dessus sur la défense concrète des résidents des cités, qui demandent avant tout <em>de la sécurité dans leur quotidien</em>. La contradiction est réelle même si l'opposition repose sur des arguments éducatifs et sociaux légitimes : l'absence totale de contre-propositions constructives affaiblit la posture.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== PAGE 3 DIVIDER ===== -->
+  <div style="display:flex;align-items:center;gap:20px;margin:40px 0 48px;">
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding:6px 16px;border:1px solid rgba(201,168,76,0.25);border-radius:2px;">Page 3 — Lois symboliques & consensus</div>
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+  </div>
+
+  <!-- ========== LOI 11 ========== -->
+  <div class="law-card" id="card11">
+    <div class="law-header" onclick="toggleCard('card11')">
+      <div class="law-number">11</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé · Jeunesse · Addictions</div>
+        <div class="law-title">Loi Puffs — Interdiction des cigarettes électroniques jetables</div>
+        <div class="law-subtitle">Interdiction vente et distribution des "puffs" · Protection des mineurs · 2ème pays européen après la Belgique</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 4 février 2025</div>
+        <div class="law-result"><span class="result-pour">Unanimité — 163 votants</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Les "puffs" — cigarettes électroniques jetables à l'emballage coloré et aux goûts acidulés — étaient utilisées par <strong>15 % des 13-16 ans</strong> malgré leur interdiction de vente aux mineurs. Qualifiées de "piège sournois pour les enfants" par l'Académie nationale de médecine, elles contenaient de la nicotine hautement addictive et des batteries au lithium non recyclables. La loi en interdit la vente et la distribution, sous peine de <strong>100 000 € d'amende</strong>. Texte transpartisan initié en 2022 par l'écologiste Francesca Pasquini, voté à l'unanimité absolue — un cas rare de consensus total.
+      </div>
+      <div class="section-label">Vote par groupe politique — Cas de consensus total</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (unanime)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le discours de protection de la santé des jeunes. Légère tension : le RN dit défendre la liberté individuelle et s'oppose à la "réglementation excessive", mais vote ici pour une interdiction stricte.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (unanime)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Parfaitement cohérent. LFI a soutenu le texte dès l'origine, soulignant les conditions d'extraction du lithium et l'addiction des mineurs.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (unanime)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent avec la défense de la santé publique, notamment des plus jeunes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (rapporteur)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">EPR rapportait le texte (Michel Lauzzana). Vote cohérent avec le Plan national antitabac 2023-2027.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (unanime)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Tension mineure avec la tradition libérale de LR (liberté du commerce, liberté individuelle), mais la protection des mineurs prime.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (co-initiatrice)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">ECOS initiait le texte (Francesca Pasquini). Absolument cohérent : santé, protection des jeunes et environnement (lithium, plastique).</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (unanime)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. Consensus total, sans débat de fond partisan.</p>
+        </div>
+      </div>
+      <div class="top-contradiction" style="border-left-color:var(--green-light);border-color:rgba(76,175,114,0.2)">
+        <div class="top-contradiction-label" style="color:var(--green-light)">✅ Loi sans contradiction majeure</div>
+        <div class="top-contradiction-text">Ce texte illustre qu'un <em>consensus total est possible</em> à l'Assemblée nationale lorsque l'intérêt général prime clairement sur les intérêts partisans. Zéro contradiction notable. C'est aussi — cyniquement — plus facile à voter à l'unanimité car <em>l'industrie du tabac n'est pas un financeur traditionnel des partis français</em>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 12 ========== -->
+  <div class="law-card" id="card12">
+    <div class="law-header" onclick="toggleCard('card12')">
+      <div class="law-number">12</div>
+      <div class="law-header-content">
+        <div class="law-theme">Travail · Retraites · Symbolique politique</div>
+        <div class="law-title">Résolution Retraites — Abrogation des 64 ans</div>
+        <div class="law-subtitle">Vote symbolique sans valeur de loi · Gauche + RN vs centre-droite · Premier vote dans l'hémicycle sur ce sujet depuis 2023</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">5 juin 2025</div>
+        <div class="law-result"><span class="result-pour">198 pour</span> · <span class="result-contre">35 contre</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Texte porté par le groupe GDR (communistes), cette <strong>résolution sans valeur légale</strong> demande l'abrogation du recul de l'âge de départ à 64 ans de la réforme Borne de 2023. Premier vote dans l'hémicycle depuis que la réforme a été imposée par 49.3. Adopté grâce à la gauche + RN + LIOT, avec <strong>le bloc central qui quitte l'hémicycle</strong> plutôt que de voter contre. Ce vote révèle des contradictions criantes de presque tous les acteurs : le RN qui dit vouloir abroger, l'EPR qui fuit le vote, LFI qui refuse la PPL RN sur la même chose.
+      </div>
+      <div class="section-label">Vote par groupe politique — Révélateur de contradictions croisées</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-7-8">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>8 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:80%"></div></div>
+          </div>
+          <p class="party-note">Le RN vote pour une résolution symbolique mais se moque lui-même de son caractère pétitionnaire. Pourtant, quand le gouvernement Barnier proposait la même mesure, le RN l'avait bloquée en refusant la censure. Et quand la gauche refusait la PPL RN sur les retraites, le RN criait à la trahison. Stratégie purement tactique.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>5 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:50%"></div></div>
+          </div>
+          <p class="party-note">LFI vote pour cette résolution mais avait refusé la PPL du RN sur le même sujet fin 2024, préférant « ne pas donner le point » à l'extrême droite. Deux poids, deux mesures : les 64 ans ne valent donc l'abrogation que si le texte vient de gauche.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Vote globalement cohérent — le PS a toujours été opposé à la réforme. Légère tension : le PS a voté pour le PLFSS qui suspend la réforme mais évite l'abrogation totale qu'il réclame ici.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Quitte l'hémicycle</span>
+          <div class="party-contradiction score-9-10">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>9 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:90%"></div></div>
+          </div>
+          <p class="party-note">Plutôt que de voter contre une résolution symbolique sur un sujet qu'il a lui-même choisi de suspendre dans le PLFSS, EPR fuit le vote en quittant l'hémicycle. Contradiction absolue entre la prétendue défense d'une réforme jugée "nécessaire" et le refus d'assumer ce positionnement dans les urnes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent — LR défend la réforme des retraites et l'allongement de la durée de cotisation depuis des années.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le refus des 64 ans défendu par les écologistes depuis 2023.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé / Absent</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Le MoDem défend la réforme des retraites mais certains membres ont voté la suspension dans le PLFSS. Tension assumée entre ligne gouvernementale et pragmatisme parlementaire.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction absolue du texte</div>
+        <div class="top-contradiction-text">L'<em>EPR (score 9/10)</em> — C'est un cas d'école de couardise politique. La majorité présidentielle a imposé la réforme des retraites par 49.3 en 2023, au mépris de 1,2 million de manifestants, en défendant son caractère "indispensable". Deux ans plus tard, plutôt que de voter contre une résolution (sans valeur légale) et d'assumer sa position, <em>EPR quitte physiquement l'hémicycle</em> pour ne pas avoir à enregistrer un vote. Entre-temps, EPR avait aussi accepté la suspension de la même réforme dans le PLFSS. Soutenir, puis suspendre, puis fuir le vote : une cohérence à géométrie très variable.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 13 ========== -->
+  <div class="law-card" id="card13">
+    <div class="law-header" onclick="toggleCard('card13')">
+      <div class="law-number">13</div>
+      <div class="law-header-content">
+        <div class="law-theme">Finances · Justice fiscale · Fraudes</div>
+        <div class="law-title">Loi Fraudes — Contre toutes les fraudes aux aides publiques</div>
+        <div class="law-subtitle">Fraude sociale ET fraude fiscale visées · Renforcement des contrôles · Sanctions élargies</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 21 mai 2025</div>
+        <div class="law-result"><span class="result-pour">Large majorité</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Ce texte renforce simultanément la lutte contre la <strong>fraude sociale</strong> (aides, prestations) et la <strong>fraude fiscale</strong> (évasion, optimisation illégale). En 2024, 20 milliards d'euros de fraudes publiques ont été détectées, dont 3 milliards dans le champ social — ce qui signifie que <strong>17 milliards relèvent de la fraude fiscale</strong>. La loi s'attaque aux deux avec le même arsenal juridique, ce qui a créé un clivage inattendu : certains partis prétendant lutter contre "la fraude" se retrouvent à rechigner quand cette lutte inclut les fraudeurs fiscaux.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (avec réserves)</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>6 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:60%"></div></div>
+          </div>
+          <p class="party-note">Le RN parle de "fraude aux aides" en ciblant quasi-exclusivement les bénéficiaires de prestations sociales. Accepter que ce texte cible à parité la fraude fiscale des entreprises et grandes fortunes contredit la rhétorique habituelle du parti, qui évite soigneusement ce second volet.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent — la lutte contre la grande évasion fiscale est au cœur du programme LFI. Légère tension : LFI aurait voulu un texte plus offensif sur la fraude des entreprises.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la lutte pour la justice fiscale portée par les socialistes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. Légère tension avec les liens historiques du macronisme avec les milieux d'affaires qui pratiquent parfois l'optimisation fiscale agressive.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>5 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:50%"></div></div>
+          </div>
+          <p class="party-note">LR se présente comme le parti de l'ordre, de la loi et de la lutte contre la fraude. Mais ses réticences sur le volet fiscal (favorable aux entreprises) révèlent une définition très sélective du mot "fraude".</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la lutte contre l'évasion fiscale et la défense des services publics financés par l'impôt.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. Le MoDem soutient la lutte contre toutes les formes de fraude aux finances publiques.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">Le <em>RN (score 6/10)</em> — Depuis des années, le parti concentre sa rhétorique anti-fraude sur "les allocataires" et "les étrangers" qui abuseraient du système social. Or la réalité statistique est inverse : la fraude fiscale représente <em>17 milliards</em> contre 3 milliards de fraude sociale. En votant pour ce texte qui remet les deux dans le même sac, le RN trahit silencieusement son narratif populiste — ou espère que ses électeurs ne liront pas les chiffres.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 14 ========== -->
+  <div class="law-card" id="card14">
+    <div class="law-header" onclick="toggleCard('card14')">
+      <div class="law-number">14</div>
+      <div class="law-header-content">
+        <div class="law-theme">Sécurité · Transports · Quotidien</div>
+        <div class="law-title">Loi Sécurité transports — Renforcement de la sûreté dans les transports</div>
+        <div class="law-subtitle">Pouvoirs de contrôle élargis · Vidéosurveillance · Sanctions agression agents · Sécurité quotidienne des usagers</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 18 mars 2025</div>
+        <div class="law-result"><span class="result-pour">Large majorité</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Face à la hausse des <strong>incivilités, agressions et violences dans les transports en commun</strong> (métros, RER, TER), cette loi renforce les pouvoirs des agents de sécurité des opérateurs de transport, durcit les sanctions pour les agressions envers le personnel et les usagers, étend les capacités de vidéosurveillance, et facilite l'intervention des forces de l'ordre. Texte pragmatique qui touche le quotidien de millions d'usagers, en particulier dans les grandes villes et banlieues.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le positionnement sécuritaire du RN. Les transports sont un thème récurrent dans leur discours sur l'insécurité quotidienne.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé / Réserves</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>5 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:50%"></div></div>
+          </div>
+          <p class="party-note">LFI défend les travailleurs des transports (souvent ses électeurs, souvent syndiqués CGT/SUD) et les usagers des banlieues. S'abstenir ou s'opposer à un texte qui protège concrètement ces mêmes personnes au nom d'une hostilité aux "logiques sécuritaires" crée une tension réelle avec sa base.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote globalement cohérent. Le PS gère de nombreuses régions qui financent les transports et est sensible à la sécurité des usagers et agents.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. EPR s'engage sur la sécurité du quotidien depuis 2017.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent avec le positionnement sécuritaire de LR.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Les écologistes défendent les transports collectifs mais s'inquiètent des dérives sécuritaires. Tension entre promotion du train/métro et opposition aux logiques de contrôle social.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le soutien aux mesures de sécurité publique pragmatiques.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>LFI (score 5/10)</em> — Difficile de prétendre représenter "les travailleurs" des dépôts de bus et les usagers des banlieues tout en s'abstenant ou exprimant des réserves sur un texte qui renforce la protection des machinistes et contrôleurs. La contradiction illustre la <em>priorité systématique donnée aux considérations idéologiques</em> (anti-sécuritaire) sur les demandes concrètes des électeurs populaires des transports.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 15 ========== -->
+  <div class="law-card" id="card15">
+    <div class="law-header" onclick="toggleCard('card15')">
+      <div class="law-number">15</div>
+      <div class="law-header-content">
+        <div class="law-theme">Agriculture · Alimentation · Souveraineté</div>
+        <div class="law-title">Loi Souveraineté agricole — Orientation et renouvellement des générations</div>
+        <div class="law-subtitle">Transmission des exploitations · Installation des jeunes agriculteurs · Souveraineté alimentaire · Filières françaises</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 20 février 2025</div>
+        <div class="law-result"><span class="result-pour">Large majorité (droite + centre)</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Ce projet de loi gouvernemental vise à résoudre la <strong>crise de transmission agricole</strong> : d'ici 2030, la moitié des agriculteurs partiront à la retraite et seuls 30 % ont des successeurs identifiés. Il crée un réseau de France Services Agriculture pour accompagner les transmissions, instaure une stratégie nationale de souveraineté alimentaire, renforce les outils de contrôle des terres agricoles face à l'accaparement, et soutient l'installation des jeunes agriculteurs. Adopté à une large majorité mais absent de mesures sur les revenus — principale revendication agricole.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Vote globalement cohérent avec la défense du "monde agricole". Légère tension : le RN a souvent critiqué les lois "bureaucratiques" qui créent de nouveaux services publics — France Services Agriculture en est un.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>4 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:40%"></div></div>
+          </div>
+          <p class="party-note">LFI dit défendre les "petits paysans" et la souveraineté alimentaire. S'opposer à une loi qui facilite l'installation des jeunes agriculteurs et lutte contre l'accaparement foncier crée une tension avec ce discours — même si la critique porte sur l'absence de mesures sur les revenus.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Opposition partiellement cohérente : le PS réclame plus de mesures sur les revenus agricoles et la régulation du foncier. Certains socialistes ont voté pour les mesures de transmission.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. C'est un projet de loi gouvernemental, porté par le ministère de l'Agriculture.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec les liens historiques de LR avec le monde agricole et la FNSEA.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Tensions entre soutien à l'agriculture durable et critique des modèles industriels portés par ce texte. Certains écologistes ont soutenu les mesures de transmission vers des exploitations à taille humaine.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le soutien au gouvernement et à la politique de souveraineté alimentaire.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>LFI (score 4/10)</em> — Le parti dit vouloir "défendre les petits paysans" et "la souveraineté alimentaire contre les multinationales". Ce texte crée précisément des outils pour faciliter l'installation des jeunes et contrôler l'accaparement foncier. L'opposition de LFI — au nom de l'absence de mesures sur les <em>revenus agricoles</em> — illustre une stratégie d'opposition systématique qui sacrifie parfois des avancées concrètes à une exigence d'exhaustivité politique.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 4 DIVIDER ===== -->
+  <div style="display:flex;align-items:center;gap:20px;margin:40px 0 48px;">
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding:6px 16px;border:1px solid rgba(201,168,76,0.25);border-radius:2px;">Page 4 — Lois de société & libertés</div>
+    <div style="flex:1;height:1px;background:var(--border)"></div>
+  </div>
+
+  <!-- ========== LOI 16 ========== -->
+  <div class="law-card" id="card16">
+    <div class="law-header" onclick="toggleCard('card16')">
+      <div class="law-number">16</div>
+      <div class="law-header-content">
+        <div class="law-theme">Santé · Libertés · Société</div>
+        <div class="law-title">Loi Aide à mourir — Droit à l'aide active à mourir</div>
+        <div class="law-subtitle">Suicide assisté légalisé sous conditions strictes · Vote de conscience · Liberté de vote totale dans tous les groupes</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté en 1re lecture le 27 mai 2025</div>
+        <div class="law-result"><span class="result-pour">305 pour</span> · <span class="result-contre">199 contre</span> · 57 abstentions</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Portée par Olivier Falorni (MoDem), cette proposition de loi historique crée un <strong>droit à l'aide à mourir</strong> pour les personnes atteintes d'une maladie grave et incurable en phase avancée ou terminale, souffrant de manière insupportable et inapaisable. Elle légalise le <strong>suicide assisté</strong>, et exceptionnellement l'euthanasie si le patient ne peut s'administrer lui-même la substance. Cas unique : <strong>aucun groupe n'a imposé de consigne de vote</strong>, laissant chaque député libre de sa conscience. Cela rend l'analyse de contradiction particulièrement révélatrice des convictions réelles.
+      </div>
+      <div class="section-label">Vote par groupe — Résultats officiels détaillés</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre — 101 contre, 19 pour sur 123</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le conservatisme social et les valeurs chrétiennes affichées par le RN. 19 députés ont voté pour, dont Jean-Philippe Tanguy — liberté de conscience assumée.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour — 62 pour, 1 abstention sur 71</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Quasi-unanimité cohérente avec la défense de la liberté individuelle et de l'autonomie corporelle portée par LFI. Le seul vote contre (Sophia Chikirou) était une erreur de manipulation.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé — majorité pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Majorité pour, cohérente avec le progressisme social du PS. Quelques voix contre, liées à des convictions personnelles profondes — pleinement légitime sur un vote de conscience.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé — 64 pour, 14 contre, 9 abst.</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Macron avait promis en 2022 de faire avancer ce texte. Que 14 députés EPR votent contre leur président sur un texte qu'il soutient ouvertement crée une légère contradiction institutionnelle.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre (massivement)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec les valeurs conservatrices et le catholicisme social de LR. L'UDR (Ciotti) est le seul groupe à avoir voté unanimement contre — 16 contre, 0 pour.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (majoritairement)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent avec la défense de l'autonomie individuelle et la lutte contre les souffrances inutiles portée par les écologistes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (Falorni = rapporteur)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">C'est Olivier Falorni (MoDem) qui portait le texte. Vote cohérent avec les valeurs libérales de liberté individuelle. Horizons (pro-Édouard Philippe) est le groupe le plus divisé : 14 pour, 13 contre.</p>
+        </div>
+      </div>
+      <div class="top-contradiction" style="border-left-color:var(--green-light);border-color:rgba(76,175,114,0.2)">
+        <div class="top-contradiction-label" style="color:var(--green-light)">✅ Loi sans contradiction majeure — vote de conscience</div>
+        <div class="top-contradiction-text">Ce texte est <em>le seul du document où la contradiction est quasi-nulle pour tous les partis</em>. En l'absence de consigne de vote, chaque groupe révèle ses convictions profondes. La gauche vote massivement pour (liberté individuelle), la droite majoritairement contre (valeurs conservatrices). Les divisions internes sont le signe d'une <em>démocratie qui fonctionne</em> sur un sujet philosophique — pas d'une contradiction.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 17 ========== -->
+  <div class="law-card" id="card17">
+    <div class="law-header" onclick="toggleCard('card17')">
+      <div class="law-number">17</div>
+      <div class="law-header-content">
+        <div class="law-theme">Économie · Environnement · ZFE</div>
+        <div class="law-title">Loi Simplification économique — Suppression des ZFE</div>
+        <div class="law-subtitle">26 mesures de simplification · Suppression des Zones à Faibles Émissions · Reculs environnementaux · Assouplissement ZAN</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 17 juin 2025</div>
+        <div class="law-result"><span class="result-pour">275 pour</span> · <span class="result-contre">252 contre</span> · 21 abstentions</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Texte de simplification administrative pour les entreprises, ce projet de loi a été <strong>"dévoyé"</strong> (selon la ministre Pannier-Runacher, EPR) pour inclure la <strong>suppression des Zones à Faibles Émissions (ZFE)</strong> — ces zones urbaines qui interdisent les véhicules les plus polluants. Les ZFE avaient été créées et défendues par le gouvernement Macron depuis 2019. La loi assouplit aussi le dispositif Zéro Artificialisation Nette (ZAN). Votée par la droite et l'extrême droite avec 23 voix d'avance seulement, malgré la division du camp gouvernemental.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. Le RN critique les ZFE depuis leur création, les qualifiant de "ségrégation sociale" contre les travailleurs qui ne peuvent acheter de voiture récente. Marine Le Pen salue une "victoire tant espérée".</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense de l'environnement et la lutte contre la pollution de l'air en ville.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense de l'environnement et la santé publique en zones urbaines denses.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé — Pannier-Runacher "regrette"</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>5 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:50%"></div></div>
+          </div>
+          <p class="party-note">EPR a créé et défendu les ZFE depuis 2019 comme pilier de la transition écologique. Agnès Pannier-Runacher (EPR) déclare "regretter des reculs préoccupants". C'est EPR qui vote la suppression de sa propre politique environnementale phare.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la ligne anti-réglementation et la défense de la liberté de circuler défendues par LR depuis des années.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Opposition totalement cohérente. Les écologistes défendent les ZFE depuis leur origine et dénoncent "un recul majeur" pour la qualité de l'air dans les villes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Le MoDem a soutenu les ZFE sous les gouvernements précédents. Certains membres votent pour la suppression au nom de la "simplification", d'autres contre pour des raisons environnementales.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction majeure du texte</div>
+        <div class="top-contradiction-text">L'<em>EPR (score 5/10)</em> — C'est le gouvernement macroniste qui a créé les ZFE en 2019, les a défendues pendant 6 ans comme "une priorité de santé publique" face à la pollution de l'air (responsable de 40 000 morts par an en France). Agnès Pannier-Runacher elle-même, ministre EPR de la Transition écologique, déclare "regretter des reculs préoccupants" — tout en faisant partie du gouvernement qui laisse passer ce texte. <em>EPR vote en rang divisé pour supprimer sa propre politique phare de 6 ans.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 18 ========== -->
+  <div class="law-card" id="card18">
+    <div class="law-header" onclick="toggleCard('card18')">
+      <div class="law-number">18</div>
+      <div class="law-header-content">
+        <div class="law-theme">Outre-mer · Solidarité nationale · Reconstruction</div>
+        <div class="law-title">Loi Urgence Mayotte — Reconstruction après le cyclone Chido</div>
+        <div class="law-subtitle">Dérogations urbanisme · Marchés publics locaux · Reconstruction écoles · Cyclone du 14 décembre 2024</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 24 février 2025</div>
+        <div class="law-result"><span class="result-pour">446 pour</span> · 0 contre · 110 abstentions</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Le cyclone Chido dévaste Mayotte le 14 décembre 2024 — l'un des pires désastres naturels de l'histoire française. Ce projet de loi d'urgence permet de <strong>déroger aux règles d'urbanisme</strong> pour accélérer la reconstruction, transfère temporairement à l'État la construction des écoles, réserve une part des marchés publics aux PME locales, suspend les cotisations sociales des entreprises et reporte leurs impôts. Adopté en quasi-unanimité, avec pour seules réserves les abstentions de LFI et des écologistes sur certaines dispositions.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>2 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:20%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense des territoires français et des Français d'outre-mer. Légère tension : le RN se méfie des "exceptions" d'urbanisme et des dépenses publiques d'urgence.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-abstention party-vote-badge">● Abstention</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">LFI dit défendre les populations les plus vulnérables, les plus pauvres, les "oubliés de la République". S'abstenir sur une loi d'urgence pour les habitants les plus démunis de France après une catastrophe naturelle crée une tension avec ce discours, même si les réserves portaient sur des dispositions spécifiques (expropriation).</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la solidarité nationale et la défense des services publics (écoles, logement social).</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. C'est un texte gouvernemental d'urgence. EPR était à l'initiative du dispositif de reconstruction.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. LR soutient la reconstruction des territoires français et les mesures de soutien aux entreprises locales.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-abstention party-vote-badge">● Abstention</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>3 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:30%"></div></div>
+          </div>
+          <p class="party-note">Tensions sur les dérogations aux règles environnementales de construction, mais l'abstention sur une loi d'urgence après une catastrophe crée une image difficile à défendre auprès des populations concernées.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec le soutien au gouvernement et à la solidarité nationale.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">La <em>LFI et ECOS (score 3/10)</em> — L'abstention sur une loi de reconstruction d'urgence pour une population frappée par une catastrophe naturelle — parmi les plus pauvres de France — est difficile à réconcilier avec le discours de "défenseurs des plus vulnérables". La position se justifie par des réserves légitimes sur l'article d'expropriation simplifié (supprimé en séance), mais <em>l'image politique reste contre-intuitive</em> face à des images de dévastration absolue.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 19 ========== -->
+  <div class="law-card" id="card19">
+    <div class="law-header" onclick="toggleCard('card19')">
+      <div class="law-number">19</div>
+      <div class="law-header-content">
+        <div class="law-theme">Immigration · Nationalité · Identité nationale</div>
+        <div class="law-title">Loi Droit du sol Mayotte — Restriction de la nationalité</div>
+        <div class="law-subtitle">Parents en situation régulière depuis 3 ans (au lieu de 3 mois) · Vote chaotique · Seul Mayotte concerné</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 6 février 2025</div>
+        <div class="law-result"><span class="result-pour">162 pour</span> · <span class="result-contre">93 contre</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Proposition de loi de LR (groupe Droite Républicaine de Laurent Wauquiez) visant à <strong>restreindre le droit du sol à Mayotte</strong> : un enfant né dans l'archipel ne devient français que si ses deux parents résident en situation régulière depuis au moins 3 ans (contre 3 mois auparavant). Vote dans la <strong>confusion totale</strong> : une quinzaine de députés de gauche votent par inadvertance un amendement UDR portant le délai à 3 ans, et 5 députés RN votent contre par erreur. Mesure symbolique et politique forte, ciblant l'immigration irrégulière à Mayotte.
+      </div>
+      <div class="section-label">Vote par groupe politique</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la position anti-immigration et anti-droit du sol défendue par le RN depuis sa fondation.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense du droit du sol et des droits des enfants nés sur le sol français.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec les valeurs républicaines d'égalité et d'universalisme défendues par le PS.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé (certains pour)</span>
+          <div class="party-contradiction score-5-6">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>5 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:50%"></div></div>
+          </div>
+          <p class="party-note">Macron avait défendu l'égalité républicaine et l'universalisme. Des députés EPR votent pour une restriction du droit du sol — principe républicain fondamental. Le ministre Darmanin (EPR) dit "vouloir aller plus loin" sur le droit du sol. Contradiction notable avec le discours universaliste macroniste.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (porteur du texte)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">C'est leur texte. Vote parfaitement cohérent avec la ligne de LR sur l'immigration depuis des années.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-contre party-vote-badge">● Contre</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent avec la défense des droits fondamentaux et l'universalisme républicain portés par les écologistes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-div party-vote-badge">~ Divisé</span>
+          <div class="party-contradiction score-3-4">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>4 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:40%"></div></div>
+          </div>
+          <p class="party-note">Le MoDem se réclame de l'humanisme libéral et de l'ouverture. Certains membres votent pour une restriction de la nationalité — tension avec les valeurs affichées du mouvement centriste.</p>
+        </div>
+      </div>
+      <div class="top-contradiction">
+        <div class="top-contradiction-label">⚡ Contradiction notable du texte</div>
+        <div class="top-contradiction-text">L'<em>EPR (score 5/10)</em> — Pendant 7 ans, la Macronie a défendu "l'universalisme républicain", s'est opposée aux restrictions du droit du sol, et a fait de l'égale dignité de tous les citoyens un marqueur identitaire fort. Le ministre Gérald Darmanin (EPR) déclare en séance être "favorable à cette modification du droit du sol" et veut même "aller plus loin". <em>L'universalisme macroniste a une géographie très précise : il s'arrête aux frontières de Mayotte quand les sondages l'exigent.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LOI 20 ========== -->
+  <div class="law-card" id="card20">
+    <div class="law-header" onclick="toggleCard('card20')">
+      <div class="law-number">20</div>
+      <div class="law-header-content">
+        <div class="law-theme">Logement · Urbanisme · Crise du logement</div>
+        <div class="law-title">Loi Bureaux-Logements — Transformation de bureaux en logements</div>
+        <div class="law-subtitle">Télétravail libère des bureaux · Facilitation des conversions · Majorité simple en copropriété · Réponse à la crise</div>
+      </div>
+      <div class="law-header-right">
+        <div class="law-date">Adopté le 16 juin 2025</div>
+        <div class="law-result"><span class="result-pour">Unanimité large</span></div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="law-body">
+      <div class="law-description">
+        Depuis la généralisation du télétravail post-Covid, <strong>le taux d'occupation des bureaux a chuté de 5,4 %</strong>, laissant des millions de m² vides dans les centres-villes. Pendant ce temps, la France manque de logements. Cette loi transpartisane facilite la <strong>transformation de bureaux, anciens bâtiments publics et locaux commerciaux en logements</strong> : abaissement des majorités requises en copropriété, assouplissements réglementaires, création d'un permis de construire "réversible". Texte évident et consensuel qui fait l'unanimité — cas rare.
+      </div>
+      <div class="section-label">Vote par groupe — Consensus quasi total</div>
+      <div class="votes-grid">
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">RN</span><span class="party-spectrum">Droite nationale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent. Le RN dit vouloir résoudre la crise du logement. Voter pour un texte concret et non-idéologique qui produit des logements supplémentaires est logique.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LFI</span><span class="party-spectrum">Gauche radicale</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent avec la défense du droit au logement et la mobilisation de biens inutilisés pour les transformer en logements accessibles.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">PS</span><span class="party-spectrum">Centre-gauche</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent. Transformer des actifs immobiliers sous-utilisés en logements sociaux et abordables est au cœur du programme socialiste.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">EPR</span><span class="party-spectrum">Centre / Macronisme</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Vote cohérent. EPR co-initiait le texte (Romain Daubié, MoDem).</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">LR / DR</span><span class="party-spectrum">Droite classique</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Cohérent : transformer des actifs privés sous-utilisés est une solution libérale à la crise du logement, qui ne nécessite pas de dépenses publiques directes.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">ECOS</span><span class="party-spectrum">Gauche écologiste</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Particulièrement cohérent : réutiliser l'existant plutôt que de construire neuf est le principe écologiste de base en urbanisme.</p>
+        </div>
+        <div class="party-vote-card">
+          <div class="party-header"><span class="party-name">MoDem</span><span class="party-spectrum">Centre libéral</span></div>
+          <span class="vote-badge vote-pour party-vote-badge">● Pour (co-initiateur)</span>
+          <div class="party-contradiction score-0-2">
+            <div class="contradiction-label"><span>Score de contradiction</span><span>1 / 10</span></div>
+            <div class="contradiction-bar"><div class="contradiction-fill" style="width:10%"></div></div>
+          </div>
+          <p class="party-note">Romain Daubié (MoDem) déposait la proposition. Vote cohérent et unanime.</p>
+        </div>
+      </div>
+      <div class="top-contradiction" style="border-left-color:var(--green-light);border-color:rgba(76,175,114,0.2)">
+        <div class="top-contradiction-label" style="color:var(--green-light)">✅ Deuxième loi sans contradiction — L'intérêt général évident l'emporte</div>
+        <div class="top-contradiction-text">Quand une solution est à la fois <em>écologiquement bonne</em> (réutiliser l'existant), <em>économiquement logique</em> (valoriser des actifs vides), et <em>socialement utile</em> (créer des logements), l'Assemblée vote unanimement. Ce deuxième cas de consensus total — avec la loi Puffs — suggère que le consensus parlementaire est possible, mais seulement quand <em>aucun lobby majeur n'est menacé</em> et qu'il n'y a pas d'enjeu de positionnement électoral.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BILAN GÉNÉRAL ===== -->
+  <div id="bilan" style="margin-top:60px;">
+    <div style="display:flex;align-items:center;gap:20px;margin-bottom:40px;">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding:6px 16px;border:1px solid rgba(201,168,76,0.25);border-radius:2px;">Bilan général — Taux de contradiction 2024-2025</div>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:28px;margin-bottom:20px;">
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.7;max-width:720px;margin-bottom:24px;">Calcul basé sur les <strong style="color:var(--text)">20 lois analysées dans ce document</strong> (nov. 2024 – juil. 2025). Il s'agit de la quasi-totalité des textes politiquement significatifs de la session 2024-2025 sur 71 textes définitivement adoptés, les autres étant techniques (ratifications, conventions, textes ultramarins). Le taux représente la <strong style="color:var(--text)">moyenne des scores de contradiction</strong> sur ces 20 textes, ramenée en pourcentage sur 100. Un score de 0 = cohérence parfaite. Un score de 100 % = contradiction absolue et systématique.</p>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- RN -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">RN</div>
+            <div style="font-size:10px;color:var(--text-faint);">Rassemblement national</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:43%;border-radius:6px;background:linear-gradient(90deg,#8a1a1a,#e04040);transition:width 1s ease;"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#e04040;text-align:right;font-weight:500;">43 %</div>
+        </div>
+
+        <!-- EPR -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">EPR</div>
+            <div style="font-size:10px;color:var(--text-faint);">Centre / Macronisme</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:28%;border-radius:6px;background:linear-gradient(90deg,#7a3a2d,#d46a4c);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#d46a4c;text-align:right;font-weight:500;">28 %</div>
+        </div>
+
+        <!-- LFI -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">LFI</div>
+            <div style="font-size:10px;color:var(--text-faint);">Gauche radicale</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:25%;border-radius:6px;background:linear-gradient(90deg,#7a6a2d,#c9a84c);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#c9a84c;text-align:right;font-weight:500;">25 %</div>
+        </div>
+
+        <!-- LR -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">LR / DR</div>
+            <div style="font-size:10px;color:var(--text-faint);">Droite classique</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:23%;border-radius:6px;background:linear-gradient(90deg,#7a6a2d,#c9a84c);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#c9a84c;text-align:right;font-weight:500;">23 %</div>
+        </div>
+
+        <!-- MoDem -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">MoDem</div>
+            <div style="font-size:10px;color:var(--text-faint);">Centre libéral</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:18%;border-radius:6px;background:linear-gradient(90deg,#4a7a2d,#7ab04c);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#7ab04c;text-align:right;font-weight:500;">18 %</div>
+        </div>
+
+        <!-- ECOS -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">ECOS</div>
+            <div style="font-size:10px;color:var(--text-faint);">Gauche écologiste</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:18%;border-radius:6px;background:linear-gradient(90deg,#4a7a2d,#7ab04c);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#7ab04c;text-align:right;font-weight:500;">18 %</div>
+        </div>
+
+        <!-- PS -->
+        <div style="display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text);font-weight:500;">PS</div>
+            <div style="font-size:10px;color:var(--text-faint);">Centre-gauche</div>
+          </div>
+          <div style="height:12px;background:var(--surface2);border-radius:6px;overflow:hidden;">
+            <div style="height:100%;width:16%;border-radius:6px;background:linear-gradient(90deg,#2d7a4e,#4caf72);"></div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;color:#4caf72;text-align:right;font-weight:500;">16 %</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Évolution notable -->
+    <div style="background:var(--surface);border:1px solid rgba(201,168,76,0.2);border-radius:4px;padding:14px 18px;margin-bottom:16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:var(--gold);margin-bottom:8px;">📊 Évolution du score RN : 52 % → 43 % avec 5 lois supplémentaires</div>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.65;">Sur les 5 nouvelles lois (aide à mourir, simplification économique, Mayotte urgence, droit du sol, bureaux-logements), le RN vote de manière relativement cohérente avec ses positions — ce qui <em>abaisse</em> la moyenne. Cela confirme que les contradictions RN sont <strong>concentrées sur des lois clés très médiatisées</strong> (retraites, viol, Airbnb, pesticides), et non diffuses sur toute la session. Autrement dit : la stratégie du RN est d'être cohérent sur les sujets techniques, et radicalement contradictoire sur les sujets symboliques qui lui coûtent électoralement le moins à trahir.</p>
+    </div>
+
+    <!-- Interprétation -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div style="background:rgba(224,64,64,0.06);border:1px solid rgba(224,64,64,0.15);border-radius:4px;padding:18px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:#e04040;margin-bottom:10px;">🔴 RN — 43 % — Champion incontesté de la contradiction</div>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.65;">Même ramené à 43 % sur 20 lois, le RN reste de loin le parti le plus contradictoire. Les incohérences majeures (retraites, viol, Airbnb, pesticides) représentent les paris populistes les plus calculés — là où le score électoral prime sur la cohérence. Ses contradictions ne sont pas accidentelles : elles sont <em>stratégiques et délibérées</em>.</p>
+      </div>
+      <div style="background:rgba(76,175,114,0.06);border:1px solid rgba(76,175,114,0.15);border-radius:4px;padding:18px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:#4caf72;margin-bottom:10px;">🟢 PS — 16 % — Le plus cohérent sur 20 lois</div>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.65;">Le PS descend à 16 % — le meilleur score. Sa stratégie d'accord politique assumé sur le PLFSS (soutien en échange de la suspension des retraites) et ses votes cohérents sur l'environnement, les droits des femmes et la justice sociale font de lui le parti le plus fidèle à son programme sur cette session. L'ECOS et le MoDem suivent à 18 % chacun, dans des registres très différents.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px 18px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-faint);margin-bottom:8px;">Note méthodologique importante</div>
+      <p style="font-size:12px;color:var(--text-faint);line-height:1.65;">Les scores de contradiction sont des <strong style="color:var(--text-muted)">analyses éditoriales</strong> fondées sur les programmes officiels, les déclarations publiques documentées et les positions historiques des partis. Ils ne constituent pas une mesure scientifique. L'écart entre discours et vote peut parfois être justifié par des considérations légitimes (pragmatisme, concessions en coalition, évolution de position). Ces scores mesurent la <em>tension perçue</em>, pas forcément la <em>mauvaise foi</em>. Pour une analyse sur 3 ans complets (2022-2025), il faudrait traiter l'intégralité des ~250 scrutins publics de la XVIe et XVIIe législature. Sur cet échantillon de 15 lois majeures, les tendances observées correspondent aux perceptions largement partagées par les analystes politiques et commentateurs indépendants.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-note">
+    <strong>Sources :</strong> Assemblée nationale (assemblee-nationale.fr), LCP Assemblée nationale, Vie-publique.fr, Datan.fr, Maire-Info, France Info, Public Sénat. Les données de vote reflètent les scrutins publics officiels. Les scores de contradiction sont des analyses éditoriales basées sur les programmes officiels, les déclarations publiques et les positions historiques des partis — ils n'engagent pas ces institutions. <strong>Partis :</strong> RN (Rassemblement National), LFI (La France Insoumise), PS (Parti Socialiste / Groupe Socialistes), EPR (Ensemble pour la République), LR/DR (Les Républicains / Droite Républicaine), ECOS (Écologiste et Social), MoDem (Les Démocrates). Document créé à des fins d'information et d'analyse citoyenne.
+  </div>
+</footer>
+
+<script>
+  function toggleCard(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  // Animate bars on open
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.contradiction-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => bar.style.width = w, 50);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.law-card').forEach(card => observer.observe(card));
+</script>
+
+</body>
+</html>

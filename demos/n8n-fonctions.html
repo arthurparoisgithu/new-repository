@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les fonctions n8n, en pratique</title>
+<style>
+  :root{
+    --ink:#161A22; --ink2:#4C5568; --ink3:#79829A;
+    --bg:#E8EBF1; --surface:#FFFFFF; --line:#D3D9E4;
+    --code:#1A2030; --codeInk:#E4E8F3; --codeDim:#8C97B4;
+    --c:#334; --radius:3px;
+    --texte:#0E7A6F; --nombre:#A8600B; --tableau:#6C28D9; --objet:#1A4FD0; --date:#BC1A61; --booleen:#15803D;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Inter","Segoe UI",Roboto,-apple-system,Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.55;
+  }
+  code,kbd,pre,.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+  button{font:inherit}
+
+  /* ---------- en-tête ---------- */
+  .masthead{padding:52px 0 24px}
+  .masthead h1{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:clamp(28px,5.4vw,46px); line-height:1.08; letter-spacing:-.03em;
+    font-weight:600; margin:0 0 14px;
+  }
+  .masthead h1 .br{display:block;color:var(--ink3)}
+  .lede{max-width:60ch;color:var(--ink2);margin:0;font-size:17px}
+
+  /* ---------- bac à sable ---------- */
+  .sandbox{
+    background:var(--code); color:var(--codeInk); border-radius:var(--radius);
+    padding:22px; margin:26px 0 0; display:grid; gap:20px;
+    grid-template-columns:minmax(0,1fr) 258px;
+  }
+  .sb-label{font-size:12px;color:var(--codeDim);margin:0 0 8px;letter-spacing:.02em}
+  #expr{
+    width:100%; background:#11162399; color:#F2F5FF; border:1px solid #333C55;
+    border-radius:var(--radius); padding:12px 13px; font-size:15px; line-height:1.5;
+    font-family:ui-monospace,Menlo,Consolas,monospace; resize:vertical; min-height:52px;
+  }
+  #expr:focus{outline:2px solid #4E7BFF;outline-offset:1px;border-color:transparent}
+  .sb-brace{color:var(--codeDim)}
+  .result{
+    margin-top:12px; padding:13px; border-radius:var(--radius); background:#0E1220;
+    border-left:3px solid #3FBFA8; min-height:50px; white-space:pre-wrap; word-break:break-word;
+    font-size:15px; color:#BFF3E6; font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .result.err{border-left-color:#FF7A7A;color:#FFB3B3}
+  .result .type{display:block;color:var(--codeDim);font-size:11px;margin-bottom:5px;font-family:inherit}
+  #steps{margin-top:12px;display:none}
+  #steps.on{display:block}
+  #steps ol{margin:0;padding:0;list-style:none;counter-reset:s}
+  #steps li{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;
+    padding:6px 0 6px 22px;border-top:1px solid #262F45;position:relative;font-size:12.5px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  #steps li::before{
+    counter-increment:s;content:counter(s);position:absolute;left:0;top:6px;
+    color:var(--codeDim);font-size:11px;
+  }
+  #steps .sp{color:#9FB0D8;word-break:break-word}
+  #steps .sv{color:#7FD1C8;word-break:break-word}
+  .sb-data pre{
+    margin:0; background:#0E1220; border-radius:var(--radius); padding:12px;
+    font-size:11.5px; line-height:1.5; color:#A9B4D1; max-height:274px; overflow:auto;
+  }
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .presets button{
+    background:#242C42;color:#C6CEE4;border:0;border-radius:20px;padding:5px 11px;
+    font-size:12.5px;cursor:pointer;
+  }
+  .presets button:hover{background:#313A56;color:#fff}
+
+  /* ---------- anatomie ---------- */
+  .anatomy{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:14px}
+  .anatomy h3{margin:0 0 4px;font-size:17px}
+  .anatomy .say{margin:0 0 18px;color:var(--ink2);font-size:15px;max-width:66ch}
+  .anat-line{font-size:clamp(13px,2.6vw,17px);line-height:2.1;word-break:break-word}
+  .anat-line span{padding-bottom:3px;border-bottom:2px solid transparent}
+  .p1{color:var(--ink3)}
+  .p2{color:var(--objet);border-bottom-color:var(--objet)!important}
+  .p3{color:var(--tableau);border-bottom-color:var(--tableau)!important}
+  .p4{color:var(--nombre);border-bottom-color:var(--nombre)!important}
+  .anat-legend{margin:18px 0 0;padding:0;list-style:none;counter-reset:a;display:grid;gap:10px}
+  .anat-legend li{padding-left:26px;position:relative;font-size:14.5px;color:var(--ink2);max-width:74ch}
+  .anat-legend li::before{
+    counter-increment:a;content:counter(a);position:absolute;left:0;top:1px;
+    width:18px;height:18px;border-radius:50%;background:var(--bg);color:var(--ink2);
+    font-size:11px;display:grid;place-items:center;
+  }
+  .anat-legend b{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;color:var(--ink)}
+
+  /* ---------- navigation ---------- */
+  .navbar{
+    position:sticky; top:0; z-index:20; background:var(--bg);
+    border-bottom:1px solid var(--line); margin-top:30px;
+  }
+  .navbar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:11px;padding-bottom:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 auto}
+  .chips button{
+    font-size:13.5px;padding:4px 11px;border-radius:20px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink2);white-space:nowrap;
+  }
+  .chips button:hover{border-color:var(--ink3)}
+  .chips button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  #search{
+    flex:0 1 230px; padding:7px 12px; border:1px solid var(--line); border-radius:20px;
+    background:var(--surface); font:inherit; font-size:14px; color:var(--ink);
+  }
+  #search:focus{outline:2px solid #4E7BFF;outline-offset:-1px}
+
+  /* ---------- sections ---------- */
+  .cat{padding:44px 0 8px;scroll-margin-top:62px}
+  .cat-head{border-top:2px solid var(--c);padding-top:14px;margin-bottom:26px}
+  .cat-head h2{
+    margin:0 0 6px;font-family:ui-monospace,Menlo,monospace;font-size:26px;
+    letter-spacing:-.02em;color:var(--c);font-weight:600;
+  }
+  .cat-head p{margin:0;max-width:66ch;color:var(--ink2);font-size:15px}
+  .grp{margin-bottom:34px}
+  .grp h3{margin:0 0 4px;font-size:16px;font-weight:650;letter-spacing:-.01em}
+  .grp .intro{margin:0 0 14px;max-width:68ch;color:var(--ink2);font-size:14.5px}
+
+  .fn{
+    background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--c);
+    border-radius:var(--radius); padding:13px 16px; margin-bottom:7px;
+    display:grid; grid-template-columns:minmax(190px,240px) minmax(0,1fr); gap:6px 22px; align-items:baseline;
+  }
+  .fn-name{font-size:14px;color:var(--c);font-weight:600;word-break:break-word}
+  .fn-desc{margin:0;font-size:14.5px;color:var(--ink2)}
+  .demo{
+    grid-column:1/-1; margin-top:10px; width:100%; text-align:left; cursor:pointer;
+    background:#F4F6FA; border:1px solid var(--line); border-radius:var(--radius);
+    padding:9px 12px; display:grid; grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);
+    gap:10px; align-items:center;
+  }
+  .demo:hover{background:#ECF0F8;border-color:var(--ink3)}
+  .demo .in{font-size:13px;color:var(--ink);word-break:break-word}
+  .demo .sep{color:var(--ink3);text-align:center;font-size:13px}
+  .demo .out{font-size:13px;color:var(--c);word-break:break-word;font-weight:600}
+  .demo.static,.demo.static:hover{cursor:default;background:#F4F6FA;border-color:var(--line)}
+
+  /* ---------- panneaux ---------- */
+  .panel{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 26px;margin:14px 0;
+  }
+  .panel h4{margin:20px 0 5px;font-size:14.5px;font-family:ui-monospace,Menlo,monospace}
+  .panel p{margin:0 0 10px;max-width:72ch;color:var(--ink2);font-size:15px}
+  .panel code{background:#EEF1F7;padding:1px 5px;border-radius:2px;font-size:13.5px;color:var(--ink)}
+  .vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .vars div{border-left:2px solid var(--line);padding-left:12px}
+  .vars b{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;font-weight:600}
+  .vars span{display:block;font-size:14px;color:var(--ink2)}
+  .recipe{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+  .recipe:first-of-type{border-top:0;padding-top:0;margin-top:0}
+  .recipe pre{
+    background:var(--code);color:var(--codeInk);padding:12px 14px;border-radius:var(--radius);
+    overflow:auto;font-size:13px;margin:8px 0 0;
+  }
+  .trap{border-left:3px solid #C9463B;padding-left:14px;margin-bottom:18px}
+  .trap b{display:block;font-size:15px;margin-bottom:3px}
+  .trap p{margin:0;font-size:14.5px}
+
+  /* ---------- exercices ---------- */
+  .ex{border-top:1px solid var(--line);padding:18px 0}
+  .ex:first-child{border-top:0;padding-top:0}
+  .ex .goal{margin:0 0 4px;font-size:15.5px;color:var(--ink);font-weight:600}
+  .ex .want{margin:0 0 10px;font-size:14px;color:var(--ink2)}
+  .ex .want code{font-family:ui-monospace,Menlo,monospace}
+  .ex-row{display:flex;gap:8px;flex-wrap:wrap}
+  .ex-row input{
+    flex:1 1 320px;padding:9px 12px;border:1px solid var(--line);border-radius:var(--radius);
+    font-family:ui-monospace,Menlo,monospace;font-size:13.5px;background:#F8FAFD;color:var(--ink);
+  }
+  .ex-row input:focus{outline:2px solid #4E7BFF;outline-offset:-1px}
+  .ex-row button{
+    padding:9px 14px;border-radius:var(--radius);border:1px solid var(--line);
+    background:var(--surface);color:var(--ink2);cursor:pointer;font-size:14px;
+  }
+  .ex-row button:hover{border-color:var(--ink3);color:var(--ink)}
+  .ex .fb{margin:9px 0 0;font-size:14px;min-height:0}
+  .ex .fb.good{color:#15803D}
+  .ex .fb.miss{color:#B8412F}
+  .ex .fb code{font-family:ui-monospace,Menlo,monospace;background:#EEF1F7;padding:1px 5px;border-radius:2px}
+
+  .empty{display:none;color:var(--ink2);padding:30px 0}
+  .empty.on{display:block}
+  footer{padding:40px 0 60px;color:var(--ink3);font-size:13.5px}
+
+  @media (max-width:760px){
+    .sandbox{grid-template-columns:1fr}
+    .fn{grid-template-columns:1fr;gap:3px}
+    .demo{grid-template-columns:1fr;gap:4px}
+    .demo .sep{text-align:left;transform:rotate(90deg);width:14px}
+    #steps li{grid-template-columns:1fr;gap:2px}
+    .masthead{padding-top:32px}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media print{
+    body{background:#fff}
+    .navbar,.sandbox,.presets,#exercices .ex-row,#exercices .fb{display:none}
+    .fn,.panel,.anatomy{break-inside:avoid;border-color:#bbb}
+    .cat{padding-top:20px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap masthead">
+  <h1>Les fonctions n8n<span class="br">expliquées par l'exemple</span></h1>
+  <p class="lede">Une expression n8n, c'est du JavaScript entre doubles accolades, plus une centaine de raccourcis maison. Tout ce qui suit tourne vraiment dans cette page : les résultats affichés sont calculés, pas recopiés. Clique sur n'importe quel exemple pour le charger dans le bac à sable et le modifier.</p>
+
+  <div class="sandbox">
+    <div>
+      <p class="sb-label">Ton expression <span class="sb-brace">{{ … }}</span></p>
+      <textarea id="expr" spellcheck="false" rows="2">$json.achats.pluck("montant").sum()</textarea>
+      <div class="result" id="out"></div>
+      <div id="steps"><p class="sb-label">Ce qui se passe, maillon par maillon</p><ol></ol></div>
+      <div class="presets" id="presets"></div>
+    </div>
+    <div class="sb-data">
+      <p class="sb-label">Donnée d'entrée <span class="sb-brace">$json</span></p>
+      <pre id="sample"></pre>
+    </div>
+  </div>
+
+  <div class="anatomy">
+    <h3>Anatomie d'une expression</h3>
+    <p class="say">Une expression se lit de gauche à droite, comme une chaîne de montage. Chaque maillon reçoit le résultat du précédent et le transforme. La couleur indique le type de donnée qui circule à cet endroit.</p>
+    <div class="anat-line mono"><span class="p1">{{</span> <span class="p2">$json.achats</span><span class="p3">.pluck("montant")</span><span class="p4">.sum()</span> <span class="p1">}}</span></div>
+    <ol class="anat-legend">
+      <li><b>{{ }}</b> — les accolades disent à n8n « ce qui suit est du code, pas du texte ». Une seule paire pour toute l'expression.</li>
+      <li><b>$json.achats</b> — le point de départ : le champ <code>achats</code> de la donnée entrante. À ce stade, on tient un tableau de trois objets.</li>
+      <li><b>.pluck("montant")</b> — premier maillon. Il reçoit le tableau d'objets et n'en garde qu'une colonne. On tient maintenant un tableau de trois nombres.</li>
+      <li><b>.sum()</b> — deuxième maillon. Il reçoit le tableau de nombres et l'additionne. On tient un seul nombre, et c'est le résultat final.</li>
+    </ol>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="wrap">
+    <div class="chips" id="chips"></div>
+    <input id="search" type="search" placeholder="Chercher une fonction…" autocomplete="off">
+  </div>
+</nav>
+
+<main class="wrap" id="main"></main>
+<p class="wrap empty" id="empty">Aucune fonction ne correspond.</p>
+
+<div class="wrap">
+
+<section class="cat" id="variables" style="--c:#334">
+  <div class="cat-head">
+    <h2>Les variables intégrées</h2>
+    <p>Les fonctions transforment une valeur. Encore faut-il aller la chercher. Voilà les mots-clés qui donnent accès aux données du workflow.</p>
+  </div>
+  <div class="panel">
+    <div class="vars">
+      <div><b>$json</b><span>La donnée de l'item en cours, telle qu'elle sort du nœud précédent.</span></div>
+      <div><b>$json.champ</b><span>Un champ précis. Pour un nom avec espace ou tiret : <code>$json["mon champ"]</code>.</span></div>
+      <div><b>$('Nom du nœud')</b><span>Les données d'un nœud plus haut dans le workflow, même s'il n'est pas juste avant.</span></div>
+      <div><b>$('Nœud').item.json.x</b><span>L'item correspondant de ce nœud. C'est la forme la plus utilisée.</span></div>
+      <div><b>$('Nœud').all()</b><span>Tous les items de ce nœud, sous forme de tableau.</span></div>
+      <div><b>$input.all()</b><span>Tous les items entrants. À combiner avec <code>.pluck()</code> et <code>.sum()</code>.</span></div>
+      <div><b>$now</b><span>Date et heure actuelles, déjà au format Luxon.</span></div>
+      <div><b>$today</b><span>Aujourd'hui à minuit. Pour comparer des jours sans l'heure.</span></div>
+      <div><b>DateTime</b><span>La bibliothèque Luxon complète, pour créer une date de toutes pièces.</span></div>
+      <div><b>$itemIndex</b><span>Le numéro de l'item en cours, à partir de 0.</span></div>
+      <div><b>$execution.id</b><span>L'identifiant de l'exécution. Utile dans les logs.</span></div>
+      <div><b>$workflow.name</b><span>Le nom du workflow, pour signer une alerte.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cat" id="recettes" style="--c:#334">
+  <div class="cat-head">
+    <h2>Six enchaînements qui servent tout le temps</h2>
+    <p>Les fonctions prennent leur valeur quand on les chaîne. Chacune passe son résultat à la suivante, de gauche à droite.</p>
+  </div>
+  <div class="panel">
+    <div class="recipe">
+      <h4>Nettoyer un texte récupéré sur une page web</h4>
+      <p>Les balises sautent, les espaces parasites aussi, et la casse est normalisée d'un coup.</p>
+      <pre>{{ $json.contenu.removeTags().trim().toSentenceCase() }}</pre>
+    </div>
+    <div class="recipe">
+      <h4>Fabriquer un identifiant propre à partir d'un nom</h4>
+      <p>Accents retirés, espaces remplacés : de quoi nommer un fichier ou une colonne sans casser une API.</p>
+      <pre>{{ $json.entreprise.replaceSpecialChars().toSnakeCase() }}</pre>
+    </div>
+    <div class="recipe">
+      <h4>Calculer un total sur tous les items entrants</h4>
+      <p>On récupère tous les items, on en extrait un champ, on additionne. Trois maillons, zéro boucle.</p>
+      <pre>{{ $input.all().map(i =&gt; i.json.montant).sum() }}</pre>
+    </div>
+    <div class="recipe">
+      <h4>Relancer seulement les inscrits de plus de 30 jours</h4>
+      <p>À brancher dans la condition d'un nœud IF. Renvoie vrai ou faux.</p>
+      <pre>{{ !$json.inscrit.toDateTime().isInLast(30, "days") }}</pre>
+    </div>
+    <div class="recipe">
+      <h4>Se protéger d'un champ absent</h4>
+      <p>Sans garde-fou, un champ manquant fait planter toute l'exécution. Deux façons de l'éviter.</p>
+      <pre>{{ $json.pseudo ?? "inconnu" }}
+{{ $json.client?.adresse?.ville ?? "non renseignée" }}</pre>
+    </div>
+    <div class="recipe">
+      <h4>Découper un gros envoi en lots de 50</h4>
+      <p>La plupart des API refusent les envois massifs. On découpe avant, on boucle ensuite.</p>
+      <pre>{{ $input.all().map(i =&gt; i.json.email).unique().chunk(50) }}</pre>
+    </div>
+  </div>
+</section>
+
+<section class="cat" id="exercices" style="--c:#0E7A6F">
+  <div class="cat-head">
+    <h2>À toi de jouer</h2>
+    <p>Six expressions à écrire contre la même donnée d'exemple que le bac à sable. Tape ta réponse et valide : elle est exécutée pour de vrai et comparée au résultat attendu.</p>
+  </div>
+  <div class="panel" id="exos"></div>
+</section>
+
+<section class="cat" id="pieges" style="--c:#C9463B">
+  <div class="cat-head">
+    <h2>Les pièges qui font perdre une soirée</h2>
+    <p>Ils reviennent tous, chez tout le monde, et ils ressemblent rarement à des erreurs.</p>
+  </div>
+  <div class="panel">
+    <div class="trap">
+      <b>Un nombre qui n'en est pas un</b>
+      <p>Ce qui vient d'un formulaire ou d'un webhook arrive en texte. <code>"5" + 5</code> donne <code>"55"</code>, pas 10. Passe par <code>.toNumber()</code> dès l'entrée.</p>
+    </div>
+    <div class="trap">
+      <b>Les parenthèses de <code>length</code></b>
+      <p><code>length</code> est une propriété, pas une fonction. <code>.length()</code> plante. Sur un objet, ça n'existe pas : utilise <code>.keys().length</code>.</p>
+    </div>
+    <div class="trap">
+      <b>Les fonctions ne modifient jamais l'original</b>
+      <p><code>.trim()</code> renvoie une nouvelle valeur, il ne nettoie pas le champ. Il faut réassigner le résultat dans un nœud Set ou Edit Fields.</p>
+    </div>
+    <div class="trap">
+      <b>Math devant, les fonctions n8n derrière</b>
+      <p><code>Math.round(x)</code> s'écrit avant la valeur, <code>x.round()</code> après. Mélanger les deux écritures est l'erreur de syntaxe la plus fréquente sur les nombres.</p>
+    </div>
+    <div class="trap">
+      <b>Une date n'est pas un texte</b>
+      <p><code>$json.date.format("dd/MM")</code> plante tant que tu n'as pas appelé <code>.toDateTime()</code> avant. Et pour les mois en français, <code>.setLocale("fr")</code> doit venir avant <code>.format()</code>.</p>
+    </div>
+    <div class="trap">
+      <b>Le fuseau horaire</b>
+      <p>n8n travaille en UTC par défaut. Une date affichée à 23h peut correspondre au lendemain. Règle le fuseau dans les paramètres du workflow avant de comparer des jours.</p>
+    </div>
+    <div class="trap">
+      <b>Tester un champ qui n'existe pas</b>
+      <p><code>$json.absent.trim()</code> arrête l'exécution. <code>$json.absent?.trim() ?? ""</code> la laisse passer. Le point d'interrogation coûte un caractère et sauve un workflow.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>Pour une version papier : imprime cette page (le bac à sable, la navigation et les champs de réponse sont masqués à l'impression) et enregistre en PDF.</p>
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
+<script>
+var SAMPLE = {
+  prenom: "Marie",
+  nom: "dupont",
+  email: "marie.dupont@example.com",
+  telephone: "+33 6 12 34 56 78",
+  age: 34,
+  salaire: 42500.756,
+  entreprise: "TechCorp Solutions",
+  site: "https://techcorp.fr/equipe/marie?ref=n8n",
+  bio: "<p>Chef de <b>projet</b> chez TechCorp</p>",
+  notes: "## Résumé\n**Cliente** fidèle depuis 2019",
+  commentaire: "  avis très positif  ",
+  surnom: "",
+  adresse: { rue: "12 rue des Lilas", ville: "Nantes", cp: "44000", complement: "" },
+  tags: ["premium", "newsletter", "premium", "b2b"],
+  tagsPartenaire: ["b2b", "vip"],
+  achats: [
+    { produit: "Licence Pro", montant: 490, date: "2025-02-11" },
+    { produit: "Formation", montant: 1200, date: "2025-06-03" },
+    { produit: "Support", montant: 150, date: "2026-01-20" }
+  ],
+  inscrit: "2019-04-15T09:30:00",
+  actif: true,
+  reduction: -12.5,
+  timestamp: 1755000000
+};
+
+var CATALOG = [
+  {
+    id: "texte",
+    titre: "Texte",
+    sous: "Tout ce qui est entre guillemets. Le type le plus courant : noms, e-mails, HTML récupéré, réponses d'API.",
+    groupes: [
+      {
+        nom: "Nettoyer",
+        intro: "Les données qui arrivent d'un site, d'un formulaire ou d'une IA sont rarement propres. On commence toujours par là.",
+        items: [
+          { n: "trim()", d: "Enlève les espaces au début et à la fin.", ex: '$json.commentaire.trim()' },
+          { n: "trimStart()", d: "Enlève les espaces au début seulement.", ex: '$json.commentaire.trimStart()' },
+          { n: "trimEnd()", d: "Enlève les espaces à la fin seulement.", ex: '$json.commentaire.trimEnd()' },
+          { n: "removeTags()", d: "Supprime les balises HTML et ne garde que le texte.", ex: '$json.bio.removeTags()' },
+          { n: "removeMarkdown()", d: "Supprime le formatage Markdown (#, **, listes, liens).", ex: '$json.notes.removeMarkdown()' },
+          { n: "replaceSpecialChars()", d: "Retire les accents. Indispensable pour les API qui ne les acceptent pas.", ex: '"Café à Nantes".replaceSpecialChars()' },
+          { n: "replace(a, b)", d: "Remplace la première occurrence uniquement.", ex: '"salut salut".replace("salut", "bonjour")' },
+          { n: "replaceAll(a, b)", d: "Remplace toutes les occurrences.", ex: '"salut salut".replaceAll("salut", "bonjour")' }
+        ]
+      },
+      {
+        nom: "Découper et assembler",
+        intro: "Extraire une partie d'une chaîne, ou fabriquer une nouvelle chaîne à partir de plusieurs morceaux.",
+        items: [
+          { n: "split(sép)", d: "Découpe en tableau selon un séparateur.", ex: '$json.email.split("@")' },
+          { n: "slice(début, fin)", d: "Coupe à partir d'une position. Accepte les nombres négatifs (depuis la fin).", ex: '$json.telephone.slice(-5)' },
+          { n: "substring(début, fin)", d: "Comme slice, mais sans les positions négatives.", ex: '$json.entreprise.substring(0, 8)' },
+          { n: "concat(texte)", d: "Colle un texte à la suite.", ex: '$json.prenom.concat(" ", $json.nom)' },
+          { n: "length", d: "Nombre de caractères. Pas de parenthèses : c'est une propriété.", ex: '$json.entreprise.length' },
+          { n: "padStart(n, car)", d: "Complète au début jusqu'à n caractères. Parfait pour les numéros de facture.", ex: '"42".padStart(5, "0")' }
+        ]
+      },
+      {
+        nom: "Extraire",
+        intro: "n8n ajoute des raccourcis que JavaScript n'a pas, pour les cas qui reviennent tout le temps en automatisation.",
+        items: [
+          { n: "extractDomain()", d: "Le domaine d'un e-mail ou d'une URL.", ex: '$json.email.extractDomain()' },
+          { n: "extractUrlPath()", d: "Le chemin d'une URL, sans le domaine ni les paramètres.", ex: '$json.site.extractUrlPath()' },
+          { n: "extractEmail()", d: "Trouve le premier e-mail dans un texte quelconque.", ex: '"écris à marie.dupont@example.com vite".extractEmail()' },
+          { n: "extractUrl()", d: "Trouve la première URL dans un texte quelconque.", ex: '"voir https://techcorp.fr/tarifs pour la suite".extractUrl()' }
+        ]
+      },
+      {
+        nom: "Tester",
+        intro: "Ces fonctions renvoient true ou false. On les branche directement dans un nœud IF ou Switch.",
+        items: [
+          { n: "includes(texte)", d: "Contient cette sous-chaîne ?", ex: '$json.entreprise.includes("Corp")' },
+          { n: "startsWith(texte)", d: "Commence par ?", ex: '$json.email.startsWith("marie")' },
+          { n: "endsWith(texte)", d: "Se termine par ?", ex: '$json.email.endsWith(".com")' },
+          { n: "isEmail()", d: "C'est un e-mail valide ?", ex: '$json.email.isEmail()' },
+          { n: "isUrl()", d: "C'est une URL valide ?", ex: '$json.site.isUrl()' },
+          { n: "isDomain()", d: "C'est un nom de domaine valide ?", ex: '"techcorp.fr".isDomain()' },
+          { n: "isNumeric()", d: "Ne contient que des chiffres ?", ex: '"44000".isNumeric()' },
+          { n: "isEmpty()", d: "Chaîne vide ?", ex: '$json.surnom.isEmpty()' },
+          { n: "isNotEmpty()", d: "Chaîne non vide ? Le garde-fou le plus utile avant d'envoyer une donnée.", ex: '$json.prenom.isNotEmpty()' }
+        ]
+      },
+      {
+        nom: "Changer la casse",
+        intro: "Normaliser avant de comparer ou d'envoyer : deux e-mails identiques écrits différemment ne se croisent jamais.",
+        items: [
+          { n: "toLowerCase()", d: "Tout en minuscules.", ex: '$json.entreprise.toLowerCase()' },
+          { n: "toUpperCase()", d: "Tout en majuscules.", ex: '$json.nom.toUpperCase()' },
+          { n: "toTitleCase()", d: "Première lettre de chaque mot en majuscule.", ex: '$json.nom.toTitleCase()' },
+          { n: "toSentenceCase()", d: "Première lettre de la phrase en majuscule, le reste en minuscules.", ex: '"BONJOUR À TOUS. ça va ?".toSentenceCase()' },
+          { n: "toSnakeCase()", d: "Mots séparés par des underscores. Pratique pour nommer des colonnes.", ex: '$json.entreprise.toSnakeCase()' }
+        ]
+      },
+      {
+        nom: "Convertir et encoder",
+        intro: "Faire passer une valeur d'un type à un autre, ou la rendre transportable dans une URL ou une API.",
+        items: [
+          { n: "toNumber()", d: "Texte → nombre. Sans ça, \"5\" + 5 donne \"55\".", ex: '"42.5".toNumber()' },
+          { n: "toInt()", d: "Texte → entier, en coupant les décimales.", ex: '"42.9 ans".toInt()' },
+          { n: "toFloat()", d: "Texte → nombre décimal.", ex: '"1 200,50".replaceAll(" ", "").toFloat()' },
+          { n: "toBoolean()", d: "Texte → vrai/faux.", ex: '"true".toBoolean()' },
+          { n: "toDateTime()", d: "Texte → date exploitable (format Luxon).", ex: '$json.inscrit.toDateTime()' },
+          { n: "parseJson()", d: "Texte JSON → objet manipulable. Le plus utile après un appel d'API brut.", ex: '\'{"ville":"Nantes","cp":44000}\'.parseJson()' },
+          { n: "urlEncode()", d: "Encode pour insertion dans une URL.", ex: '"chef de projet & design".urlEncode()' },
+          { n: "urlDecode()", d: "Décode une chaîne encodée.", ex: '"chef%20de%20projet".urlDecode()' },
+          { n: "base64Encode()", d: "Encode en base64 (pièces jointes, auth basique).", ex: '$json.email.base64Encode()' },
+          { n: "base64Decode()", d: "Décode du base64.", ex: '"Ym9uam91ciBOYW50ZXM=".base64Decode()' },
+          { n: "quote(mark)", d: "Entoure de guillemets en échappant ceux de l'intérieur.", ex: '\'Elle a dit "oui"\'.quote()' },
+          { n: "hash(algo)", d: "Empreinte md5, sha256… Calculée par le serveur n8n, pas simulable ici.", ex: null, res: '3f2a8c… (md5)' }
+        ]
+      }
+    ]
+  },
+  {
+    id: "nombre",
+    titre: "Nombre & maths",
+    sous: "Sans guillemets. Attention : ce qui vient d'un formulaire ou d'une API est presque toujours du texte déguisé en nombre. Deux familles cohabitent ici : les fonctions n8n qui s'écrivent après la valeur, et l'objet Math de JavaScript qui s'écrit avant.",
+    groupes: [
+      {
+        nom: "Arrondir",
+        intro: "Trois façons d'arrondir, et elles ne font pas la même chose. C'est la source d'erreur numéro un sur les prix.",
+        items: [
+          { n: "round(décimales)", d: "Arrondit au plus proche. Sans argument : à l'entier.", ex: '$json.salaire.round(2)' },
+          { n: "ceil()", d: "Arrondit toujours vers le haut.", ex: '(4.2).ceil()' },
+          { n: "floor()", d: "Arrondit toujours vers le bas.", ex: '(4.9).floor()' },
+          { n: "abs()", d: "Valeur absolue : enlève le signe négatif.", ex: '$json.reduction.abs()' }
+        ]
+      },
+      {
+        nom: "Tester",
+        intro: "",
+        items: [
+          { n: "isEven()", d: "Pair ?", ex: '$json.age.isEven()' },
+          { n: "isOdd()", d: "Impair ?", ex: '$json.age.isOdd()' },
+          { n: "isInteger()", d: "Entier, sans décimales ?", ex: '$json.salaire.isInteger()' }
+        ]
+      },
+      {
+        nom: "Afficher",
+        intro: "Un nombre brut n'est jamais lisible dans un e-mail ou un rapport. La locale change tout : point, virgule, espace.",
+        items: [
+          { n: "format('fr-FR')", d: "Formate selon un pays. En français, espace pour les milliers.", ex: '$json.salaire.format("fr-FR")' },
+          { n: "format('en-US')", d: "Format américain : virgule pour les milliers.", ex: '$json.salaire.format("en-US")' },
+          { n: "toLocaleString(…)", d: "Idem avec devise, pourcentage, nombre de décimales.", ex: '$json.salaire.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })' },
+          { n: "toString()", d: "Nombre → texte, pour enchaîner avec les fonctions de texte.", ex: '$json.age.toString().padStart(3, "0")' }
+        ]
+      },
+      {
+        nom: "Convertir",
+        intro: "",
+        items: [
+          { n: "toBoolean()", d: "0 devient faux, tout le reste devient vrai.", ex: '(0).toBoolean()' },
+          { n: "toDateTime('s')", d: "Timestamp Unix → date. Préciser 's' si le timestamp est en secondes.", ex: '$json.timestamp.toDateTime("s")' }
+        ]
+      },
+      {
+        nom: "Calculer",
+        intro: "Les opérateurs classiques fonctionnent directement dans une expression, mélangés aux champs.",
+        items: [
+          { n: "+ - * /", d: "Les quatre opérations.", ex: '($json.salaire / 12).round(2)' },
+          { n: "%", d: "Le reste d'une division. Sert à répartir en lots ou à alterner.", ex: '$json.age % 7' },
+          { n: "**", d: "Puissance.", ex: '2 ** 10' }
+        ]
+      },
+      {
+        nom: "L'objet Math",
+        intro: "Math est le couteau suisse mathématique de JavaScript, disponible tel quel dans n8n. Repère bien la différence d'écriture : Math.round(x) se met devant la valeur, alors que x.round() se met derrière. Les deux existent et font la même chose.",
+        items: [
+          { n: "Math.round(x)", d: "Arrondit à l'entier le plus proche.", ex: 'Math.round($json.salaire)' },
+          { n: "Math.floor(x)", d: "Arrondit vers le bas.", ex: 'Math.floor($json.salaire)' },
+          { n: "Math.ceil(x)", d: "Arrondit vers le haut.", ex: 'Math.ceil($json.salaire)' },
+          { n: "Math.trunc(x)", d: "Coupe les décimales sans arrondir. Sur un négatif, le résultat diffère de floor.", ex: 'Math.trunc($json.reduction)' },
+          { n: "Math.abs(x)", d: "Enlève le signe.", ex: 'Math.abs($json.reduction)' },
+          { n: "Math.sign(x)", d: "Renvoie 1, -1 ou 0 selon le signe.", ex: 'Math.sign($json.reduction)' },
+          { n: "Math.max(a, b, …)", d: "La plus grande valeur. Les trois points déplient un tableau en arguments.", ex: 'Math.max(...$json.achats.pluck("montant"))' },
+          { n: "Math.min(a, b, …)", d: "La plus petite valeur.", ex: 'Math.min($json.age, 30)' },
+          { n: "Math.pow(a, b)", d: "a puissance b. Identique à a ** b.", ex: 'Math.pow(2, 8)' },
+          { n: "Math.sqrt(x)", d: "Racine carrée.", ex: 'Math.sqrt(144)' },
+          { n: "Math.random()", d: "Nombre au hasard entre 0 et 1. Multiplie puis arrondis pour un entier.", ex: 'Math.floor(Math.random() * 100)' }
+        ]
+      },
+      {
+        nom: "Les calculs qui reviennent en automatisation",
+        intro: "Ce ne sont pas des fonctions mais des combinaisons. Elles couvrent la quasi-totalité des besoins chiffrés d'un workflow de facturation, de reporting ou de scoring.",
+        items: [
+          { n: "Ajouter la TVA", d: "Multiplier par 1,20 puis arrondir à deux décimales.", ex: '($json.achats.pluck("montant").sum() * 1.2).round(2)' },
+          { n: "Appliquer une remise", d: "Une remise de 15 % revient à garder 85 % du montant.", ex: '($json.achats.first().montant * 0.85).round(2)' },
+          { n: "Calculer une part en %", d: "La partie divisée par le tout, multipliée par cent.", ex: '(($json.achats.first().montant / $json.achats.pluck("montant").sum()) * 100).round(1) + " %"' },
+          { n: "Mesurer une évolution", d: "Écart divisé par la valeur de départ. Un résultat positif est une hausse.", ex: '(((1200 - 490) / 490) * 100).round(1) + " %"' },
+          { n: "Borner une valeur", d: "Forcer un nombre à rester entre un minimum et un maximum.", ex: 'Math.min(Math.max($json.age, 18), 65)' },
+          { n: "Convertir en centimes", d: "Beaucoup d'API de paiement n'acceptent que des entiers.", ex: 'Math.round($json.salaire * 100)' }
+        ]
+      }
+    ]
+  },
+  {
+    id: "tableau",
+    titre: "Tableau",
+    sous: "Une liste entre crochets. C'est ce que renvoie n'importe quelle API qui répond « plusieurs résultats », et c'est le type qui demande le plus de pratique.",
+    groupes: [
+      {
+        nom: "Piocher dedans",
+        intro: "Avant de transformer, il faut savoir attraper le bon élément.",
+        items: [
+          { n: "first()", d: "Le premier élément.", ex: '$json.achats.first()' },
+          { n: "last()", d: "Le dernier élément.", ex: '$json.achats.last()' },
+          { n: "length", d: "Combien d'éléments.", ex: '$json.achats.length' },
+          { n: "randomItem()", d: "Un élément au hasard.", ex: '$json.tags.randomItem()' },
+          { n: "pluck(champ)", d: "Extrait une seule colonne d'une liste d'objets.", ex: '$json.achats.pluck("montant")' },
+          { n: "chunk(n)", d: "Découpe en paquets de n. Indispensable pour les API limitées en lots.", ex: '$json.tags.chunk(2)' }
+        ]
+      },
+      {
+        nom: "Nettoyer",
+        intro: "",
+        items: [
+          { n: "unique()", d: "Supprime les doublons.", ex: '$json.tags.unique()' },
+          { n: "removeDuplicates(champ)", d: "Doublons sur une liste d'objets, selon un champ.", ex: '[{ id: 1 }, { id: 1 }, { id: 2 }].removeDuplicates("id")' },
+          { n: "compact()", d: "Retire les valeurs vides, null et undefined.", ex: '["a", "", null, "b"].compact()' },
+          { n: "isEmpty()", d: "Liste vide ? À tester avant toute boucle.", ex: '$json.achats.isEmpty()' },
+          { n: "isNotEmpty()", d: "Liste non vide ?", ex: '$json.tags.isNotEmpty()' }
+        ]
+      },
+      {
+        nom: "Calculer",
+        intro: "Sur un tableau de nombres, ces quatre-là remplacent un tableur entier.",
+        items: [
+          { n: "sum()", d: "Somme.", ex: '$json.achats.pluck("montant").sum()' },
+          { n: "average()", d: "Moyenne.", ex: '$json.achats.pluck("montant").average().round(2)' },
+          { n: "max()", d: "Plus grande valeur.", ex: '$json.achats.pluck("montant").max()' },
+          { n: "min()", d: "Plus petite valeur.", ex: '$json.achats.pluck("montant").min()' },
+          { n: "percentile(n)", d: "Le n-ième centile. Utile pour repérer les valeurs hautes sans se faire piéger par un extrême.", ex: '$json.achats.pluck("montant").percentile(50)' }
+        ]
+      },
+      {
+        nom: "Combiner et trier",
+        intro: "",
+        items: [
+          { n: "union(autre)", d: "Fusionne deux listes sans doublons.", ex: '$json.tags.union($json.tagsPartenaire)' },
+          { n: "intersection(autre)", d: "Ne garde que ce qui est dans les deux.", ex: '$json.tags.intersection($json.tagsPartenaire)' },
+          { n: "difference(autre)", d: "Ne garde que ce qui manque à l'autre.", ex: '$json.tags.difference($json.tagsPartenaire)' },
+          { n: "smartJoin(clé, valeur)", d: "Liste d'objets → un seul objet. Le sauveur quand une API renvoie des paires clé/valeur en tableau.", ex: '$json.achats.smartJoin("produit", "montant")' },
+          { n: "renameKeys(a, b)", d: "Renomme un champ dans tous les objets.", ex: '$json.achats.renameKeys("montant", "prix").first()' },
+          { n: "merge(autre)", d: "Fusionne deux listes d'objets position par position.", ex: '[{ a: 1 }, { a: 2 }].merge([{ b: 9 }, { b: 8 }])' },
+          { n: "append(…)", d: "Ajoute un ou plusieurs éléments à la fin.", ex: '$json.tags.unique().append("vip")' },
+          { n: "concat(autre)", d: "Colle deux tableaux bout à bout, doublons compris.", ex: '$json.tags.concat($json.tagsPartenaire)' },
+          { n: "toJsonString()", d: "Tableau → texte JSON, pour le loger dans un champ texte.", ex: '$json.tags.toJsonString()' }
+        ]
+      },
+      {
+        nom: "Réduire, tester, parcourir",
+        intro: "Les trois premières prennent une petite fonction en argument et remplacent à elles seules une boucle entière. reduce est la plus puissante de toutes : elle parcourt la liste en gardant un accumulateur, ce qui permet de tout calculer, pas seulement une somme.",
+        items: [
+          { n: "reduce((acc, v) => …, 0)", d: "Parcourt la liste en accumulant un résultat. Le second argument est la valeur de départ.", ex: '$json.achats.reduce((total, a) => total + a.montant, 0)' },
+          { n: "reduce, version texte", d: "Le même mécanisme pour construire une phrase ou un objet.", ex: '$json.achats.reduce((txt, a) => txt + a.produit + " (" + a.montant + " €) ", "")' },
+          { n: "some(…)", d: "Au moins un élément correspond ? Renvoie vrai ou faux.", ex: '$json.achats.some(a => a.montant > 1000)' },
+          { n: "every(…)", d: "Tous les éléments correspondent ?", ex: '$json.achats.every(a => a.montant > 100)' },
+          { n: "findIndex(…)", d: "La position du premier élément qui correspond. -1 s'il n'y en a pas.", ex: '$json.achats.findIndex(a => a.produit === "Support")' },
+          { n: "indexOf(v)", d: "La position d'une valeur simple.", ex: '$json.tags.indexOf("newsletter")' },
+          { n: "slice(a, b)", d: "Extrait une portion sans toucher à l'original.", ex: '$json.achats.slice(0, 2).pluck("produit")' },
+          { n: "at(-1)", d: "L'élément à cette position. Les nombres négatifs comptent depuis la fin.", ex: '$json.tags.at(-1)' },
+          { n: "flat()", d: "Aplatit un tableau de tableaux en un seul niveau.", ex: '[[1, 2], [3], [4, 5]].flat()' }
+        ]
+      },
+      {
+        nom: "Trier proprement",
+        intro: "Attention, piège classique : sort() sans argument trie en ordre alphabétique, même sur des nombres — 10 passe donc avant 9. Il faut toujours donner une règle de comparaison. Et sort modifie le tableau d'origine : glisse un .slice() devant pour travailler sur une copie.",
+        items: [
+          { n: "sort() sans règle", d: "Tri texte. Regarde l'ordre des nombres : il est faux.", ex: '[10, 9, 100, 25].slice().sort()' },
+          { n: "Tri numérique croissant", d: "La règle a - b donne l'ordre croissant.", ex: '$json.achats.pluck("montant").slice().sort((a, b) => a - b)' },
+          { n: "Tri numérique décroissant", d: "On inverse la soustraction.", ex: '$json.achats.pluck("montant").slice().sort((a, b) => b - a)' },
+          { n: "Trier des objets sur un champ", d: "Même règle, appliquée à une propriété.", ex: '$json.achats.slice().sort((a, b) => b.montant - a.montant).pluck("produit")' },
+          { n: "Trier par date", d: "Les dates converties se comparent comme des nombres.", ex: '$json.achats.slice().sort((a, b) => b.date.toDateTime() - a.date.toDateTime()).pluck("date")' },
+          { n: "Trier du texte avec accents", d: "localeCompare respecte l'alphabet français et la casse.", ex: '["banane", "Pomme", "abricot", "élan"].slice().sort((a, b) => a.localeCompare(b))' },
+          { n: "Le plus gros élément", d: "Trier puis prendre le premier : le combo le plus courant.", ex: '$json.achats.slice().sort((a, b) => b.montant - a.montant).first().produit' }
+        ]
+      },
+      {
+        nom: "JavaScript natif",
+        intro: "Ces méthodes ne sont pas propres à n8n mais ce sont les plus puissantes. Elles prennent une petite fonction en argument.",
+        items: [
+          { n: "filter(…)", d: "Ne garde que les éléments qui passent le test.", ex: '$json.achats.filter(a => a.montant > 200).pluck("produit")' },
+          { n: "map(…)", d: "Transforme chaque élément.", ex: '$json.tags.map(t => t.toUpperCase())' },
+          { n: "sort(…)", d: "Trie. Pour des nombres, il faut donner la règle de comparaison.", ex: '$json.achats.pluck("montant").sort((a, b) => b - a)' },
+          { n: "join(sép)", d: "Tableau → texte, collé avec un séparateur.", ex: '$json.tags.unique().join(", ")' },
+          { n: "includes(v)", d: "La liste contient cette valeur ?", ex: '$json.tags.includes("premium")' },
+          { n: "find(…)", d: "Le premier élément qui correspond.", ex: '$json.achats.find(a => a.produit === "Formation")' }
+        ]
+      }
+    ]
+  },
+  {
+    id: "objet",
+    titre: "Objet",
+    sous: "Une fiche avec des champs nommés, entre accolades. $json lui-même est un objet : tout ce qui suit s'applique donc directement à la donnée qui traverse ton workflow.",
+    groupes: [
+      {
+        nom: "Atteindre un champ",
+        intro: "Avant toute transformation, il faut savoir écrire le chemin vers la donnée. Le point suffit dans 90 % des cas ; les crochets prennent le relais dès que le nom du champ contient un espace, un accent, ou qu'il est calculé.",
+        items: [
+          { n: "objet.champ", d: "La notation par point, la plus lisible.", ex: '$json.adresse.ville' },
+          { n: 'objet["champ"]', d: "La notation par crochets. Obligatoire si le nom contient un espace ou un tiret.", ex: '$json["adresse"]["cp"]' },
+          { n: "Descendre dans un tableau", d: "On mélange librement crochets numérotés et points.", ex: '$json.achats[1].produit' },
+          { n: "Clé calculée", d: "Entre crochets, on peut mettre une expression et pas seulement un nom fixe.", ex: '$json.adresse[Object.keys($json.adresse)[1]]' },
+          { n: "?. chaînage optionnel", d: "Le champ client n'existe pas dans la donnée : sans le point d'interrogation, cette ligne arrêterait l'exécution. Avec, elle renvoie simplement undefined.", ex: '$json.client?.adresse?.ville' },
+          { n: "?? valeur de secours", d: "Le duo gagnant avec ?. : un chemin incertain et une valeur par défaut.", ex: '$json.client?.adresse?.ville ?? "non renseignée"' }
+        ]
+      },
+      {
+        nom: "Inspecter",
+        intro: "Quand tu ne sais pas ce qu'une API t'a renvoyé, commence toujours par là.",
+        items: [
+          { n: "keys()", d: "La liste des noms de champs.", ex: '$json.adresse.keys()' },
+          { n: "values()", d: "La liste des valeurs.", ex: '$json.adresse.values()' },
+          { n: "hasField(nom)", d: "Ce champ existe ? Évite les plantages sur données incomplètes.", ex: '$json.adresse.hasField("ville")' },
+          { n: "isEmpty()", d: "Objet sans aucun champ ?", ex: '$json.adresse.isEmpty()' },
+          { n: "isNotEmpty()", d: "Objet avec au moins un champ ?", ex: '$json.adresse.isNotEmpty()' }
+        ]
+      },
+      {
+        nom: "Transformer",
+        intro: "",
+        items: [
+          { n: "compact()", d: "Retire les champs vides.", ex: '$json.adresse.compact()' },
+          { n: "removeField(nom)", d: "Supprime un champ. Pratique pour retirer une donnée sensible avant envoi.", ex: '$json.adresse.removeField("cp")' },
+          { n: "removeFieldsContaining(v)", d: "Supprime les champs dont la valeur contient ce texte.", ex: '$json.adresse.removeFieldsContaining("Nantes")' },
+          { n: "keepFieldsContaining(v)", d: "Ne garde que les champs dont la valeur contient ce texte.", ex: '$json.adresse.keepFieldsContaining("44")' },
+          { n: "merge(autre)", d: "Fusionne deux objets. Le second écrase le premier en cas de conflit.", ex: '$json.adresse.merge({ pays: "France" })' },
+          { n: "toJsonString()", d: "Objet → texte JSON.", ex: '$json.adresse.toJsonString()' },
+          { n: "urlEncode()", d: "Objet → chaîne de paramètres d'URL.", ex: '$json.adresse.urlEncode()' }
+        ]
+      },
+      {
+        nom: "De l'objet au tableau, et retour",
+        intro: "C'est le passage secret des transformations avancées. Un objet ne se parcourt pas directement ; on le convertit en tableau, on applique les fonctions de tableau, puis on reconstruit un objet. Dès que tu veux renommer tous les champs, filtrer sur les valeurs ou nettoyer une réponse d'API en profondeur, tu passes par là.",
+        items: [
+          { n: "Object.keys(obj)", d: "Les noms de champs, en tableau.", ex: 'Object.keys($json.adresse)' },
+          { n: "Object.values(obj)", d: "Les valeurs, en tableau.", ex: 'Object.values($json.adresse)' },
+          { n: "Object.entries(obj)", d: "Les paires nom/valeur, en tableau de petits tableaux.", ex: 'Object.entries($json.adresse)' },
+          { n: "entries + map", d: "Parcourir tous les champs d'un coup. Les crochets dans ([k, v]) dépaquettent la paire.", ex: 'Object.entries($json.adresse).map(([k, v]) => k + " : " + v).join(" | ")' },
+          { n: "Object.fromEntries(…)", d: "Reconstruit un objet à partir des paires. Ici, on supprime les champs vides.", ex: 'Object.fromEntries(Object.entries($json.adresse).filter(([k, v]) => v !== ""))' },
+          { n: "Renommer tous les champs", d: "Le même aller-retour, appliqué aux noms plutôt qu'aux valeurs.", ex: 'Object.fromEntries(Object.entries($json.adresse).map(([k, v]) => [k.toUpperCase(), v]))' },
+          { n: "{ ...objet, champ: x }", d: "Les trois points recopient l'objet ; ce qui suit ajoute ou écrase un champ.", ex: '{ ...$json.adresse, pays: "France", cp: "44100" }' },
+          { n: "JSON.parse(JSON.stringify(o))", d: "Une copie totalement indépendante, y compris des objets imbriqués.", ex: 'JSON.parse(JSON.stringify($json.adresse)).ville' }
+        ]
+      }
+    ]
+  },
+  {
+    id: "date",
+    titre: "Date",
+    sous: "n8n utilise la bibliothèque Luxon, accessible aussi par le mot DateTime. Retiens une règle : une date n'est jamais du texte. Tant que tu n'as pas converti avec toDateTime(), aucune fonction de date ne marchera.",
+    groupes: [
+      {
+        nom: "Obtenir une date",
+        intro: "Tout commence ici. Quatre portes d'entrée selon ce que tu as sous la main : l'instant présent, un texte, un timestamp, ou une date écrite dans un format inhabituel.",
+        items: [
+          { n: "$now", d: "Date et heure de l'instant, déjà convertie.", ex: '$now.setLocale("fr").format("cccc d LLLL yyyy, HH:mm")' },
+          { n: "$today", d: "Aujourd'hui à minuit. Pour comparer des jours sans se soucier de l'heure.", ex: '$today.format("dd/MM/yyyy")' },
+          { n: "texte.toDateTime()", d: "Convertit un texte de date standard.", ex: '$json.inscrit.toDateTime().format("dd/MM/yyyy")' },
+          { n: "nombre.toDateTime('s')", d: "Convertit un timestamp Unix. Précise 's' s'il est en secondes.", ex: '$json.timestamp.toDateTime("s").format("dd/MM/yyyy")' },
+          { n: "DateTime.fromFormat(…)", d: "Lit une date écrite à la française, que toDateTime() ne sait pas deviner.", ex: 'DateTime.fromFormat("15/04/2019", "dd/MM/yyyy").format("yyyy-MM-dd")' },
+          { n: "DateTime.fromISO(…)", d: "Lit une date au format standard des API.", ex: 'DateTime.fromISO("2026-01-20").setLocale("fr").format("cccc")' },
+          { n: "setZone(zone)", d: "Change le fuseau. n8n travaille en UTC par défaut, d'où des décalages d'un jour.", ex: '$now.setZone("Europe/Paris").format("dd/MM/yyyy HH:mm")' }
+        ]
+      },
+      {
+        nom: "Afficher",
+        intro: "Le format se compose de lettres : yyyy l'année, MM le mois, dd le jour, HH l'heure, mm les minutes.",
+        items: [
+          { n: "format('dd/MM/yyyy')", d: "Format français classique.", ex: '$json.inscrit.toDateTime().format("dd/MM/yyyy")' },
+          { n: "format('cccc d LLLL')", d: "Jour et mois en toutes lettres.", ex: '$json.inscrit.toDateTime().setLocale("fr").format("cccc d LLLL yyyy")' },
+          { n: "toISO()", d: "Format standard des API.", ex: '$json.inscrit.toDateTime().toISO()' },
+          { n: "extract(partie)", d: "Récupère juste l'année, le mois, le jour…", ex: '$json.inscrit.toDateTime().extract("year")' }
+        ]
+      },
+      {
+        nom: "Décaler",
+        intro: "Les unités : days, weeks, months, years, hours, minutes.",
+        items: [
+          { n: "plus(n, unité)", d: "Ajoute du temps.", ex: '$json.inscrit.toDateTime().plus(30, "days").format("dd/MM/yyyy")' },
+          { n: "minus(n, unité)", d: "Retire du temps.", ex: '$json.inscrit.toDateTime().minus(2, "months").format("dd/MM/yyyy")' },
+          { n: "beginningOf(unité)", d: "Début de semaine, de mois, d'année.", ex: '$json.inscrit.toDateTime().beginningOf("month").format("dd/MM/yyyy")' },
+          { n: "endOfMonth()", d: "Dernier instant du mois.", ex: '$json.inscrit.toDateTime().endOfMonth().format("dd/MM/yyyy")' }
+        ]
+      },
+      {
+        nom: "Comparer",
+        intro: "Le cœur de toute relance automatique : « est-ce que ça date de plus de X ? »",
+        items: [
+          { n: "isWeekend()", d: "Samedi ou dimanche ?", ex: '$json.inscrit.toDateTime().isWeekend()' },
+          { n: "isBetween(a, b)", d: "Entre deux dates ?", ex: '$json.inscrit.toDateTime().isBetween("2019-01-01", "2019-12-31")' },
+          { n: "isInLast(n, unité)", d: "Dans les n derniers jours ?", ex: '$json.inscrit.toDateTime().isInLast(30, "days")' },
+          { n: "diffToNow(unité)", d: "Écart avec maintenant.", ex: '$json.inscrit.toDateTime().diffToNow("years")' },
+          { n: "diffTo(date, unité)", d: "Écart avec une autre date.", ex: '$json.inscrit.toDateTime().diffTo("2026-01-01", "months")' },
+          { n: "hasSame(date, unité)", d: "Même jour, même mois, même année ?", ex: '$now.hasSame($today, "day")' }
+        ]
+      },
+      {
+        nom: "Les jetons de format",
+        intro: "Le format se construit comme un lego : chaque lettre répétée un certain nombre de fois donne un morceau de date. Ajoute setLocale('fr') avant format() pour obtenir les mois et les jours en français. Les jetons ci-dessous s'appliquent tous à la même date : le 15 avril 2019 à 9h30.",
+        items: [
+          { n: "yyyy", d: "Année sur quatre chiffres.", ex: '$json.inscrit.toDateTime().format("yyyy")' },
+          { n: "yy", d: "Année sur deux chiffres.", ex: '$json.inscrit.toDateTime().format("yy")' },
+          { n: "MM", d: "Mois en chiffres, avec le zéro.", ex: '$json.inscrit.toDateTime().format("MM")' },
+          { n: "LLL", d: "Mois en lettres, abrégé.", ex: '$json.inscrit.toDateTime().setLocale("fr").format("LLL")' },
+          { n: "LLLL", d: "Mois en lettres, en entier.", ex: '$json.inscrit.toDateTime().setLocale("fr").format("LLLL")' },
+          { n: "dd", d: "Jour du mois.", ex: '$json.inscrit.toDateTime().format("dd")' },
+          { n: "cccc", d: "Jour de la semaine en lettres.", ex: '$json.inscrit.toDateTime().setLocale("fr").format("cccc")' },
+          { n: "HH:mm", d: "Heure sur 24 h et minutes.", ex: '$json.inscrit.toDateTime().format("HH:mm")' },
+          { n: "Tout combiner", d: "Les jetons se mélangent librement avec du texte.", ex: '$json.inscrit.toDateTime().setLocale("fr").format("cccc dd LLLL yyyy à HH:mm")' }
+        ]
+      },
+      {
+        nom: "Durées et formulations",
+        intro: "Pour afficher un écart à un humain plutôt que de le calculer pour une machine.",
+        items: [
+          { n: "toRelative()", d: "Transforme l'écart en phrase lisible.", ex: '$json.inscrit.toDateTime().setLocale("fr").toRelative()' },
+          { n: "toMillis()", d: "La date en millisecondes, pour stocker ou comparer.", ex: '$json.inscrit.toDateTime().toMillis()' },
+          { n: "toISO()", d: "Le format universel attendu par la majorité des API.", ex: '$now.toISO()' },
+          { n: "Duration.fromObject(…)", d: "Construit une durée et la convertit dans une autre unité.", ex: 'Duration.fromObject({ days: 45 }).as("weeks").round(1)' },
+          { n: "Interval.fromDateTimes(…)", d: "L'intervalle entre deux dates, mesuré dans l'unité de ton choix.", ex: 'Interval.fromDateTimes($json.inscrit.toDateTime(), $now).length("months").round(0)' }
+        ]
+      }
+    ]
+  },
+  {
+    id: "booleen",
+    titre: "Booléen",
+    sous: "Vrai ou faux. Deux fonctions, mais c'est le type qui pilote tous tes nœuds IF et Switch.",
+    groupes: [
+      {
+        nom: "Convertir",
+        intro: "",
+        items: [
+          { n: "toInt()", d: "true devient 1, false devient 0.", ex: '$json.actif.toInt()' },
+          { n: "toNumber()", d: "Identique à toInt().", ex: '$json.actif.toNumber()' },
+          { n: "toString()", d: "true devient le texte \"true\".", ex: '$json.actif.toString()' }
+        ]
+      },
+      {
+        nom: "Combiner",
+        intro: "Les opérateurs logiques, à connaître pour écrire des conditions en une seule expression.",
+        items: [
+          { n: "&&", d: "Les deux conditions doivent être vraies.", ex: '$json.actif && $json.age > 18' },
+          { n: "||", d: "Au moins une des deux.", ex: '$json.surnom.isNotEmpty() || $json.prenom.isNotEmpty()' },
+          { n: "!", d: "Inverse la valeur.", ex: '!$json.actif' },
+          { n: "? :", d: "Le ternaire : si… alors… sinon. Remplace un nœud IF entier.", ex: '$json.age > 30 ? "senior" : "junior"' },
+          { n: "??", d: "Valeur de secours si le champ est null ou absent.", ex: '$json.pseudo ?? $json.prenom' }
+        ]
+      }
+    ]
+  }
+];
+
+
+
+</script>
+<script>
+/* Reproduction locale des "extension functions" n8n, pour apprentissage. */
+(function (root) {
+  var LX = root.luxon || null;
+
+  function def(target, name, fn) {
+    try {
+      Object.defineProperty(target, name, { value: fn, enumerable: false, writable: true, configurable: true });
+    } catch (e) {}
+  }
+
+  /* ---------- STRING ---------- */
+  var S = String.prototype;
+  def(S, 'base64Encode', function () {
+    if (typeof btoa === 'function') return btoa(unescape(encodeURIComponent(this)));
+    return Buffer.from(String(this), 'utf8').toString('base64');
+  });
+  def(S, 'base64Decode', function () {
+    if (typeof atob === 'function') return decodeURIComponent(escape(atob(this)));
+    return Buffer.from(String(this), 'base64').toString('utf8');
+  });
+  def(S, 'extractDomain', function () {
+    var s = String(this);
+    if (s.indexOf('@') > -1) return s.split('@').pop();
+    try { return new URL(s).hostname; } catch (e) {}
+    var m = s.match(/^(?:https?:\/\/)?([^\/\s?#]+)/i);
+    return m ? m[1] : '';
+  });
+  def(S, 'extractEmail', function () {
+    var m = String(this).match(/[\w.+-]+@[\w-]+\.[\w.-]+/);
+    return m ? m[0] : undefined;
+  });
+  def(S, 'extractUrl', function () {
+    var m = String(this).match(/https?:\/\/[^\s<>"')]+/);
+    return m ? m[0] : undefined;
+  });
+  def(S, 'extractUrlPath', function () {
+    try { return new URL(String(this)).pathname; } catch (e) { return ''; }
+  });
+  def(S, 'isDomain', function () { return /^[\w-]+(\.[\w-]+)+$/.test(String(this)); });
+  def(S, 'isEmail', function () { return /^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(String(this)); });
+  def(S, 'isUrl', function () { try { new URL(String(this)); return true; } catch (e) { return false; } });
+  def(S, 'isEmpty', function () { return String(this).length === 0; });
+  def(S, 'isNotEmpty', function () { return String(this).length > 0; });
+  def(S, 'isNumeric', function () { var s = String(this).trim(); return s !== '' && !isNaN(Number(s)); });
+  def(S, 'parseJson', function () { try { return JSON.parse(String(this)); } catch (e) { return undefined; } });
+  def(S, 'quote', function (mark) {
+    var m = mark || '"';
+    return m + String(this).replace(/\\/g, '\\\\').replace(new RegExp(m, 'g'), '\\' + m) + m;
+  });
+  def(S, 'removeMarkdown', function () {
+    return String(this)
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+      .replace(/^\s{0,3}>\s?/gm, '')
+      .replace(/^\s*[-*+]\s+/gm, '')
+      .replace(/^\s*\d+\.\s+/gm, '')
+      .replace(/(\*\*|__)(.*?)\1/g, '$2')
+      .replace(/(\*|_)(.*?)\1/g, '$2')
+      .replace(/`([^`]*)`/g, '$1')
+      .replace(/^\s*[-*_]{3,}\s*$/gm, '')
+      .trim();
+  });
+  def(S, 'removeTags', function () { return String(this).replace(/<[^>]*>/g, ''); });
+  def(S, 'replaceSpecialChars', function () {
+    return String(this).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  });
+  def(S, 'toBoolean', function () {
+    var s = String(this).trim().toLowerCase();
+    return ['true', '1', 'yes', 'y', 'oui'].indexOf(s) > -1;
+  });
+  def(S, 'toFloat', function () { return parseFloat(String(this).replace(',', '.')); });
+  def(S, 'toInt', function () { return parseInt(String(this), 10); });
+  def(S, 'toNumber', function () { return Number(String(this).replace(',', '.')); });
+  def(S, 'toSentenceCase', function () {
+    var s = String(this).toLowerCase();
+    return s.replace(/(^\s*\S|[.!?]\s+\S)/g, function (c) { return c.toUpperCase(); });
+  });
+  def(S, 'toTitleCase', function () {
+    return String(this).toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  });
+  def(S, 'toSnakeCase', function () {
+    return String(this).trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+      .replace(/[^A-Za-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '').toLowerCase();
+  });
+  def(S, 'urlEncode', function () { return encodeURIComponent(String(this)); });
+  def(S, 'urlDecode', function () { try { return decodeURIComponent(String(this)); } catch (e) { return String(this); } });
+  def(S, 'toDateTime', function () {
+    if (LX) return LX.DateTime.fromISO(String(this));
+    return new Date(String(this));
+  });
+  def(S, 'hash', function (algo) { return '[' + (algo || 'md5') + '] calculé côté serveur n8n'; });
+
+  /* ---------- NUMBER ---------- */
+  var N = Number.prototype;
+  def(N, 'abs', function () { return Math.abs(this); });
+  def(N, 'ceil', function () { return Math.ceil(this); });
+  def(N, 'floor', function () { return Math.floor(this); });
+  def(N, 'round', function (d) { var p = Math.pow(10, d || 0); return Math.round(this * p) / p; });
+  def(N, 'isEven', function () { return Number(this) % 2 === 0; });
+  def(N, 'isOdd', function () { return Math.abs(Number(this) % 2) === 1; });
+  def(N, 'isInteger', function () { return Number.isInteger(Number(this)); });
+  def(N, 'format', function (locale, opts) { return Number(this).toLocaleString(locale || 'en-US', opts); });
+  def(N, 'toBoolean', function () { return Number(this) !== 0; });
+  def(N, 'toDateTime', function (unit) {
+    var ms = unit === 's' ? Number(this) * 1000 : Number(this);
+    if (LX) return LX.DateTime.fromMillis(ms);
+    return new Date(ms);
+  });
+
+  /* ---------- BOOLEAN ---------- */
+  var B = Boolean.prototype;
+  def(B, 'toInt', function () { return this == true ? 1 : 0; });
+  def(B, 'toNumber', function () { return this == true ? 1 : 0; });
+
+  /* ---------- ARRAY ---------- */
+  var A = Array.prototype;
+  def(A, 'first', function () { return this[0]; });
+  def(A, 'last', function () { return this[this.length - 1]; });
+  def(A, 'isEmpty', function () { return this.length === 0; });
+  def(A, 'isNotEmpty', function () { return this.length > 0; });
+  def(A, 'sum', function () { return this.reduce(function (a, b) { return a + Number(b); }, 0); });
+  def(A, 'average', function () { return this.length ? this.sum() / this.length : 0; });
+  def(A, 'max', function () { return Math.max.apply(null, this.map(Number)); });
+  def(A, 'min', function () { return Math.min.apply(null, this.map(Number)); });
+  def(A, 'unique', function (key) {
+    if (key) {
+      var seen = {}; var out = [];
+      this.forEach(function (o) { var k = JSON.stringify(o && o[key]); if (!seen[k]) { seen[k] = 1; out.push(o); } });
+      return out;
+    }
+    return this.filter(function (v, i, a) { return a.indexOf(v) === i; });
+  });
+  def(A, 'removeDuplicates', function (key) { return this.unique(key); });
+  def(A, 'compact', function () {
+    return this.filter(function (v) { return v !== null && v !== undefined && v !== ''; });
+  });
+  def(A, 'chunk', function (size) {
+    var out = [];
+    for (var i = 0; i < this.length; i += size) out.push(this.slice(i, i + size));
+    return out;
+  });
+  def(A, 'pluck', function (key) {
+    if (!key) return this.slice();
+    return this.map(function (o) { return o ? o[key] : undefined; });
+  });
+  def(A, 'randomItem', function () { return this[Math.floor(Math.random() * this.length)]; });
+  def(A, 'union', function (other) { return this.concat(other || []).unique(); });
+  def(A, 'intersection', function (other) {
+    var o = other || [];
+    return this.filter(function (v) { return o.indexOf(v) > -1; }).unique();
+  });
+  def(A, 'difference', function (other) {
+    var o = other || [];
+    return this.filter(function (v) { return o.indexOf(v) === -1; });
+  });
+  def(A, 'merge', function (other) {
+    var o = other || [];
+    return this.map(function (v, i) { return Object.assign({}, v, o[i] || {}); });
+  });
+  def(A, 'smartJoin', function (keyField, valueField) {
+    var out = {};
+    this.forEach(function (o) { if (o && o[keyField] !== undefined) out[o[keyField]] = o[valueField]; });
+    return out;
+  });
+  def(A, 'renameKeys', function (from, to) {
+    return this.map(function (o) {
+      var c = Object.assign({}, o);
+      if (from in c) { c[to] = c[from]; delete c[from]; }
+      return c;
+    });
+  });
+  def(A, 'percentile', function (p) {
+    var s = this.map(Number).sort(function (a, b) { return a - b; });
+    if (!s.length) return undefined;
+    var idx = (p / 100) * (s.length - 1);
+    var lo = Math.floor(idx), hi = Math.ceil(idx);
+    return lo === hi ? s[lo] : s[lo] + (s[hi] - s[lo]) * (idx - lo);
+  });
+  def(A, 'append', function () {
+    return this.concat(Array.prototype.slice.call(arguments));
+  });
+  def(A, 'toJsonString', function () { return JSON.stringify(this); });
+
+  /* ---------- OBJECT ---------- */
+  var O = Object.prototype;
+  def(O, 'hasField', function (name) { return Object.prototype.hasOwnProperty.call(this, name); });
+  def(O, 'isEmpty', function () { return Object.keys(this).length === 0; });
+  def(O, 'isNotEmpty', function () { return Object.keys(this).length > 0; });
+  def(O, 'keys', function () { return Object.keys(this); });
+  def(O, 'values', function () { return Object.values(this); });
+  def(O, 'removeField', function (name) {
+    var c = Object.assign({}, this); delete c[name]; return c;
+  });
+  def(O, 'compact', function () {
+    var c = {}; var self = this;
+    Object.keys(this).forEach(function (k) {
+      var v = self[k];
+      if (v !== null && v !== undefined && v !== '') c[k] = v;
+    });
+    return c;
+  });
+  def(O, 'removeFieldsContaining', function (needle) {
+    var c = {}; var self = this;
+    Object.keys(this).forEach(function (k) {
+      if (String(self[k]).indexOf(needle) === -1) c[k] = self[k];
+    });
+    return c;
+  });
+  def(O, 'keepFieldsContaining', function (needle) {
+    var c = {}; var self = this;
+    Object.keys(this).forEach(function (k) {
+      if (String(self[k]).indexOf(needle) > -1) c[k] = self[k];
+    });
+    return c;
+  });
+  def(O, 'merge', function (other) { return Object.assign({}, this, other || {}); });
+  def(O, 'toJsonString', function () { return JSON.stringify(this); });
+  def(O, 'urlEncode', function () {
+    var self = this;
+    return Object.keys(this).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(self[k]);
+    }).join('&');
+  });
+
+  /* ---------- DATE (Luxon) ---------- */
+  if (LX) {
+    var D = LX.DateTime.prototype;
+    var origPlus = D.plus, origMinus = D.minus;
+    def(D, 'plus', function (a, b) {
+      if (typeof a === 'number') { var o = {}; o[b || 'days'] = a; return origPlus.call(this, o); }
+      return origPlus.call(this, a);
+    });
+    def(D, 'minus', function (a, b) {
+      if (typeof a === 'number') { var o = {}; o[b || 'days'] = a; return origMinus.call(this, o); }
+      return origMinus.call(this, a);
+    });
+    def(D, 'beginningOf', function (unit) { return this.startOf(unit || 'week'); });
+    def(D, 'endOfMonth', function () { return this.endOf('month'); });
+    def(D, 'extract', function (part) {
+      var map = { year: 'year', month: 'month', day: 'day', hour: 'hour', minute: 'minute', second: 'second',
+        week: 'weekNumber', dayOfWeek: 'weekday' };
+      return this[map[part] || part];
+    });
+    def(D, 'format', function (fmt) { return this.toFormat(fmt || 'yyyy-MM-dd'); });
+    def(D, 'isWeekend', function () { return this.weekday > 5; });
+    def(D, 'isBetween', function (a, b) {
+      var d1 = LX.DateTime.fromISO(String(a)), d2 = LX.DateTime.fromISO(String(b));
+      return this >= d1 && this <= d2;
+    });
+    def(D, 'isInLast', function (n, unit) {
+      var now = LX.DateTime.now();
+      var o = {}; o[unit || 'days'] = n;
+      return this <= now && this >= now.minus(o);
+    });
+    def(D, 'toDateTime', function () { return this; });
+    def(D, 'diffTo', function (other, unit) {
+      var d = LX.DateTime.fromISO(String(other));
+      return Math.round(d.diff(this, unit || 'days').as(unit || 'days'));
+    });
+    def(D, 'diffToNow', function (unit) {
+      return Math.round(LX.DateTime.now().diff(this, unit || 'days').as(unit || 'days'));
+    });
+  }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function(){
+  var LX = window.luxon || null;
+  var COLORS = {texte:'var(--texte)',nombre:'var(--nombre)',tableau:'var(--tableau)',objet:'var(--objet)',date:'var(--date)',booleen:'var(--booleen)'};
+  var STATICS = [['variables','Variables'],['recettes','Recettes'],['exercices','Exercices'],['pieges','Pièges']];
+
+  function typeOf(v){
+    if (v === null) return 'null';
+    if (v === undefined) return 'undefined';
+    if (LX && LX.DateTime.isDateTime(v)) return 'date';
+    if (Array.isArray(v)) return 'tableau (' + v.length + ')';
+    return ({string:'texte',number:'nombre',boolean:'booléen',object:'objet',function:'fonction'})[typeof v] || typeof v;
+  }
+  function show(v, pretty){
+    if (v === undefined) return 'undefined';
+    if (v === null) return 'null';
+    if (LX && LX.DateTime.isDateTime(v)) return v.toISO();
+    if (typeof v === 'object') { try { return JSON.stringify(v, null, pretty ? 2 : 0); } catch(e){ return String(v); } }
+    if (typeof v === 'string') return '"' + v + '"';
+    return String(v);
+  }
+  function run(src){
+    var now = LX ? LX.DateTime.now() : new Date();
+    var today = LX ? LX.DateTime.now().startOf('day') : new Date();
+    return new Function('$json','$now','$today','DateTime','Duration','Interval','$itemIndex',
+      'return (' + src + ')')(
+      SAMPLE, now, today,
+      LX && LX.DateTime, LX && LX.Duration, LX && LX.Interval, 0);
+  }
+  function clean(src){ return src.trim().replace(/^\{\{/, '').replace(/\}\}$/, '').trim(); }
+
+  /* ---- découpe une chaîne de fonctions en maillons ---- */
+  function chainOf(src){
+    if (/[+\-*/%<>=,?]|&&|\|\|/.test(src.replace(/"[^"]*"|'[^']*'|\([^()]*\)/g, ''))) return null;
+    var parts = [], depth = 0, q = null, start = 0;
+    for (var i = 0; i < src.length; i++){
+      var c = src[i];
+      if (q){ if (c === '\\') { i++; continue; } if (c === q) q = null; continue; }
+      if (c === '"' || c === "'" || c === '`'){ q = c; continue; }
+      if ('([{'.indexOf(c) > -1) depth++;
+      else if (')]}'.indexOf(c) > -1) depth--;
+      else if (c === '.' && depth === 0){
+        if (/[0-9]/.test(src[i-1] || '') && /[0-9]/.test(src[i+1] || '')) continue;
+        parts.push(src.slice(start, i)); start = i;
+      }
+    }
+    parts.push(src.slice(start));
+    if (parts.length < 3) return null;
+    var acc = '', steps = [];
+    for (var j = 0; j < parts.length; j++){
+      acc += parts[j];
+      steps.push(acc);
+    }
+    return steps.slice(0, 9);
+  }
+
+  /* ---- bac à sable ---- */
+  var expr = document.getElementById('expr'), out = document.getElementById('out'),
+      stepsBox = document.getElementById('steps'), stepsList = stepsBox.querySelector('ol');
+
+  function renderSteps(src){
+    var steps = chainOf(src);
+    stepsList.innerHTML = '';
+    if (!steps){ stepsBox.className = ''; return; }
+    var shown = 0;
+    steps.forEach(function(s){
+      var val;
+      try { val = show(run(s), false); } catch(e){ return; }
+      if (val.length > 110) val = val.slice(0, 110) + '…';
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.className = 'sp'; a.textContent = s;
+      var b = document.createElement('span'); b.className = 'sv'; b.textContent = val;
+      li.appendChild(a); li.appendChild(b); stepsList.appendChild(li); shown++;
+    });
+    stepsBox.className = shown > 1 ? 'on' : '';
+  }
+
+  function evaluate(){
+    var src = clean(expr.value);
+    if (!src){ out.className = 'result'; out.textContent = 'Écris une expression pour voir le résultat.'; stepsBox.className = ''; return; }
+    try {
+      var v = run(src);
+      out.className = 'result';
+      out.innerHTML = '<span class="type"></span>';
+      out.firstChild.textContent = typeOf(v);
+      out.appendChild(document.createTextNode(show(v, true)));
+      renderSteps(src);
+    } catch (e){
+      out.className = 'result err';
+      out.innerHTML = '<span class="type">erreur</span>';
+      out.appendChild(document.createTextNode(e.message));
+      stepsBox.className = '';
+    }
+  }
+  expr.addEventListener('input', evaluate);
+
+  function load(src){
+    expr.value = src; evaluate();
+    document.querySelector('.sandbox').scrollIntoView({block:'center'});
+    expr.focus();
+  }
+
+  var PRESETS = [
+    ['Nom complet', '$json.prenom + " " + $json.nom.toTitleCase()'],
+    ['Domaine e-mail', '$json.email.extractDomain()'],
+    ['Total des achats', '$json.achats.pluck("montant").sum()'],
+    ['Prix en euros', '$json.salaire.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })'],
+    ['Date en français', '$json.inscrit.toDateTime().setLocale("fr").format("cccc d LLLL yyyy")'],
+    ['Tags sans doublon', '$json.tags.unique().join(", ")']
+  ];
+  var pres = document.getElementById('presets');
+  PRESETS.forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = p[0];
+    b.addEventListener('click', function(){ load(p[1]); });
+    pres.appendChild(b);
+  });
+
+  document.getElementById('sample').textContent = JSON.stringify(SAMPLE, null, 2);
+
+  /* ---- catalogue ---- */
+  var main = document.getElementById('main'), chips = document.getElementById('chips');
+  function addChip(id, label, color){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = label; b.dataset.target = id;
+    if (color) b.style.color = color;
+    b.addEventListener('click', function(){
+      var t = document.getElementById(id);
+      if (t) t.scrollIntoView({block:'start'});
+    });
+    chips.appendChild(b);
+  }
+
+  CATALOG.forEach(function(cat){
+    addChip(cat.id, cat.titre, COLORS[cat.id]);
+    var sec = document.createElement('section');
+    sec.className = 'cat'; sec.id = cat.id;
+    sec.style.setProperty('--c', COLORS[cat.id] || '#334');
+    var head = document.createElement('div');
+    head.className = 'cat-head';
+    var h2 = document.createElement('h2'); h2.textContent = cat.titre;
+    var ps = document.createElement('p'); ps.textContent = cat.sous;
+    head.appendChild(h2); head.appendChild(ps); sec.appendChild(head);
+
+    cat.groupes.forEach(function(g){
+      var gd = document.createElement('div'); gd.className = 'grp';
+      var h3 = document.createElement('h3'); h3.textContent = g.nom; gd.appendChild(h3);
+      if (g.intro){ var gi = document.createElement('p'); gi.className = 'intro'; gi.textContent = g.intro; gd.appendChild(gi); }
+      g.items.forEach(function(it){
+        var art = document.createElement('article'); art.className = 'fn';
+        art.dataset.search = (it.n + ' ' + it.d + ' ' + (it.ex || '')).toLowerCase();
+        var nm = document.createElement('code'); nm.className = 'fn-name mono'; nm.textContent = it.n;
+        var ds = document.createElement('p'); ds.className = 'fn-desc'; ds.textContent = it.d;
+        art.appendChild(nm); art.appendChild(ds);
+
+        var res, cls = 'demo';
+        if (it.ex){
+          try { res = show(run(it.ex), false); } catch(e){ res = 'erreur : ' + e.message; }
+        } else { res = it.res || '—'; cls += ' static'; }
+        var btn = document.createElement('button');
+        btn.className = cls; btn.type = 'button';
+        var ci = document.createElement('code'); ci.className = 'in mono'; ci.textContent = it.ex || it.n;
+        var sp = document.createElement('span'); sp.className = 'sep'; sp.textContent = '→';
+        var co = document.createElement('code'); co.className = 'out mono'; co.textContent = res;
+        btn.appendChild(ci); btn.appendChild(sp); btn.appendChild(co);
+        if (it.ex){
+          btn.title = 'Ouvrir dans le bac à sable';
+          btn.addEventListener('click', function(){ load(it.ex); });
+        }
+        art.appendChild(btn);
+        gd.appendChild(art);
+      });
+      sec.appendChild(gd);
+    });
+    main.appendChild(sec);
+  });
+  STATICS.forEach(function(s){ addChip(s[0], s[1]); });
+
+  /* ---- chip actif au défilement ---- */
+  if ('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        chips.querySelectorAll('button').forEach(function(b){
+          b.className = b.dataset.target === en.target.id ? 'on' : '';
+        });
+      });
+    }, {rootMargin:'-60px 0px -70% 0px'});
+    document.querySelectorAll('.cat').forEach(function(s){ obs.observe(s); });
+  }
+
+  /* ---- recherche ---- */
+  var search = document.getElementById('search'), empty = document.getElementById('empty');
+  search.addEventListener('input', function(){
+    var q = search.value.trim().toLowerCase(), total = 0;
+    main.querySelectorAll('.cat').forEach(function(sec){
+      var catHits = 0;
+      sec.querySelectorAll('.grp').forEach(function(g){
+        var hits = 0;
+        g.querySelectorAll('.fn').forEach(function(f){
+          var m = !q || f.dataset.search.indexOf(q) > -1;
+          f.style.display = m ? '' : 'none';
+          if (m) hits++;
+        });
+        g.style.display = hits ? '' : 'none';
+        catHits += hits;
+      });
+      sec.style.display = catHits ? '' : 'none';
+      total += catHits;
+    });
+    empty.className = total ? 'empty' : 'empty on';
+  });
+
+  /* ---- exercices ---- */
+  var EXOS = [
+    { goal: "Écris le nom complet en majuscules : prénom, espace, nom.",
+      want: '"MARIE DUPONT"',
+      sol: '($json.prenom + " " + $json.nom).toUpperCase()' },
+    { goal: "Récupère le nom de domaine du site web, sans le https ni le chemin.",
+      want: '"techcorp.fr"',
+      sol: '$json.site.extractDomain()' },
+    { goal: "Compte les achats de plus de 200 €.",
+      want: '2',
+      sol: '$json.achats.filter(a => a.montant > 200).length' },
+    { goal: "Affiche la date d'inscription au format jour/mois/année.",
+      want: '"15/04/2019"',
+      sol: '$json.inscrit.toDateTime().format("dd/MM/yyyy")' },
+    { goal: "Liste les tags sans doublon, séparés par une virgule et un espace.",
+      want: '"premium, newsletter, b2b"',
+      sol: '$json.tags.unique().join(", ")' },
+    { goal: "Calcule le montant moyen des achats, arrondi à deux décimales.",
+      want: '613.33',
+      sol: '$json.achats.pluck("montant").average().round(2)' }
+  ];
+  var exos = document.getElementById('exos');
+  EXOS.forEach(function(x){
+    var d = document.createElement('div'); d.className = 'ex';
+    var g = document.createElement('p'); g.className = 'goal'; g.textContent = x.goal;
+    var w = document.createElement('p'); w.className = 'want';
+    w.innerHTML = 'Résultat attendu : <code></code>';
+    w.querySelector('code').textContent = x.want;
+    var row = document.createElement('div'); row.className = 'ex-row';
+    var inp = document.createElement('input');
+    inp.type = 'text'; inp.spellcheck = false; inp.placeholder = '$json.…';
+    var ok = document.createElement('button'); ok.type = 'button'; ok.textContent = 'Vérifier';
+    var sol = document.createElement('button'); sol.type = 'button'; sol.textContent = 'Voir la solution';
+    var fb = document.createElement('p'); fb.className = 'fb';
+    function check(){
+      var src = clean(inp.value);
+      if (!src){ fb.className = 'fb'; fb.textContent = ''; return; }
+      var v;
+      try { v = show(run(src), false); }
+      catch(e){ fb.className = 'fb miss'; fb.textContent = 'Ça plante : ' + e.message; return; }
+      if (v === x.want){ fb.className = 'fb good'; fb.textContent = 'C\u2019est exactement ça.'; }
+      else { fb.className = 'fb miss'; fb.innerHTML = 'Ton expression renvoie <code></code>. Ce n\u2019est pas encore le résultat attendu.'; fb.querySelector('code').textContent = v; }
+    }
+    ok.addEventListener('click', check);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') check(); });
+    sol.addEventListener('click', function(){
+      inp.value = x.sol;
+      fb.className = 'fb'; fb.textContent = 'Une solution possible. Il y en a souvent plusieurs.';
+    });
+    row.appendChild(inp); row.appendChild(ok); row.appendChild(sol);
+    d.appendChild(g); d.appendChild(w); d.appendChild(row); d.appendChild(fb);
+    exos.appendChild(d);
+  });
+
+  evaluate();
+})();
+</script>
+</body>
+</html>

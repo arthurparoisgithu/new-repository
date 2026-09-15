@@ -1,0 +1,303 @@
+{
+  "name": "WebReset — Audit multi-agents d'un site de profession libérale",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "audit-cabinet",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Formulaire d'audit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-780, 300],
+      "webhookId": "audit-cabinet"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalise l'entrée du formulaire et fabrique un identifiant de dossier.\nconst m = $json.body ?? $json;\nconst url = (m.url ?? '').trim().replace(/\\/$/, '');\nif (!/^https?:\\/\\//.test(url)) {\n  throw new Error(\"URL invalide : indiquez l'adresse complète, https:// compris.\");\n}\nreturn [{\n  json: {\n    dossier: `${(m.metier ?? 'cabinet').toSnakeCase()}_${$now.toFormat('yyyyLLdd')}_${$execution.id}`,\n    url,\n    domaine: url.replace(/^https?:\\/\\//, '').split('/')[0],\n    metier: m.metier ?? 'notaire',\n    ville: m.ville ?? 'Nantes',\n    email: m.email ?? null,\n    recuA: $now.toISO()\n  }\n}];"
+      },
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Normaliser la demande",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-560, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": { "response": { "neverError": true, "fullResponse": true } },
+          "timeout": 15000
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Récupérer la page d'accueil",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-340, 300],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrait les signaux mesurables AVANT de faire parler un modèle.\n// Les agents raisonnent sur des faits, pas sur du HTML brut.\nconst html = $json.body ?? '';\nconst head = html.slice(0, 40000);\nconst pick = (re) => (head.match(re)?.[1] ?? '').replace(/\\s+/g, ' ').trim();\nconst all  = (re) => [...html.matchAll(re)].map(m => m[1].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim());\n\nconst texte = html.replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n                  .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n                  .removeTags();\n\nconst faits = {\n  statut: $json.statusCode ?? 0,\n  https: ($('Normaliser la demande').item.json.url).startsWith('https://'),\n  poidsKo: Math.round(html.length / 1024),\n  title: pick(/<title[^>]*>([\\s\\S]*?)<\\/title>/i),\n  metaDescription: pick(/<meta[^>]+name=[\"']description[\"'][^>]+content=[\"']([^\"']*)/i),\n  viewport: /name=[\"']viewport[\"']/i.test(head),\n  h1: all(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/gi),\n  h2: all(/<h2[^>]*>([\\s\\S]*?)<\\/h2>/gi).slice(0, 12),\n  nbImagesSansAlt: (html.match(/<img(?![^>]*\\balt=)/gi) ?? []).length,\n  formulaire: /<form/i.test(html),\n  telCliquable: /href=[\"']tel:/i.test(html),\n  mailto: /href=[\"']mailto:/i.test(html),\n  priseRdvEnLigne: /(doctolib|calendly|rendez-?vous en ligne|prendre rendez-?vous)/i.test(texte),\n  mentionsLegales: /mentions l[ée]gales/i.test(texte),\n  rgpd: /(politique de confidentialit[ée]|rgpd|donn[ée]es personnelles)/i.test(texte),\n  cookiesBanniere: /(tarteaucitron|axeptio|cookieconsent|didomi)/i.test(html),\n  motsVisibles: texte.split(' ').filter(Boolean).length\n};\n\nreturn [{ json: { ...$('Normaliser la demande').item.json, faits } }];"
+      },
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Extraire les faits mesurables",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-120, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audité : {{ $json.url }}\nMétier : {{ $json.metier }} — Ville : {{ $json.ville }}\n\nSignaux relevés sur la page d'accueil (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent VISIBILITÉ du cabinet WebReset. Tu audites la visibilité locale d'un site de profession libérale française.\n\nRègles absolues :\n1. Tu ne juges QUE les signaux fournis. Si une information n'y figure pas, tu écris \"non mesuré\" — tu n'inventes jamais un chiffre, un classement ni un volume de recherche.\n2. Tu raisonnes en référentiel local : le requêteur type tape \"<métier> <ville>\", pas le nom du cabinet.\n3. Chaque problème doit citer le signal exact qui te le fait dire.\n\nBarème /100 : balise title orientée métier+ville (25), meta description incitative (15), un seul H1 explicite (15), structure H2 couvrant les prestations (15), accessibilité des images (10), poids de page (10), HTTPS + viewport (10).\n\nRends un problème critique en premier. Maximum 4 problèmes."
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Agent 1 — Visibilité locale",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [200, 120]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audité : {{ $json.url }}\nMétier : {{ $json.metier }}\n\nSignaux relevés (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent CONVERSION du cabinet WebReset. Tu mesures une seule chose : la distance entre l'arrivée d'un visiteur et la prise de contact.\n\nThèse maison, que tu appliques : un site de cabinet échoue presque toujours parce qu'il décrit une activité au lieu de déclencher un rendez-vous.\n\nRègles absolues :\n1. Tu ne juges QUE les signaux fournis ; sinon \"non mesuré\".\n2. Tu comptes les frictions : absence de téléphone cliquable, absence de formulaire, absence de prise de RDV en ligne, appel à l'action absent du premier écran, densité de texte institutionnel.\n3. Tu formules chaque problème en conséquence business (\"un appel perdu sur mobile\"), jamais en vocabulaire de design.\n\nBarème /100 : chemin de contact évident (30), téléphone cliquable sur mobile (20), prise de RDV ou formulaire (25), promesse lisible en H1 (15), densité de texte raisonnable (10).\n\nMaximum 4 problèmes, le plus coûteux en premier."
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Agent 2 — Conversion",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audité : {{ $json.url }}\nProfession réglementée : {{ $json.metier }}\n\nSignaux relevés (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent CONFORMITÉ du cabinet WebReset. Tu vérifies qu'un site de profession réglementée française reste dans son cadre déontologique.\n\nRéférentiels que tu connais et que tu cites nommément :\n— notaire : charte de nommage et de communication du CSN, usage encadré du logo Notaires de France et de la Marianne, contrôle a posteriori par la chambre.\n— avocat : RIN, article 10 — communication autorisée mais sans démarchage personnalisé ni mention comparative ou laudative.\n— expert-comptable / CGP : information sobre et vérifiable, pas de promesse de performance.\n— tous : mentions légales complètes, politique de confidentialité, consentement cookies avant dépôt de traceurs.\n\nRègles absolues :\n1. Tu ne signales que ce que les signaux permettent d'établir. Une absence de preuve se dit \"à vérifier manuellement\", jamais \"non conforme\".\n2. Tu n'es pas juriste et tu l'écris : tes constats sont des points de vigilance à faire valider par l'ordre compétent.\n\nBarème /100 : mentions légales (30), politique de confidentialité RGPD (25), gestion des cookies (20), sobriété du discours (25)."
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Agent 3 — Conformité ordinale",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [200, 480]
+    },
+    {
+      "parameters": { "mode": "combine", "combineBy": "combineAll", "options": {} },
+      "id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Fusionner les trois avis",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Dossier : {{ $('Extraire les faits mesurables').item.json.dossier }}\nSite : {{ $('Extraire les faits mesurables').item.json.url }}\nMétier : {{ $('Extraire les faits mesurables').item.json.metier }} — {{ $('Extraire les faits mesurables').item.json.ville }}\n\nRapport de l'agent Visibilité :\n{{ JSON.stringify($('Agent 1 — Visibilité locale').item.json.output) }}\n\nRapport de l'agent Conversion :\n{{ JSON.stringify($('Agent 2 — Conversion').item.json.output) }}\n\nRapport de l'agent Conformité :\n{{ JSON.stringify($('Agent 3 — Conformité ordinale').item.json.output) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es le SUPERVISEUR. Tu reçois trois rapports d'agents spécialisés et tu produis le document qu'un associé de cabinet lira en trois minutes.\n\nTravail attendu :\n1. Arbitrer les désaccords. Si deux agents pointent la même cause avec des mots différents, tu fusionnes en un seul chantier.\n2. Calculer le score global : visibilité 35 %, conversion 45 %, conformité 20 %. La conversion pèse le plus parce que c'est elle qui produit des rendez-vous.\n3. Prioriser par (impact ÷ effort), pas par gravité. Un correctif à 30 minutes qui débloque le téléphone passe devant une refonte sémantique.\n4. Écrire pour un lecteur non technique : aucune mention de balise, de framework ou de composant dans le plan d'action. Des conséquences et des délais.\n5. Ne jamais promettre un résultat chiffré (\"+40 % de rendez-vous\"). WebReset n'a pas encore l'historique client qui le permettrait.\n\nTon : direct, précis, sans flatterie. Trois chantiers maximum."
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Agent 4 — Superviseur",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "version": 2 },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.scoreGlobal }}",
+                    "rightValue": 55,
+                    "operator": { "type": "number", "operation": "lt" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Opportunité forte"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "version": 2 },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.scoreGlobal }}",
+                    "rightValue": 55,
+                    "operator": { "type": "number", "operation": "gte" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rapport standard"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Score sous 55 ?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [920, 300]
+    },
+    {
+      "parameters": {
+        "sendTo": "arthur270.parois@gmail.com",
+        "subject": "=⚑ Opportunité — {{ $('Extraire les faits mesurables').item.json.domaine }} ({{ $json.output.scoreGlobal }}/100)",
+        "emailType": "html",
+        "message": "=<h2>{{ $('Extraire les faits mesurables').item.json.metier }} — {{ $('Extraire les faits mesurables').item.json.ville }}</h2>\n<p><b>{{ $json.output.scoreGlobal }}/100.</b> {{ $json.output.verdict }}</p>\n<p>Premier chantier : {{ $json.output.chantiers[0].titre }}</p>\n<p><a href=\"{{ $('Extraire les faits mesurables').item.json.url }}\">Ouvrir le site</a> · dossier {{ $('Extraire les faits mesurables').item.json.dossier }}</p>",
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000011",
+      "name": "Alerte interne",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1160, 200]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "schema": { "__rl": true, "mode": "list", "value": "public" },
+        "table": { "__rl": true, "mode": "list", "value": "AuditRequest" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dossier": "={{ $('Extraire les faits mesurables').item.json.dossier }}",
+            "url": "={{ $('Extraire les faits mesurables').item.json.url }}",
+            "metier": "={{ $('Extraire les faits mesurables').item.json.metier }}",
+            "ville": "={{ $('Extraire les faits mesurables').item.json.ville }}",
+            "email": "={{ $('Extraire les faits mesurables').item.json.email }}",
+            "scoreGlobal": "={{ $json.output.scoreGlobal }}",
+            "rapport": "={{ JSON.stringify($json.output) }}",
+            "status": "new"
+          }
+        },
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000012",
+      "name": "Archiver le dossier",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1160, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ dossier: $('Extraire les faits mesurables').item.json.dossier, rapport: $('Agent 4 — Superviseur').item.json.output }) }}",
+        "options": {}
+      },
+      "id": "a1000000-0000-4000-8000-000000000013",
+      "name": "Répondre au formulaire",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1400, 300]
+    },
+    {
+      "parameters": { "options": { "temperature": 0.2 } },
+      "id": "a1000000-0000-4000-8000-000000000020",
+      "name": "Modèle — analystes",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.2,
+      "position": [200, 680]
+    },
+    {
+      "parameters": { "options": { "temperature": 0.35 } },
+      "id": "a1000000-0000-4000-8000-000000000021",
+      "name": "Modèle — superviseur",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.2,
+      "position": [700, 680]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"score\": 42,\n  \"synthese\": \"une phrase\",\n  \"problemes\": [\n    { \"gravite\": \"critique\", \"constat\": \"…\", \"signal\": \"title\", \"correctif\": \"…\" }\n  ]\n}"
+      },
+      "id": "a1000000-0000-4000-8000-000000000022",
+      "name": "Format — rapport d'analyste",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [420, 680]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scoreGlobal\": 38,\n  \"verdict\": \"une phrase\",\n  \"chantiers\": [\n    { \"titre\": \"…\", \"pourquoi\": \"…\", \"effort\": \"30 min\", \"impact\": \"fort\" }\n  ],\n  \"aVerifierAvecLOrdre\": [\"…\"]\n}"
+      },
+      "id": "a1000000-0000-4000-8000-000000000023",
+      "name": "Format — rapport final",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [900, 680]
+    }
+  ],
+  "connections": {
+    "Formulaire d'audit": { "main": [[{ "node": "Normaliser la demande", "type": "main", "index": 0 }]] },
+    "Normaliser la demande": { "main": [[{ "node": "Récupérer la page d'accueil", "type": "main", "index": 0 }]] },
+    "Récupérer la page d'accueil": { "main": [[{ "node": "Extraire les faits mesurables", "type": "main", "index": 0 }]] },
+    "Extraire les faits mesurables": {
+      "main": [[
+        { "node": "Agent 1 — Visibilité locale", "type": "main", "index": 0 },
+        { "node": "Agent 2 — Conversion", "type": "main", "index": 0 },
+        { "node": "Agent 3 — Conformité ordinale", "type": "main", "index": 0 }
+      ]]
+    },
+    "Agent 1 — Visibilité locale": { "main": [[{ "node": "Fusionner les trois avis", "type": "main", "index": 0 }]] },
+    "Agent 2 — Conversion": { "main": [[{ "node": "Fusionner les trois avis", "type": "main", "index": 1 }]] },
+    "Agent 3 — Conformité ordinale": { "main": [[{ "node": "Fusionner les trois avis", "type": "main", "index": 2 }]] },
+    "Fusionner les trois avis": { "main": [[{ "node": "Agent 4 — Superviseur", "type": "main", "index": 0 }]] },
+    "Agent 4 — Superviseur": { "main": [[{ "node": "Score sous 55 ?", "type": "main", "index": 0 }]] },
+    "Score sous 55 ?": {
+      "main": [
+        [{ "node": "Alerte interne", "type": "main", "index": 0 }, { "node": "Archiver le dossier", "type": "main", "index": 0 }],
+        [{ "node": "Archiver le dossier", "type": "main", "index": 0 }]
+      ]
+    },
+    "Alerte interne": { "main": [[{ "node": "Répondre au formulaire", "type": "main", "index": 0 }]] },
+    "Archiver le dossier": { "main": [[{ "node": "Répondre au formulaire", "type": "main", "index": 0 }]] },
+    "Modèle — analystes": {
+      "ai_languageModel": [[
+        { "node": "Agent 1 — Visibilité locale", "type": "ai_languageModel", "index": 0 },
+        { "node": "Agent 2 — Conversion", "type": "ai_languageModel", "index": 0 },
+        { "node": "Agent 3 — Conformité ordinale", "type": "ai_languageModel", "index": 0 }
+      ]]
+    },
+    "Modèle — superviseur": {
+      "ai_languageModel": [[{ "node": "Agent 4 — Superviseur", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Format — rapport d'analyste": {
+      "ai_outputParser": [[
+        { "node": "Agent 1 — Visibilité locale", "type": "ai_outputParser", "index": 0 },
+        { "node": "Agent 2 — Conversion", "type": "ai_outputParser", "index": 0 },
+        { "node": "Agent 3 — Conformité ordinale", "type": "ai_outputParser", "index": 0 }
+      ]]
+    },
+    "Format — rapport final": {
+      "ai_outputParser": [[{ "node": "Agent 4 — Superviseur", "type": "ai_outputParser", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "instanceId": "webreset-dossier-alternance" },
+  "tags": [{ "name": "WebReset" }, { "name": "agents" }]
+}
