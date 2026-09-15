@@ -773,7 +773,8 @@
         <button class="btn" id="runBtn" type="button">Lancer l'exécution</button>
         <span class="spacer"></span>
         <button class="btn ghost" id="copyWorkflow" type="button">Copier le workflow n8n</button>
-        <a class="btn ghost" href="assets/n8n/webreset-audit-agents.json" target="_blank" rel="noopener" download="WebReset-audit-multi-agents.json">Ouvrir le fichier ↗</a>
+        <button class="btn ghost" id="downloadWorkflow" type="button">Télécharger le JSON</button>
+        <a class="btn ghost" href="assets/n8n/webreset-audit-agents.json" target="_blank" rel="noopener">Ouvrir le fichier ↗</a>
       </div>
 
       <div class="runner">
@@ -993,8 +994,8 @@ const faits = {
         dix-huit nœuds, leurs connexions, les quatre consignes d'agents, les deux analyseurs de sortie
         structurée et l'aiguillage. Pour le rejouer chez vous, deux chemins : le bouton
         <em>Copier le workflow</em> place le JSON dans le presse-papier — il suffit de le coller dans un
-        canevas n8n vide ; ou <em>Ouvrir le fichier</em>, puis <span class="mono">Import from File</span>
-        dans n8n.
+        canevas n8n vide ; <em>Télécharger le JSON</em> enregistre le fichier, à reprendre avec
+        <span class="mono">Import from File</span> dans n8n.
       </p>
       <p class="disclaimer">
         <b>Ce qui a été retiré avant publication :</b> les identifiants de connexion Gmail et Google Sheets,
