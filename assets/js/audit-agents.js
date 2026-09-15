@@ -418,14 +418,19 @@ async function run(key) {
   setNode("switch", "done", sup.route);
   const alerte = sup.route === "Opportunité forte";
   setNode("mail", alerte ? "run" : "skip", alerte ? "envoie" : "non emprunté");
-  setNode("db", "run", "écrit");
-  await sleep(560); if (!alive()) return;
+  await sleep(420); if (!alive()) return;
   setNode("mail", alerte ? "done" : "skip", alerte ? "1 envoyé" : "non emprunté");
+  /* les deux branches se rejoignent ici : tout dossier est archivé */
+  setNode("prep", "run", "exécute");
+  await sleep(330); if (!alive()) return;
+  setNode("prep", "done", "1 item");
+  setNode("db", "run", "écrit");
+  await sleep(430); if (!alive()) return;
   setNode("db", "done", "1 ligne");
   e = entry("Aiguillage · score " + sup.scoreGlobal + "/100", at());
   block(e, alerte
-    ? `< 55 → branche « Opportunité forte »\nGmail  : alerte interne à arthur270.parois@gmail.com\nPostgres : AuditRequest ← ${d.dossier}`
-    : `≥ 55 → branche « Rapport standard »\nGmail  : non emprunté\nPostgres : AuditRequest ← ${d.dossier}`);
+    ? `< 55 → branche « Opportunité forte »\nGmail         : alerte interne à arthur270.parois@gmail.com\nGoogle Sheets : 1 ligne ← ${d.dossier}`
+    : `≥ 55 → branche « Rapport standard »\nGmail         : non emprunté\nGoogle Sheets : 1 ligne ← ${d.dossier}`);
 
   /* 11 — réponse */
   setNode("respond", "run", "répond");

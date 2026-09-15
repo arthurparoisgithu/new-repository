@@ -10,7 +10,9 @@
 #
 set -euo pipefail
 
-COMPTE="arthurparoisgithu"
+COMPTE="${COMPTE:-arthurparoisgithu}"
+# Surchargeable pour tester le script sans toucher à GitHub.
+DEPOT_BASE="${DEPOT_BASE:-https://github.com/$COMPTE}"
 RACINE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 publier () {
@@ -30,7 +32,7 @@ publier () {
   git -C "$travail" init -q -b main
   git -C "$travail" add -A
   git -C "$travail" commit -q -m "$titre — version export statique pour GitHub Pages"
-  git -C "$travail" remote add origin "https://github.com/$COMPTE/$depot.git"
+  git -C "$travail" remote add origin "$DEPOT_BASE/$depot.git"
 
   # --force : le dépôt de destination est un miroir de projets/, pas un historique.
   git -C "$travail" push -u --force origin main

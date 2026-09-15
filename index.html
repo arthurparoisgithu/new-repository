@@ -748,7 +748,7 @@
   <section class="plate" id="plate-agents" aria-labelledby="t-agents">
     <div class="plate-head">
       <p class="k">Planche 05<span class="sep">/</span>Workflow multi-agents</p>
-      <p class="meta">17 nœuds · 4 agents · n8n + LangChain</p>
+      <p class="meta">18 nœuds · 4 agents · n8n + Claude Sonnet 5</p>
     </div>
 
     <div class="stack">
@@ -773,6 +773,7 @@
         <button class="btn" id="runBtn" type="button">Lancer l'exécution</button>
         <span class="spacer"></span>
         <button class="btn ghost" id="copyWorkflow" type="button">Copier le workflow n8n</button>
+        <a class="btn ghost" href="assets/n8n/webreset-audit-agents.json" target="_blank" rel="noopener" download="WebReset-audit-multi-agents.json">Ouvrir le fichier ↗</a>
       </div>
 
       <div class="runner">
@@ -789,7 +790,8 @@
           <div class="node is-agent" data-node="agent4" data-state="done"><span class="ic">A4</span><span class="nm">Superviseur</span><span class="st">31/100</span></div>
           <div class="node" data-node="switch" data-state="done"><span class="ic">⤨</span><span class="nm">Score sous 55 ?</span><span class="st">Opportunité forte</span></div>
           <div class="node" data-node="mail" data-state="done"><span class="ic">@</span><span class="nm">Alerte interne</span><span class="st">1 envoyé</span></div>
-          <div class="node" data-node="db" data-state="done"><span class="ic">DB</span><span class="nm">Archiver le dossier</span><span class="st">1 ligne</span></div>
+          <div class="node" data-node="prep" data-state="done"><span class="ic">JS</span><span class="nm">Préparer la ligne</span><span class="st">1 item</span></div>
+          <div class="node" data-node="db" data-state="done"><span class="ic">GS</span><span class="nm">Archiver — Google Sheets</span><span class="st">1 ligne</span></div>
           <div class="node" data-node="respond" data-state="done"><span class="ic">↩</span><span class="nm">Répondre au formulaire</span><span class="st">200</span></div>
         </div>
 
@@ -987,10 +989,17 @@ const faits = {
       </section>
 
       <p class="note">
-        <strong>Le fichier est réel et importable.</strong> <code class="mono">assets/n8n/webreset-audit-agents.json</code>
-        contient les dix-sept nœuds, leurs connexions, les quatre consignes d'agents, les deux analyseurs
-        de sortie structurée et l'aiguillage. Collez-le dans un canevas n8n vide : il ne manque que vos
-        identifiants de modèle, de messagerie et de base.
+        <strong>Le fichier est l'export réel du workflow.</strong> Il sort de l'instance n8n où il tourne :
+        dix-huit nœuds, leurs connexions, les quatre consignes d'agents, les deux analyseurs de sortie
+        structurée et l'aiguillage. Pour le rejouer chez vous, deux chemins : le bouton
+        <em>Copier le workflow</em> place le JSON dans le presse-papier — il suffit de le coller dans un
+        canevas n8n vide ; ou <em>Ouvrir le fichier</em>, puis <span class="mono">Import from File</span>
+        dans n8n.
+      </p>
+      <p class="disclaimer">
+        <b>Ce qui a été retiré avant publication :</b> les identifiants de connexion Gmail et Google Sheets,
+        ainsi que l'identifiant du classeur d'archivage — c'est une adresse vers un document privé.
+        Remplacez-les par les vôtres à l'import. Tout le reste est intact.
       </p>
 
       <footer style="border-top:1px solid var(--rule);padding-top:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;justify-content:space-between">
