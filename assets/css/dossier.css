@@ -134,7 +134,7 @@ a { color: inherit; }
 h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
 
 h1 {
-  font-size: clamp(38px, 7vw, 68px);
+  font-size: clamp(34px, 5.6vw, 56px);
   font-variation-settings: "wdth" 108, "wght" 620;
   line-height: 1.02;
   letter-spacing: -.02em;
@@ -354,8 +354,10 @@ h4 {
 /* ---------- planche 01 — parcours ---------- */
 
 .hero { display: grid; gap: 26px; }
+.hero h1 { max-width: 20ch; }
 .hero h1 .quiet { color: var(--ink-3); }
 .hero h1 .hl {
+  font-size: .86em;
   font-style: italic;
   font-family: var(--serif);
   font-weight: 500;
@@ -888,3 +890,49 @@ h4 {
   .finding { grid-template-columns: minmax(0, 1fr); gap: 7px; }
   .sev { justify-self: start; }
 }
+
+/* ---------- ajouts : CV et liens de mise en ligne ---------- */
+
+.tl-when { line-height: 1.45; }
+
+.tl-what h4 .xp-where {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-variation-settings: "wght" 400;
+}
+
+ul.xp-list {
+  margin: 9px 0 0;
+  padding-left: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 64ch;
+}
+ul.xp-list li {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+ul.xp-list li::marker { color: var(--accent); }
+ul.xp-list strong { color: var(--ink); font-weight: 600; }
+
+.project-brief .live { margin: -6px 0 0; }
+.project-brief .live a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-wash);
+  padding-bottom: 2px;
+}
+.project-brief .live a:hover { border-bottom-color: var(--accent); }
