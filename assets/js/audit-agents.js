@@ -418,14 +418,19 @@ async function run(key) {
   setNode("switch", "done", sup.route);
   const alerte = sup.route === "Opportunité forte";
   setNode("mail", alerte ? "run" : "skip", alerte ? "envoie" : "non emprunté");
-  setNode("db", "run", "écrit");
-  await sleep(560); if (!alive()) return;
+  await sleep(420); if (!alive()) return;
   setNode("mail", alerte ? "done" : "skip", alerte ? "1 envoyé" : "non emprunté");
+  /* les deux branches se rejoignent ici : tout dossier est archivé */
+  setNode("prep", "run", "exécute");
+  await sleep(330); if (!alive()) return;
+  setNode("prep", "done", "1 item");
+  setNode("db", "run", "écrit");
+  await sleep(430); if (!alive()) return;
   setNode("db", "done", "1 ligne");
   e = entry("Aiguillage · score " + sup.scoreGlobal + "/100", at());
   block(e, alerte
-    ? `< 55 → branche « Opportunité forte »\nGmail  : alerte interne à arthur270.parois@gmail.com\nPostgres : AuditRequest ← ${d.dossier}`
-    : `≥ 55 → branche « Rapport standard »\nGmail  : non emprunté\nPostgres : AuditRequest ← ${d.dossier}`);
+    ? `< 55 → branche « Opportunité forte »\nGmail         : alerte interne à arthur270.parois@gmail.com\nGoogle Sheets : 1 ligne ← ${d.dossier}`
+    : `≥ 55 → branche « Rapport standard »\nGmail         : non emprunté\nGoogle Sheets : 1 ligne ← ${d.dossier}`);
 
   /* 11 — réponse */
   setNode("respond", "run", "répond");
@@ -484,18 +489,58 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = "Lancer l'exécution";
   });
 
-  /* copie du workflow */
+  /* ---- export du workflow ---- */
+
+  const WORKFLOW = "assets/n8n/webreset-audit-agents.json";
+  const NOM_FICHIER = "WebReset-audit-multi-agents.json";
+
   const copyBtn = $("#copyWorkflow");
   if (copyBtn) {
     copyBtn.addEventListener("click", async () => {
       try {
-        const res = await fetch("assets/n8n/webreset-audit-agents.json");
-        const txt = await res.text();
+        const txt = await (await fetch(WORKFLOW)).text();
         await navigator.clipboard.writeText(txt);
         toast("Workflow copié — collez-le dans un canevas n8n vide");
       } catch (err) {
-        toast("Copie impossible ici : ouvrez le fichier JSON et copiez-le à la main");
+        toast("Copie impossible ici : ouvrez le fichier et copiez-le à la main");
       }
+    });
+  }
+
+  const dlBtn = $("#downloadWorkflow");
+  if (dlBtn) {
+    dlBtn.addEventListener("click", async () => {
+      let txt;
+      try {
+        txt = await (await fetch(WORKFLOW)).text();
+      } catch (err) {
+        toast("Fichier introuvable — utilisez « Ouvrir le fichier »");
+        return;
+      }
+
+      /* Sur claude.ai, seul l'hôte peut écrire un fichier : on passe par lui.
+         Ailleurs (GitHub Pages, ouverture locale), le lien de téléchargement
+         classique fonctionne. */
+      const downloads = await window.claude?.use?.("downloads").catch(() => null);
+      if (downloads) {
+        try {
+          await downloads.save({ filename: NOM_FICHIER, data: txt });
+          toast("Workflow enregistré");
+        } catch (err) {
+          if (err?.code !== "declined") {
+            toast("Enregistrement impossible — utilisez « Copier le workflow »");
+          }
+        }
+        return;
+      }
+
+      const url = URL.createObjectURL(new Blob([txt], { type: "application/json" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = NOM_FICHIER;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast("Workflow téléchargé");
     });
   }
 });

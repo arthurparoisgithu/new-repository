@@ -35,3 +35,19 @@ démonstration sont anonymisés.
 ## Publier sur GitHub Pages
 
 Réglages du dépôt → Pages → *Deploy from a branch* → branche courante, dossier `/`.
+
+## Les deux sites clients
+
+`projets/kine` et `projets/webreset` contiennent les applications Next.js,
+préparées pour l'export statique et prêtes à être publiées sur GitHub Pages.
+
+```bash
+./scripts/publier-les-sites.sh
+```
+
+Le script pousse `projets/kine` vers `arthurparoisgithu/kin-` et
+`projets/webreset` vers `arthurparoisgithu/web-rest`. Chaque dépôt embarque son
+propre workflow GitHub Actions : il construit l'export statique et le publie.
+
+- https://arthurparoisgithu.github.io/kin-/
+- https://arthurparoisgithu.github.io/web-rest/
