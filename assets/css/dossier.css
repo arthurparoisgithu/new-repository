@@ -936,3 +936,37 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   padding-bottom: 2px;
 }
 .project-brief .live a:hover { border-bottom-color: var(--accent); }
+
+/* ---------- CV affiché dans la page ---------- */
+
+.cv-frame {
+  display: block;
+  width: 100%;
+  height: 860px;
+  border: 0;
+  background: var(--surface-2);
+}
+.cv-fallback {
+  margin: 0;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink-2);
+}
+.cv-fallback a { color: var(--accent-ink); }
+
+@media (max-width: 760px) {
+  /* Les navigateurs mobiles n'intègrent pas les PDF : on renvoie vers l'onglet. */
+  .cv-frame { height: 320px; }
+}
+
+/* ---------- deux liens sous le nom du projet ---------- */
+
+.project-brief .live {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.project-brief .live a.repo { color: var(--ink-2); border-bottom-color: var(--rule); }
+.project-brief .live a.repo:hover { color: var(--ink); border-bottom-color: var(--ink-3); }
