@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dossier Arthur Parois</title>
-<meta name="description" content="Dossier de candidature en alternance : trois sites livrés, un cours interactif sur n8n, une analyse des votes de l'Assemblée nationale et un workflow n8n multi-agents rejouable.">
+<meta name="description" content="Dossier de candidature en alternance : deux sites livrés et en ligne, un cours interactif sur n8n et un workflow n8n multi-agents rejouable dans la page.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23DE3E68'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,15 +39,10 @@
         <span class="nav-label">n8n</span>
         <span class="nav-num">03</span>
       </button>
-      <button class="nav-item" data-go="lois">
-        <span class="nav-dot" aria-hidden="true"></span>
-        <span class="nav-label">Lois &amp; votes</span>
-        <span class="nav-num">04</span>
-      </button>
       <button class="nav-item" data-go="agents">
         <span class="nav-dot" aria-hidden="true"></span>
         <span class="nav-label">Démo agents</span>
-        <span class="nav-num">05</span>
+        <span class="nav-num">04</span>
       </button>
     </nav>
 
@@ -313,17 +308,10 @@
             </div>
           </div>
           <div class="tl-row">
-            <span class="tl-when">2026</span>
-            <div class="tl-what">
-              <h4>« Votes &amp; Contradictions » — analyse parlementaire</h4>
-              <p>Vingt textes de la XVII<sup>e</sup> législature, sept groupes, un score d'écart entre le discours affiché et le vote réel.</p>
-            </div>
-          </div>
-          <div class="tl-row">
             <span class="tl-when">Sept. 2026</span>
             <div class="tl-what">
               <h4>Audit multi-agents — industrialisation de la méthode</h4>
-              <p>Le diagnostic que je faisais à la main devient un workflow n8n : trois agents spécialisés, un superviseur qui arbitre, un aiguillage, une base et un rapport. C'est la planche 05.</p>
+              <p>Le diagnostic que je faisais à la main devient un workflow n8n : trois agents spécialisés, un superviseur qui arbitre, un aiguillage, une base et un rapport. C'est la planche 04.</p>
             </div>
           </div>
         </div>
@@ -464,7 +452,7 @@
               <div>
                 <h4>Workflow multi-agents</h4>
                 <p>Un workflow n8n spécialisé dans l'audit de sites, qui met en évidence les axes d'amélioration d'un prospect.</p>
-                <a href="#agents" data-go="agents">Le rejouer, planche 05 →</a>
+                <a href="#agents" data-go="agents">Le rejouer, planche 04 →</a>
               </div>
               <div>
                 <h4>Analyseur de fonctions n8n</h4>
@@ -785,101 +773,11 @@
   </section>
 
   <!-- ══════════════════════════════════════════════════════
-       PLANCHE 04 — LOIS & VOTES
-       ══════════════════════════════════════════════════════ -->
-  <section class="plate" id="plate-lois" aria-labelledby="t-lois">
-    <div class="plate-head">
-      <p class="k">Planche 04<span class="sep">/</span>Données publiques</p>
-      <p class="meta">XVII<sup>e</sup> législature · nov. 2024 — juil. 2025</p>
-    </div>
-
-    <div class="stack">
-
-      <header class="stack-tight">
-        <h2 id="t-lois">Votes &amp; Contradictions</h2>
-        <p class="lede">
-          Les scrutins de l'Assemblée nationale sont publics, les programmes des partis aussi.
-          Personne ne les met côte à côte. J'ai repris vingt textes majeurs, relevé le vote de chaque
-          groupe, et mesuré l'écart avec le discours que ce groupe tenait sur le même sujet.
-        </p>
-      </header>
-
-      <div class="kv">
-        <div><span class="k">Textes analysés</span><span class="v">20</span></div>
-        <div><span class="k">Groupes suivis</span><span class="v">7</span></div>
-        <div><span class="k">Votes documentés</span><span class="v">140</span></div>
-        <div><span class="k">Période</span><span class="v">9<small> mois</small></span></div>
-      </div>
-
-      <section>
-        <div class="section-rule">
-          <h3>La méthode</h3>
-          <span class="line"></span>
-        </div>
-        <div class="prose">
-          <p>
-            Pour chaque texte : l'objet de la loi, la date et le résultat du scrutin, puis le vote
-            des sept groupes principaux. À côté de chaque vote, un <strong>score d'écart de 0 à 10</strong>
-            entre les positions publiques du parti sur ce sujet et son vote réel — 0 pour une position
-            parfaitement tenue, 10 pour une contradiction frontale.
-          </p>
-          <p>
-            Le score n'est pas un jugement de valeur sur la position elle-même : un groupe peut voter
-            contre un texte pour des raisons entièrement cohérentes avec son programme et obtenir 1/10.
-            <em>Ce qui est mesuré, c'est la distance entre ce qui est dit et ce qui est fait</em>, pas
-            l'opinion. Chaque score est accompagné du raisonnement qui l'a produit, pour qu'un lecteur
-            en désaccord sache exactement où il l'est.
-          </p>
-          <p>
-            Sources : comptes rendus de l'Assemblée nationale, LCP, Vie Publique. Les scrutins
-            sont tous vérifiables un par un.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-rule">
-          <h3>Le barème</h3>
-          <span class="line"></span>
-        </div>
-        <div class="kv">
-          <div><span class="k">0 — 3</span><span class="v" style="font-size:16px">Cohérent</span></div>
-          <div><span class="k">4 — 6</span><span class="v" style="font-size:16px">Notable</span></div>
-          <div><span class="k">7 — 8</span><span class="v" style="font-size:16px">Fort</span></div>
-          <div><span class="k">9 — 10</span><span class="v" style="font-size:16px">Critique</span></div>
-        </div>
-        <p class="note" style="margin-top:20px">
-          <strong>Ce que ce travail m'a appris.</strong> La partie difficile n'a jamais été la mise en
-          forme : c'est de tenir une grille de lecture identique pour les sept groupes, y compris quand
-          le résultat déplaît. Un score de contradiction n'a de valeur que s'il est appliqué de la même
-          manière à tout le monde — sinon ce n'est plus une analyse, c'est un tract.
-        </p>
-      </section>
-
-      <section>
-        <div class="section-rule">
-          <h3>Le document, en entier</h3>
-          <span class="line"></span>
-        </div>
-        <div class="viewer">
-          <div class="viewer-bar">
-            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="addr">demos/lois-votes.html — cliquez sur un texte pour déplier les sept votes</span>
-            <a href="demos/lois-votes.html" target="_blank" rel="noopener">Plein écran ↗</a>
-          </div>
-          <iframe data-src="demos/lois-votes.html" title="Votes et contradictions : analyse de vingt lois de la XVIIe législature" loading="lazy"></iframe>
-        </div>
-      </section>
-
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════
-       PLANCHE 05 — DÉMO AGENTS
+       PLANCHE 04 — DÉMO AGENTS
        ══════════════════════════════════════════════════════ -->
   <section class="plate" id="plate-agents" aria-labelledby="t-agents">
     <div class="plate-head">
-      <p class="k">Planche 05<span class="sep">/</span>Workflow multi-agents</p>
+      <p class="k">Planche 04<span class="sep">/</span>Workflow multi-agents</p>
       <p class="meta">18 nœuds · 4 agents · n8n + Claude Sonnet 5</p>
     </div>
 
