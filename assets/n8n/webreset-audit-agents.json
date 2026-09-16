@@ -1,0 +1,752 @@
+{
+  "name": "WebReset — Audit multi-agents",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "audit-cabinet",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "20ff1640-5a14-4538-92de-4f1e5976706c",
+      "name": "Formulaire d'audit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": null
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalise l'entree du formulaire et fabrique un identifiant de dossier.\nconst m = $json.body ?? $json;\nconst url = (m.url ?? '').trim().replace(/\\/$/, '');\nif (!/^https?:\\/\\//.test(url)) {\n  throw new Error(\"URL invalide : indiquez l'adresse complete, https:// compris.\");\n}\nconst metierSlug = (m.metier ?? 'cabinet')\n  .toLowerCase()\n  .normalize('NFD')\n  .replace(/[\\u0300-\\u036f]/g, '')\n  .replace(/[^a-z0-9]+/g, '_')\n  .replace(/^_+|_+$/g, '');\nconst dossier = metierSlug + '_' + $now.toFormat('yyyyLLdd') + '_' + $execution.id;\nreturn [{\n  json: {\n    dossier,\n    url,\n    domaine: url.replace(/^https?:\\/\\//, '').split('/')[0],\n    metier: m.metier ?? 'notaire',\n    ville: m.ville ?? 'Nantes',\n    email: m.email ?? null,\n    recuA: $now.toISO(),\n  },\n}];"
+      },
+      "id": "abbccbbe-b1d4-400c-9925-b234b40cdf9b",
+      "name": "Normaliser la demande",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "e4cbc27c-bd10-45d4-ab73-1761454a3ce9",
+      "name": "Recuperer la page d'accueil",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        400
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrait les signaux mesurables AVANT de faire parler un modele.\n// Les agents raisonnent sur des faits, pas sur du HTML brut.\nconst html = $json.body ?? '';\nconst head = html.slice(0, 40000);\nconst pick = (re) => (head.match(re)?.[1] ?? '').replace(/\\s+/g, ' ').trim();\nconst all = (re) => [...html.matchAll(re)].map(x => x[1].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim());\nconst texte = html\n  .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n  .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n  .replace(/<[^>]+>/g, ' ');\nconst demande = $('Normaliser la demande').item.json;\nconst faits = {\n  statut: $json.statusCode ?? 0,\n  https: demande.url.startsWith('https://'),\n  poidsKo: Math.round(html.length / 1024),\n  title: pick(/<title[^>]*>([\\s\\S]*?)<\\/title>/i),\n  metaDescription: pick(/<meta[^>]+name=[\"']description[\"'][^>]+content=[\"']([^\"']*)/i),\n  viewport: /name=[\"']viewport[\"']/i.test(head),\n  h1: all(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/gi),\n  h2: all(/<h2[^>]*>([\\s\\S]*?)<\\/h2>/gi).slice(0, 12),\n  nbImagesSansAlt: (html.match(/<img(?![^>]*\\balt=)/gi) ?? []).length,\n  formulaire: /<form/i.test(html),\n  telCliquable: /href=[\"']tel:/i.test(html),\n  mailto: /href=[\"']mailto:/i.test(html),\n  priseRdvEnLigne: /(doctolib|calendly|rendez-?vous en ligne|prendre rendez-?vous)/i.test(texte),\n  mentionsLegales: /mentions l[ee]gales/i.test(texte),\n  rgpd: /(politique de confidentialit[ee]|rgpd|donn[ee]es personnelles)/i.test(texte),\n  cookiesBanniere: /(tarteaucitron|axeptio|cookieconsent|didomi)/i.test(html),\n  motsVisibles: texte.split(' ').filter(Boolean).length,\n};\nreturn [{ json: { ...demande, faits } }];"
+      },
+      "id": "ce282463-421f-4836-bc0e-d1aad488ba28",
+      "name": "Extraire les faits mesurables",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audite : {{ $json.url }}\nMetier : {{ $json.metier }} — Ville : {{ $json.ville }}\n\nSignaux releves sur la page d'accueil (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent VISIBILITE du cabinet WebReset. Tu audites la visibilite locale d'un site de profession liberale francaise.\n\nRegles absolues :\n1. Tu ne juges QUE les signaux fournis. Si une information n'y figure pas, tu ecris \"non mesure\" — tu n'inventes jamais un chiffre, un classement ni un volume de recherche.\n2. Tu raisonnes en referentiel local : le requeteur type tape \"<metier> <ville>\", pas le nom du cabinet.\n3. Chaque probleme doit citer le signal exact qui te le fait dire.\n\nBareme /100 : balise title orientee metier+ville (25), meta description incitative (15), un seul H1 explicite (15), structure H2 couvrant les prestations (15), accessibilite des images (10), poids de page (10), HTTPS + viewport (10).\n\nRends un probleme critique en premier. Maximum 4 problemes."
+        }
+      },
+      "id": "d515f52d-527d-4d52-a1d8-39a068c813e2",
+      "name": "Agent 1 - Visibilite locale",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-5",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {
+          "maxTokensToSample": 8000,
+          "temperature": 0.2
+        }
+      },
+      "id": "934615b2-d92d-41ce-8de9-4439ea55daeb",
+      "name": "Modele - analystes",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        912,
+        224
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Gateway credits",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"score\": 42,\n  \"synthese\": \"une phrase\",\n  \"problemes\": [\n    {\n      \"gravite\": \"critique\",\n      \"constat\": \"…\",\n      \"signal\": \"title\",\n      \"correctif\": \"…\"\n    }\n  ]\n}"
+      },
+      "id": "8acb0c66-d47f-43ee-a779-91157e0c6ea9",
+      "name": "Format - rapport d'analyste",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "id": "a8067927-97ca-44c5-8bdd-add855d585eb",
+      "name": "Fusionner les trois avis",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1248,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audite : {{ $json.url }}\nMetier : {{ $json.metier }}\n\nSignaux releves (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent CONVERSION du cabinet WebReset. Tu mesures une seule chose : la distance entre l'arrivee d'un visiteur et la prise de contact.\n\nThese maison, que tu appliques : un site de cabinet echoue presque toujours parce qu'il decrit une activite au lieu de declencher un rendez-vous.\n\nRegles absolues :\n1. Tu ne juges QUE les signaux fournis ; sinon \"non mesure\".\n2. Tu comptes les frictions : absence de telephone cliquable, absence de formulaire, absence de prise de RDV en ligne, appel a l'action absent du premier ecran, densite de texte institutionnel.\n3. Tu formules chaque probleme en consequence business (\"un appel perdu sur mobile\"), jamais en vocabulaire de design.\n\nBareme /100 : chemin de contact evident (30), telephone cliquable sur mobile (20), prise de RDV ou formulaire (25), promesse lisible en H1 (15), densite de texte raisonnable (10).\n\nMaximum 4 problemes, le plus couteux en premier."
+        }
+      },
+      "id": "2ee27ffc-04ec-4d68-b2fc-e307376ddc08",
+      "name": "Agent 2 - Conversion",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        896,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Site audite : {{ $json.url }}\nProfession reglementee : {{ $json.metier }}\n\nSignaux releves (JSON) :\n{{ JSON.stringify($json.faits, null, 2) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es l'agent CONFORMITE du cabinet WebReset. Tu verifies qu'un site de profession reglementee francaise reste dans son cadre deontologique.\n\nReferentiels que tu connais et que tu cites nommement :\n— notaire : charte de nommage et de communication du CSN, usage encadre du logo Notaires de France et de la Marianne, controle a posteriori par la chambre.\n— avocat : RIN, article 10 — communication autorisee mais sans demarchage personnalise ni mention comparative ou laudative.\n— expert-comptable / CGP : information sobre et verifiable, pas de promesse de performance.\n— tous : mentions legales completes, politique de confidentialite, consentement cookies avant depot de traceurs.\n\nRegles absolues :\n1. Tu ne signales que ce que les signaux permettent d'etablir. Une absence de preuve se dit \"a verifier manuellement\", jamais \"non conforme\".\n2. Tu n'es pas juriste et tu l'ecris : tes constats sont des points de vigilance a faire valider par l'ordre competent.\n\nBareme /100 : mentions legales (30), politique de confidentialite RGPD (25), gestion des cookies (20), sobriete du discours (25)."
+        }
+      },
+      "id": "0295a28a-4928-4ab0-96bc-acdaabcc59ce",
+      "name": "Agent 3 - Conformite ordinale",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        896,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Dossier : {{ $('Extraire les faits mesurables').item.json.dossier }}\nSite : {{ $('Extraire les faits mesurables').item.json.url }}\nMetier : {{ $('Extraire les faits mesurables').item.json.metier }} — {{ $('Extraire les faits mesurables').item.json.ville }}\n\nRapport de l'agent Visibilite :\n{{ JSON.stringify($('Agent 1 - Visibilite locale').item.json.output) }}\n\nRapport de l'agent Conversion :\n{{ JSON.stringify($('Agent 2 - Conversion').item.json.output) }}\n\nRapport de l'agent Conformite :\n{{ JSON.stringify($('Agent 3 - Conformite ordinale').item.json.output) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Tu es le SUPERVISEUR. Tu recois trois rapports d'agents specialises et tu produis le document qu'un associe de cabinet lira en trois minutes.\n\nTravail attendu :\n1. Arbitrer les desaccords. Si deux agents pointent la meme cause avec des mots differents, tu fusionnes en un seul chantier.\n2. Calculer le score global : visibilite 35 %, conversion 45 %, conformite 20 %. La conversion pese le plus parce que c'est elle qui produit des rendez-vous.\n3. Prioriser par (impact / effort), pas par gravite. Un correctif a 30 minutes qui debloque le telephone passe devant une refonte semantique.\n4. Ecrire pour un lecteur non technique : aucune mention de balise, de framework ou de composant dans le plan d'action. Des consequences et des delais.\n5. Ne jamais promettre un resultat chiffre (\"+40 % de rendez-vous\"). WebReset n'a pas encore l'historique client qui le permettrait.\n\nTon : direct, precis, sans flatterie. Trois chantiers maximum."
+        }
+      },
+      "id": "136ac0e1-57ee-4ed7-ad50-46776d0aff98",
+      "name": "Agent 4 - Superviseur",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1472,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-5",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {
+          "maxTokensToSample": 8000,
+          "temperature": 0.35
+        }
+      },
+      "id": "ac5d8464-f465-411c-85b8-2ab8e275a572",
+      "name": "Modele - superviseur",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        1488,
+        624
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "Gateway credits",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scoreGlobal\": 38,\n  \"verdict\": \"une phrase\",\n  \"chantiers\": [\n    {\n      \"titre\": \"…\",\n      \"pourquoi\": \"…\",\n      \"effort\": \"30 min\",\n      \"impact\": \"fort\"\n    }\n  ],\n  \"aVerifierAvecLOrdre\": [\n    \"…\"\n  ]\n}"
+      },
+      "id": "dce9cb90-3a95-4375-b0f2-fbbbedf5d0a6",
+      "name": "Format - rapport final",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1616,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.scoreGlobal }}",
+                    "rightValue": 55,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Opportunite forte"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.scoreGlobal }}",
+                    "rightValue": 55,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gte"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Rapport standard"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0491750c-bf1b-42f4-8473-6164329ad5d9",
+      "name": "Score sous 55 ?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1824,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "arthur270.parois@gmail.com",
+        "subject": "=Opportunite — {{ $('Extraire les faits mesurables').item.json.domaine }} ({{ $('Agent 4 - Superviseur').item.json.output.scoreGlobal }}/100)",
+        "message": "=<h2>{{ $('Extraire les faits mesurables').item.json.metier }} — {{ $('Extraire les faits mesurables').item.json.ville }}</h2>\n<p><b>{{ $('Agent 4 - Superviseur').item.json.output.scoreGlobal }}/100.</b> {{ $('Agent 4 - Superviseur').item.json.output.verdict }}</p>\n<p>Premier chantier : {{ $('Agent 4 - Superviseur').item.json.output.chantiers[0].titre }}</p>\n<p><a href=\"{{ $('Extraire les faits mesurables').item.json.url }}\">Ouvrir le site</a> · dossier {{ $('Extraire les faits mesurables').item.json.dossier }}</p>",
+        "options": {}
+      },
+      "id": "ad38f5c8-1d12-4787-9ecd-357fb743e3c2",
+      "name": "Alerte interne",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2048,
+        336
+      ],
+      "webhookId": null,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": null,
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $('Extraire les faits mesurables').item.json;\nconst r = $('Agent 4 - Superviseur').item.json.output ?? {};\nreturn [{\n  json: {\n    dossier: d.dossier,\n    url: d.url,\n    metier: d.metier,\n    ville: d.ville,\n    email: d.email,\n    score_global: r.scoreGlobal ?? '',\n    verdict: r.verdict ?? '',\n    rapport: JSON.stringify(r),\n    status: 'new',\n    recu_a: d.recuA,\n  },\n}];"
+      },
+      "id": "940599f7-e18e-4c9f-ab55-d2c5936ac041",
+      "name": "Preparer la ligne",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2272,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REMPLACER_PAR_VOTRE_ID_DE_CLASSEUR",
+          "cachedResultName": "WebReset — Dossiers d'audit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REMPLACER_PAR_VOTRE_ID_D_ONGLET",
+          "cachedResultName": "Dossiers"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "schema": [
+            {
+              "id": "dossier",
+              "displayName": "dossier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "metier",
+              "displayName": "metier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ville",
+              "displayName": "ville",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "score_global",
+              "displayName": "score_global",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "verdict",
+              "displayName": "verdict",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "rapport",
+              "displayName": "rapport",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "recu_a",
+              "displayName": "recu_a",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ff5d87cd-8cc0-400a-bd46-313390721b2d",
+      "name": "Archiver le dossier",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2272,
+        400
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": null,
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ dossier: $('Extraire les faits mesurables').item.json.dossier, rapport: $('Agent 4 - Superviseur').item.json.output }) }}",
+        "options": {}
+      },
+      "id": "815e8349-601c-4e0c-a691-224dd3aee34f",
+      "name": "Repondre au formulaire",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2496,
+        400
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Formulaire d'audit": {
+      "main": [
+        [
+          {
+            "node": "Normaliser la demande",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normaliser la demande": {
+      "main": [
+        [
+          {
+            "node": "Recuperer la page d'accueil",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recuperer la page d'accueil": {
+      "main": [
+        [
+          {
+            "node": "Extraire les faits mesurables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraire les faits mesurables": {
+      "main": [
+        [
+          {
+            "node": "Agent 1 - Visibilite locale",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent 2 - Conversion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent 3 - Conformite ordinale",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 1 - Visibilite locale": {
+      "main": [
+        [
+          {
+            "node": "Fusionner les trois avis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modele - analystes": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 1 - Visibilite locale",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agent 2 - Conversion",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agent 3 - Conformite ordinale",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format - rapport d'analyste": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent 1 - Visibilite locale",
+            "type": "ai_outputParser",
+            "index": 0
+          },
+          {
+            "node": "Agent 2 - Conversion",
+            "type": "ai_outputParser",
+            "index": 0
+          },
+          {
+            "node": "Agent 3 - Conformite ordinale",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusionner les trois avis": {
+      "main": [
+        [
+          {
+            "node": "Agent 4 - Superviseur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 2 - Conversion": {
+      "main": [
+        [
+          {
+            "node": "Fusionner les trois avis",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Agent 3 - Conformite ordinale": {
+      "main": [
+        [
+          {
+            "node": "Fusionner les trois avis",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Agent 4 - Superviseur": {
+      "main": [
+        [
+          {
+            "node": "Score sous 55 ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modele - superviseur": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 4 - Superviseur",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format - rapport final": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent 4 - Superviseur",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score sous 55 ?": {
+      "main": [
+        [
+          {
+            "node": "Alerte interne",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preparer la ligne",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerte interne": {
+      "main": [
+        [
+          {
+            "node": "Preparer la ligne",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparer la ligne": {
+      "main": [
+        [
+          {
+            "node": "Archiver le dossier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Archiver le dossier": {
+      "main": [
+        [
+          {
+            "node": "Repondre au formulaire",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "instanceId": "webreset-dossier-alternance"
+  },
+  "nodeGroups": [
+    {
+      "id": "d99183d4-d041-4d1d-81ba-4c63c7a797eb",
+      "name": "Ingestion",
+      "nodeIds": [
+        "abbccbbe-b1d4-400c-9925-b234b40cdf9b",
+        "e4cbc27c-bd10-45d4-ab73-1761454a3ce9",
+        "ce282463-421f-4836-bc0e-d1aad488ba28"
+      ],
+      "description": "Normalise la demande, recupere la page d'accueil et extrait les signaux mesurables."
+    },
+    {
+      "id": "6df59f22-0868-4bd7-ae28-5685a6f86827",
+      "name": "Restitution",
+      "nodeIds": [
+        "0491750c-bf1b-42f4-8473-6164329ad5d9",
+        "ad38f5c8-1d12-4787-9ecd-357fb743e3c2",
+        "940599f7-e18e-4c9f-ab55-d2c5936ac041",
+        "ff5d87cd-8cc0-400a-bd46-313390721b2d",
+        "815e8349-601c-4e0c-a691-224dd3aee34f"
+      ],
+      "description": "Alerte interne si opportunite, archivage du dossier et reponse au formulaire."
+    }
+  ],
+  "tags": [
+    {
+      "name": "WebReset"
+    },
+    {
+      "name": "agents"
+    }
+  ]
+}
