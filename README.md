@@ -8,6 +8,9 @@ dossier tel quel (GitHub Pages, Netlify, n'importe quel hébergeur statique).
 
 ```
 index.html                              les quatre planches (onglets côté client)
+cv.html                                 le CV seul, mis en page pour l'impression A4
+assets/cv/arthur-parois-cv.pdf          le même CV en PDF, texte sélectionnable
+scripts/generer-cv-pdf.sh               refabrique ce PDF à partir de cv.html
 assets/css/dossier.css                  feuille de style unique, thèmes clair et sombre
 assets/js/dossier.js                    onglets, thème, chargement différé des pièces jointes
 assets/js/audit-agents.js               rejeu du workflow d'agents + les trois dossiers figés
@@ -15,6 +18,25 @@ assets/n8n/webreset-audit-agents.json   le workflow n8n, importable tel quel (17
 assets/img/                             visuels des projets kiné et Myrtille Sauvage
 demos/n8n-fonctions.html                cours interactif « Les fonctions n8n, en pratique »
 ```
+
+## Le CV en PDF
+
+`cv.html` est la source unique du CV téléchargeable : même contenu que le bloc
+« Le CV, en entier » de la planche 01, mis en page pour une feuille A4. Le
+bouton *Télécharger le PDF* de la page d'accueil pointe vers le fichier déjà
+généré, pour qu'un recruteur n'ait rien à installer.
+
+Après avoir modifié `cv.html`, régénérez le PDF :
+
+```bash
+./scripts/generer-cv-pdf.sh
+```
+
+Le script incruste d'abord les polices Google en base64 dans une copie
+temporaire, puis imprime la page avec un Chromium sans interface. Le rendu ne
+dépend donc d'aucun accès réseau au moment de l'impression. Renseignez
+`CHROME=/chemin/vers/chrome` si aucun navigateur n'est trouvé automatiquement.
+Le texte du PDF reste sélectionnable et indexable.
 
 ## Le workflow n8n
 

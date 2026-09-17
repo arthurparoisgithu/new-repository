@@ -180,6 +180,13 @@ h4 {
   max-width: 58ch;
   margin: 0;
 }
+/* seconde phrase de l'accroche : même voix, un cran en retrait */
+.lede.quiet {
+  font-size: clamp(16px, 1.7vw, 18px);
+  color: var(--ink-2);
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+}
 
 .mono { font-family: var(--mono); font-size: 12.5px; letter-spacing: -.01em; }
 
@@ -365,6 +372,8 @@ h4 {
   letter-spacing: -.01em;
 }
 
+.hero-meta-group { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; }
+
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
@@ -382,6 +391,8 @@ h4 {
   white-space: nowrap;
 }
 .tag.on { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-wash); }
+/* seconde rangée : les outils, volontairement plus discrets que la disponibilité */
+.tag.quiet { background: transparent; color: var(--ink-3); border-color: var(--rule-2); }
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
@@ -948,6 +959,14 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 .project-brief .live a.repo:hover { color: var(--ink); border-bottom-color: var(--ink-3); }
 
 /* ---------- le CV, rendu comme un document ---------- */
+
+.cv-actions { margin: -4px 0 22px; align-items: center; }
+.cv-actions-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--ink-3);
+}
 
 .cv {
   border: 1px solid var(--rule);
