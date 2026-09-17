@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..120,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/css/dossier.css">
 <script src="assets/js/dossier.js"></script>
+<script src="assets/js/telechargement.js" defer></script>
 </head>
 <body>
 
@@ -69,16 +70,16 @@
     <div class="stack">
 
       <header class="hero">
-        <h1 id="t-parcours">Huit ans à faire tenir des groupes.<br><span class="hl">Maintenant, je construis leurs outils.</span></h1>
+        <h1 id="t-parcours">Deux sites livrés, des automatisations qui tournent.<br><span class="hl">Et encore beaucoup à apprendre.</span></h1>
         <p class="lede">
-          Aéroport, clubs de vacances, EHPAD, plateaux de tournage : mes métiers précédents consistaient
-          tous à faire circuler de l'information entre des gens qui ne se connaissaient pas. Je fais
-          désormais la même chose avec des sites, des automatisations et des agents — et ce dossier
-          les ouvre plutôt qu'il ne les décrit.
+          Aéroport, clubs de vacances, EHPAD, tournages : j'ai passé plusieurs années à faire circuler
+          de l'information entre des gens qui ne se connaissaient pas. Depuis un an, j'applique la même
+          chose au numérique, en autodidacte. Ce dossier ne raconte pas ce que je saurais faire :
+          il ouvre les travaux, pour que vous jugiez sur pièces.
         </p>
 
         <div class="hero-meta">
-          <span class="tag on">Alternance à Paris — disponible immédiatement</span>
+          <span class="tag on">Alternance — disponible dès maintenant</span>
           <span class="tag">Nantes · mobilité Paris</span>
           <span class="tag">Next.js · Tailwind · Prisma</span>
           <span class="tag">n8n · Make · agents IA</span>
@@ -89,6 +90,9 @@
         <div class="cta-row">
           <a class="btn" href="#sites" data-go="sites">Ouvrir les projets</a>
           <a class="btn ghost" href="#agents" data-go="agents">Rejouer le workflow d'agents</a>
+          <button class="btn ghost" type="button"
+                  data-telecharger="assets/cv/CV-Arthur-Parois.pdf"
+                  data-nom="CV-Arthur-Parois.pdf">Télécharger le CV</button>
         </div>
       </header>
 
@@ -322,6 +326,13 @@
           <h2>Le CV, en entier</h2>
           <span class="line"></span>
         </div>
+        <div class="cv-actions">
+          <button class="btn" type="button"
+                  data-telecharger="assets/cv/CV-Arthur-Parois.pdf"
+                  data-nom="CV-Arthur-Parois.pdf">Télécharger le CV (PDF)</button>
+          <a class="btn ghost" href="assets/cv/CV-Arthur-Parois.pdf" target="_blank" rel="noopener">Ouvrir le PDF ↗</a>
+          <span class="cv-actions-note">Une page A4, texte sélectionnable</span>
+        </div>
         <article class="cv">
 
           <header class="cv-head">
@@ -346,9 +357,7 @@
             d'un même secteur.
             <br><br>
             Ce que j'apporte n'est pas seulement technique. Je sais <strong>écouter un besoin mal formulé,
-            le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien</strong>. Je cherche une
-            alternance ou un contrat de professionnalisation à Paris pour structurer cette pratique et la
-            mettre au service d'une équipe.
+            le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien</strong>.
           </p>
 
           <div class="cv-cols">
@@ -803,7 +812,9 @@
         <button class="btn" id="runBtn" type="button">Lancer l'exécution</button>
         <span class="spacer"></span>
         <button class="btn ghost" id="copyWorkflow" type="button">Copier le workflow n8n</button>
-        <button class="btn ghost" id="downloadWorkflow" type="button">Télécharger le JSON</button>
+        <button class="btn ghost" type="button"
+                data-telecharger="assets/n8n/webreset-audit-agents.json"
+                data-nom="WebReset-audit-multi-agents.json">Télécharger le JSON</button>
         <a class="btn ghost" href="assets/n8n/webreset-audit-agents.json" target="_blank" rel="noopener">Ouvrir le fichier ↗</a>
       </div>
 

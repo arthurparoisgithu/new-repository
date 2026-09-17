@@ -354,7 +354,7 @@ h4 {
 /* ---------- planche 01 — parcours ---------- */
 
 .hero { display: grid; gap: 26px; }
-.hero h1 { max-width: 20ch; }
+.hero h1 { max-width: 26ch; }
 .hero h1 .quiet { color: var(--ink-3); }
 .hero h1 .hl {
   font-size: .86em;
@@ -1115,4 +1115,19 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 @media (max-width: 560px) {
   .cv-head { flex-direction: column-reverse; align-items: flex-start; gap: 16px; }
   .cv-photo { flex-basis: 86px; width: 86px; height: 86px; }
+}
+
+/* ---------- barre d'actions du CV ---------- */
+
+.cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 18px;
+}
+.cv-actions-note {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
 }
