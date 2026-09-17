@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV — Arthur Parois</title>
+<meta name="description" content="CV d'Arthur Parois — chef de projet digital, automatisation et IA. Version imprimable et téléchargeable en PDF.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23DE3E68'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..120,400..700&family=Newsreader:opsz,wght@6..72,400..600&display=swap">
+<style>
+/* ============================================================
+   CV Arthur Parois — feuille unique, pensée pour l'impression A4.
+   C'est ce fichier que scripts/generer-cv-pdf.sh transforme en
+   assets/cv/arthur-parois-cv.pdf : ne pas les laisser diverger.
+   ============================================================ */
+
+:root {
+  --ink:   #16181C;
+  --ink-2: #454A52;
+  --ink-3: #6E747C;
+  --rule:  #D4D7CF;
+  --accent: #DE3E68;
+  --accent-ink: #A9254A;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #E7E9E2;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+/* ---------- barre d'actions : écran seulement ---------- */
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18px 12mm 0;
+}
+.bar .back {
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.bar .back:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.bar .spacer { flex: 1 1 auto; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+  color: #FBFBF9;
+  font-family: var(--display);
+  font-size: 13px;
+  font-variation-settings: "wght" 560;
+  letter-spacing: .01em;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { opacity: .88; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn.ghost:hover { border-color: var(--ink); opacity: 1; }
+
+/* ---------- la feuille ---------- */
+
+.sheet {
+  max-width: 210mm;
+  margin: 18px auto 40px;
+  padding: 16mm 12mm;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(22,24,28,.05), 0 14px 34px -22px rgba(22,24,28,.5);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 12px;
+}
+.name {
+  margin: 0;
+  font-size: 30px;
+  font-variation-settings: "wght" 680, "wdth" 96;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+.role {
+  margin: 5px 0 0;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-2);
+}
+.contact {
+  margin: 0;
+  text-align: right;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.contact a { text-decoration: none; }
+.contact span, .contact a { display: block; }
+
+.intro {
+  margin: 14px 0 0;
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.intro strong { color: var(--ink); font-weight: 600; }
+.intro + .intro { margin-top: 8px; }
+
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 26px;
+  margin-top: 18px;
+}
+
+.rub {
+  margin: 0 0 10px;
+  font-size: 10.5px;
+  font-variation-settings: "wght" 660;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 5px;
+}
+.side .rub:not(:first-child) { margin-top: 20px; }
+
+.job { margin-bottom: 14px; break-inside: avoid; }
+.job:last-child { margin-bottom: 0; }
+.job h3 {
+  margin: 0;
+  font-size: 14.5px;
+  font-variation-settings: "wght" 640;
+}
+.meta {
+  margin: 2px 0 6px;
+  font-size: 11.5px;
+  letter-spacing: .02em;
+  color: var(--ink-3);
+}
+.job ul { margin: 0; padding-left: 15px; }
+.job li {
+  font-family: var(--serif);
+  font-size: 13.2px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin-bottom: 3px;
+}
+.job li::marker { color: var(--accent); }
+
+.skill { margin-bottom: 11px; break-inside: avoid; }
+.skill:last-child { margin-bottom: 0; }
+.skill p { margin: 0; font-family: var(--serif); font-size: 12.8px; line-height: 1.5; color: var(--ink-2); }
+.skill-k {
+  font-family: var(--display) !important;
+  font-size: 11.5px !important;
+  font-variation-settings: "wght" 620;
+  letter-spacing: .02em;
+  color: var(--ink) !important;
+  margin-bottom: 2px !important;
+}
+.skill-t {
+  font-family: var(--display) !important;
+  font-size: 12.5px !important;
+  font-variation-settings: "wght" 600;
+  color: var(--ink) !important;
+}
+
+.built { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; break-inside: avoid; }
+.built-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 4px;
+}
+.built-grid h3 { margin: 0; font-size: 13.5px; font-variation-settings: "wght" 640; }
+.built-grid p { margin: 4px 0 4px; font-family: var(--serif); font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.built-grid .url {
+  font-size: 11px;
+  letter-spacing: .01em;
+  color: var(--accent-ink);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.search {
+  margin: 16px 0 0;
+  padding: 11px 13px;
+  border-left: 2px solid var(--accent);
+  background: rgba(222, 62, 104, 0.07);
+  font-family: var(--serif);
+  font-size: 13.2px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  break-inside: avoid;
+}
+.search strong { color: var(--accent-ink); font-weight: 600; }
+
+.sign {
+  margin: 14px 0 0;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  color: var(--ink-3);
+}
+.sign a { color: var(--ink-3); }
+
+/* ---------- écrans étroits ---------- */
+
+@media (max-width: 720px) {
+  .sheet { padding: 22px 18px; margin: 12px 10px 30px; }
+  .head { align-items: flex-start; }
+  .contact { text-align: left; }
+  .cols { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .built-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- impression / export PDF ---------- */
+
+@page { size: A4; margin: 11mm 12mm; }
+
+@media print {
+  body { background: #fff; font-size: 15px; }
+  .intro { font-size: 14.6px; line-height: 1.68; }
+  .cols { gap: 28px; margin-top: 22px; }
+  .job { margin-bottom: 18px; }
+  .job li { font-size: 13.8px; line-height: 1.55; margin-bottom: 4px; }
+  .job h3 { font-size: 15px; }
+  .skill { margin-bottom: 13px; }
+  .skill p { font-size: 13.3px; line-height: 1.55; }
+  .side .rub:not(:first-child) { margin-top: 24px; }
+  .built { margin-top: 22px; padding-top: 18px; }
+  .built-grid p { font-size: 13.4px; }
+  .search { font-size: 13.6px; padding: 13px 15px; }
+  .bar { display: none !important; }
+  .sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  a { text-decoration: none; }
+  .search { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <a class="back" href="index.html">← Retour au dossier</a>
+  <span class="spacer"></span>
+  <a class="btn" href="assets/cv/arthur-parois-cv.pdf" download="Arthur-Parois-CV.pdf">Télécharger le PDF</a>
+  <button class="btn ghost" type="button" onclick="window.print()">Imprimer cette page</button>
+</div>
+
+<main class="sheet">
+
+  <header class="head">
+    <div>
+      <h1 class="name">Arthur Parois</h1>
+      <p class="role">Chef de projet digital &amp; automatisation · Développeur no-code &amp; IA</p>
+    </div>
+    <p class="contact">
+      <a href="tel:+33622998663">06 22 99 86 63</a>
+      <a href="mailto:arthur270.parois@gmail.com">arthur270.parois@gmail.com</a>
+      <a href="https://github.com/arthurparoisgithu">github.com/arthurparoisgithu</a>
+      <span>Nantes — mobilité Paris immédiate</span>
+    </p>
+  </header>
+
+  <p class="intro">
+    Aussi bien dans l'animation qu'à l'aéroport comme agent d'escale, mes activités précédentes
+    consistaient à faire fonctionner au mieux des dynamiques de groupe : gérer un flux de passagers
+    en escale, tenir une salle, animer un groupe qui ne se connaît pas. Depuis un an, je cherche à
+    appliquer cette même idée de cohésion à la création d'outils informatiques permettant une
+    meilleure circulation de l'information et une mise en relation plus facile entre les acteurs
+    d'un même secteur.
+  </p>
+  <p class="intro">
+    Ce que j'apporte n'est pas seulement technique. Je sais <strong>écouter un besoin mal formulé,
+    le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien</strong>. Je cherche une
+    alternance ou un contrat de professionnalisation à Paris pour structurer cette pratique et la
+    mettre au service d'une équipe.
+  </p>
+
+  <div class="cols">
+
+    <div class="main">
+      <p class="rub">Parcours</p>
+
+      <div class="job">
+        <h3>Création d'agence — WebReset</h3>
+        <p class="meta">03/2026 → en cours · Nantes · Indépendant</p>
+        <ul>
+          <li>Conception et développement de sites pour professions réglementées : Webflow, Framer, WordPress, composants Next.js sur mesure</li>
+          <li>Audit de sites clients, réécriture des contenus, référencement naturel local et suivi Google Analytics</li>
+          <li>Automatisation de process métier sous Make et n8n : formulaires, prise de rendez-vous, relances, connexion d'API REST</li>
+          <li>Offre productisée pour praticiens paramédicaux : positionnement, tarification, business plan, abonnement récurrent</li>
+          <li>Développement d'ArtisanScan, application de prospection conçue en no-code</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <h3>Vidéo &amp; communication — Vlipp Vidéo Nantes</h3>
+        <p class="meta">2024 → en cours · Association de production vidéo</p>
+        <ul>
+          <li>Écriture, tournage et montage : formats courts, captations, contenus de marque</li>
+          <li>Ligne éditoriale et animation des réseaux sociaux, création des supports (Canva, suite Adobe, Figma)</li>
+          <li>Coordination des bénévoles, des intervenants et des partenaires</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <h3>Animateur socioculturel</h3>
+        <p class="meta">2023 → 2026 · Clubs de vacances, périscolaire, EHPAD</p>
+        <ul>
+          <li>Conception de formats immersifs : escape games scénarisés, rallyes photo avec QR codes, soirées à thème</li>
+          <li>Animation auprès de publics très différents — enfants, adultes, personnes âgées — avec adaptation en temps réel</li>
+          <li>Voix off des spectacles, prise de parole devant plusieurs centaines de personnes</li>
+          <li>Production des supports visuels et vidéo de communication des structures</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <h3>Agent d'escale — aéroport</h3>
+        <p class="meta">2018 → 2022 · En parallèle des études</p>
+        <ul>
+          <li>Accueil passagers et gestion des flux en environnement multilingue, sous forte contrainte de temps</li>
+          <li>Traitement des imprévus et des situations tendues, coordination avec les équipages</li>
+          <li>Rigueur procédurale : c'est là que j'ai appris qu'un process clair vaut mieux qu'une bonne intention</li>
+        </ul>
+      </div>
+    </div>
+
+    <aside class="side">
+      <p class="rub">Compétences</p>
+
+      <div class="skill">
+        <p class="skill-k">No-code &amp; automatisation</p>
+        <p>Make · n8n · Zapier · Airtable · Notion · Webflow · Framer · WordPress · Supabase · API REST · webhooks · déploiement VPS</p>
+      </div>
+      <div class="skill">
+        <p class="skill-k">Intelligence artificielle appliquée</p>
+        <p>Conception de prompts et d'assistants métier · agents IA · LLM auto-hébergés (Ollama, Qwen) · Claude Code · architectures hybrides local / API</p>
+      </div>
+      <div class="skill">
+        <p class="skill-k">Communication &amp; contenu</p>
+        <p>Écriture et montage vidéo · Canva, suite Adobe, Figma · réseaux sociaux et ligne éditoriale · rédaction web, SEO, Google Analytics</p>
+      </div>
+      <div class="skill">
+        <p class="skill-k">Relation &amp; transmission</p>
+        <p>Recueil du besoin client · gestion de projet · formation et accompagnement des utilisateurs · animation de groupe · prise de parole</p>
+      </div>
+
+      <p class="rub">Formation</p>
+      <div class="skill">
+        <p class="skill-t">ALT — Animateur Loisir Tourisme</p>
+        <p class="meta">2026 · diplôme d'animation</p>
+      </div>
+      <div class="skill">
+        <p class="skill-t">Licence LEA — Langues et cultures étrangères</p>
+        <p class="meta">2019 → 2021 · 2 années validées</p>
+      </div>
+      <div class="skill">
+        <p class="skill-t">Parcours autodidacte no-code &amp; IA</p>
+        <p class="meta">2025 → 2026 · formation Millénium · développement web, automatisation, IA générative</p>
+      </div>
+
+      <p class="rub">Langues</p>
+      <div class="skill">
+        <p><strong>Français</strong> — langue maternelle<br><strong>Anglais</strong> — courant<br><strong>Espagnol</strong> — notions</p>
+      </div>
+
+      <p class="rub">Hors écran</p>
+      <div class="skill">
+        <p>Théâtre et improvisation depuis plusieurs années, scènes ouvertes à Nantes. C'est là que j'ai appris à parler à une salle, à lire un groupe et à ne pas paniquer quand le scénario dérape.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="built">
+    <p class="rub">Ce que j'ai construit</p>
+    <div class="built-grid">
+      <div>
+        <h3>Workflow multi-agents</h3>
+        <p>Un workflow n8n spécialisé dans l'audit de sites, qui met en évidence les axes d'amélioration d'un prospect. Rejouable hors ligne dans le dossier.</p>
+        <a class="url" href="https://arthurparoisgithu.github.io/new-repository/#agents">arthurparoisgithu.github.io/new-repository/#agents</a>
+      </div>
+      <div>
+        <h3>Analyseur de fonctions n8n</h3>
+        <p>Cours interactif qui exécute réellement les expressions qu'il enseigne : bac à sable et six exercices corrigés à l'exécution.</p>
+        <a class="url" href="https://arthurparoisgithu.github.io/new-repository/#n8n">arthurparoisgithu.github.io/new-repository/#n8n</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="search">
+    <strong>Recherche :</strong> alternance en contrat de professionnalisation à Paris — chef de projet
+    digital, développeur no-code, chargé de projet automatisation et IA, chargé de communication
+    digitale. Disponible immédiatement.
+  </p>
+
+  <p class="sign">
+    Dossier complet, pièces ouvrables et code source :
+    <a href="https://arthurparoisgithu.github.io/new-repository/">arthurparoisgithu.github.io/new-repository</a>
+  </p>
+
+</main>
+
+</body>
+</html>
