@@ -96,10 +96,10 @@ a { color: inherit; }
 
 .head {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 10px;
+  gap: 16px;
   border-bottom: 2px solid var(--ink);
   padding-bottom: 12px;
 }
@@ -113,11 +113,22 @@ a { color: inherit; }
 .role {
   margin: 5px 0 0;
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 14px;
+  text-wrap: balance;
   font-style: italic;
   color: var(--ink-2);
 }
+.head-id { flex: 1 1 auto; min-width: 0; }
+.photo {
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+}
 .contact {
+  flex: 0 0 auto;
   margin: 0;
   text-align: right;
   font-size: 12.5px;
@@ -239,8 +250,9 @@ a { color: inherit; }
 
 @media (max-width: 720px) {
   .sheet { padding: 22px 18px; margin: 12px 10px 30px; }
-  .head { align-items: flex-start; }
+  .head { flex-wrap: wrap; align-items: flex-start; }
   .contact { text-align: left; }
+  .photo { flex-basis: 70px; width: 70px; height: 70px; }
   .cols { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .built-grid { grid-template-columns: minmax(0, 1fr); }
 }
@@ -270,7 +282,7 @@ a { color: inherit; }
     box-shadow: none;
   }
   a { text-decoration: none; }
-  .search { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .search, .photo { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
 </head>
@@ -286,7 +298,8 @@ a { color: inherit; }
 <main class="sheet">
 
   <header class="head">
-    <div>
+    <img class="photo" src="assets/img/arthur-parois.jpg" alt="Portrait d'Arthur Parois" width="520" height="520">
+    <div class="head-id">
       <h1 class="name">Arthur Parois</h1>
       <p class="role">Chef de projet digital &amp; automatisation · Développeur no-code &amp; IA</p>
     </div>

@@ -91,8 +91,25 @@ html = re.sub(
     html,
 )
 
+# les images locales aussi : la copie temporaire vit hors du dépôt,
+# les chemins relatifs n'y résoudraient pas
+import mimetypes, os
+racine = os.path.dirname(os.path.abspath(source))
+
+def incruster_image(m):
+    attr, chemin = m.group(1), m.group(2)
+    fichier = os.path.join(racine, chemin)
+    if not os.path.isfile(fichier):
+        return m.group(0)
+    type_mime = mimetypes.guess_type(fichier)[0] or "application/octet-stream"
+    with open(fichier, "rb") as f:
+        donnees = base64.b64encode(f.read()).decode()
+    return '%s="data:%s;base64,%s"' % (attr, type_mime, donnees)
+
+html, images = re.subn(r'(src)="(?!https?:|data:)([^"]+)"', incruster_image, html)
+
 io.open(sortie, "w", encoding="utf-8").write(html)
-print("%d fichier(s) de police incrusté(s)" % len(vus))
+print("%d fichier(s) de police et %d image(s) incrusté(s)" % (len(vus), images))
 PY
 
 # ---------- imprimer ----------
