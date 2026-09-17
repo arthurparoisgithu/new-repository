@@ -1,13 +1,13 @@
 # Dossier Arthur Parois — candidature alternance
 
-Site statique qui regroupe mes travaux en cinq planches : parcours, sites web,
-n8n, analyse parlementaire, et une démonstration de workflow multi-agents.
+Site statique qui regroupe mes travaux en quatre planches : parcours et CV,
+sites web, n8n, et une démonstration de workflow multi-agents.
 
 Aucune dépendance, aucune étape de build : ouvrez `index.html`, ou servez le
 dossier tel quel (GitHub Pages, Netlify, n'importe quel hébergeur statique).
 
 ```
-index.html                              les cinq planches (onglets côté client)
+index.html                              les quatre planches (onglets côté client)
 cv.html                                 le CV seul, mis en page pour l'impression A4
 assets/cv/arthur-parois-cv.pdf          le même CV en PDF, texte sélectionnable
 scripts/generer-cv-pdf.sh               refabrique ce PDF à partir de cv.html
@@ -17,7 +17,6 @@ assets/js/audit-agents.js               rejeu du workflow d'agents + les trois d
 assets/n8n/webreset-audit-agents.json   le workflow n8n, importable tel quel (17 nœuds)
 assets/img/                             visuels des projets kiné et Myrtille Sauvage
 demos/n8n-fonctions.html                cours interactif « Les fonctions n8n, en pratique »
-demos/lois-votes.html                   « Votes & Contradictions », XVIIe législature
 ```
 
 ## Le CV en PDF
@@ -50,7 +49,7 @@ Chaîne : webhook → normalisation → récupération de la page → extraction
 conversion, conformité) → fusion → agent superviseur → aiguillage sur le score
 → alerte + archivage → réponse.
 
-La console de la planche 05 **rejoue** des exécutions capturées, hors ligne :
+La console de la planche 04 **rejoue** des exécutions capturées, hors ligne :
 elle ne fait aucun appel réseau, et les cabinets des trois dossiers de
 démonstration sont anonymisés.
 
@@ -73,3 +72,11 @@ propre workflow GitHub Actions : il construit l'export statique et le publie.
 
 - https://arthurparoisgithu.github.io/kin-/
 - https://arthurparoisgithu.github.io/web-rest/
+
+## Publier le dossier lui-même
+
+La branche `gh-pages` de ce dépôt contient le dossier prêt à être servi.
+Pour le mettre en ligne : rendre le dépôt public, puis
+Settings → Pages → Source : *Deploy from a branch* → `gh-pages` / `(root)`.
+
+Adresse obtenue : https://arthurparoisgithu.github.io/new-repository/

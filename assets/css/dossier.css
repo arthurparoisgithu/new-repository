@@ -1112,3 +1112,26 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   .cv-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .cv-side .cv-rub:first-child { margin-top: 0; }
 }
+
+/* la photo de l'en-tête du CV */
+
+.cv-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.cv-photo {
+  order: 2;
+  flex: 0 0 104px;
+  width: 104px;
+  height: 104px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+}
+
+@media (max-width: 560px) {
+  .cv-head { flex-direction: column-reverse; align-items: flex-start; gap: 16px; }
+  .cv-photo { flex-basis: 86px; width: 86px; height: 86px; }
+}
