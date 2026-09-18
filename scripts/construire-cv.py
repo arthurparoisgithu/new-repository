@@ -166,6 +166,21 @@ def page(styles_polices: str) -> str:
 """
 
 
+def figer_les_dates(pdf: pathlib.Path) -> None:
+    """Remplace l'horodatage que Chromium inscrit dans le PDF.
+
+    Sans cela, deux rendus du même CV diffèrent de six octets — l'heure de
+    génération — et le PDF ressort modifié dans `git status` à chaque
+    publication, pour un document identique. Les deux dates ont une longueur
+    fixe : les substituer ne décale aucun offset de la table xref.
+    """
+    FIGEE = b"D:20260101000000+00'00'"
+    brut = pdf.read_bytes()
+    fige = re.sub(rb"D:\d{14}\+\d{2}'\d{2}'", FIGEE, brut)
+    if fige != brut:
+        pdf.write_bytes(fige)
+
+
 def main() -> None:
     lien = ('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             f'<link rel="stylesheet" href="{FONTS_CSS}">')
@@ -196,6 +211,8 @@ def main() -> None:
         pg.pdf(path=str(sortie), format="A4", print_background=True, scale=0.94,
                margin={"top": "10mm", "bottom": "10mm", "left": "10mm", "right": "10mm"})
         navigateur.close()
+
+    figer_les_dates(sortie)
     print(f"PDF écrit : {sortie.stat().st_size // 1024} Ko")
 
 
