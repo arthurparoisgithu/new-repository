@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dossier Arthur Parois</title>
-<meta name="description" content="Dossier de candidature en alternance : deux sites livrés et en ligne, un cours interactif sur n8n et un workflow n8n multi-agents rejouable dans la page.">
+<meta name="description" content="Dossier de candidature en alternance : deux sites livrés et en ligne, un cours interactif sur n8n, un workflow n8n multi-agents rejouable et un générateur de jeux d'animation en Python.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23DE3E68'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +44,11 @@
         <span class="nav-dot" aria-hidden="true"></span>
         <span class="nav-label">Démo agents</span>
         <span class="nav-num">04</span>
+      </button>
+      <button class="nav-item" data-go="jeux">
+        <span class="nav-dot" aria-hidden="true"></span>
+        <span class="nav-label">Générateur de jeux</span>
+        <span class="nav-num">05</span>
       </button>
     </nav>
 
@@ -335,8 +340,6 @@
           <button class="btn" type="button"
                   data-telecharger="assets/cv/CV-Arthur-Parois.pdf"
                   data-nom="CV-Arthur-Parois.pdf">Télécharger le CV (PDF)</button>
-          <a class="btn ghost" href="assets/cv/CV-Arthur-Parois.pdf" target="_blank" rel="noopener">Ouvrir le PDF ↗</a>
-          <a class="btn ghost" href="cv.html" target="_blank" rel="noopener">Version imprimable ↗</a>
           <span class="cv-actions-note">Une page A4, texte sélectionnable</span>
         </div>
         <article class="cv">
@@ -1058,6 +1061,195 @@ const faits = {
         </p>
         <p class="mono" style="color:var(--ink-3);margin:0">Dossier de candidature — alternance Alegria Academy</p>
       </footer>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       PLANCHE 05 — GÉNÉRATEUR DE JEUX
+       ══════════════════════════════════════════════════════ -->
+  <section class="plate" id="plate-jeux" aria-labelledby="t-jeux">
+    <div class="plate-head">
+      <p class="k">Planche 05<span class="sep">/</span>Générateur de jeux</p>
+      <p class="meta">Python · FastAPI · PostgreSQL · pytest</p>
+    </div>
+
+    <div class="stack">
+
+      <header class="stack-tight">
+        <h2 id="t-jeux">Ce n'est pas un projet de génération. C'est un projet de validation.</h2>
+        <p class="lede">
+          J'ai été animateur pendant trois ans. Préparer les jeux prend des soirées entières,
+          et tout recommence à chaque nouveau groupe. Un modèle écrit un quiz en dix secondes —
+          mais il l'écrit avec un aplomb total, et la bonne réponse est parfois fausse, absente
+          des propositions, ou présente deux fois. L'animateur, lui, est devant cinquante
+          personnes quand il le découvre.
+        </p>
+        <p class="cv-actions">
+          <a class="btn" href="https://github.com/arthurparoisgithu/animation" target="_blank" rel="noopener">Le code sur GitHub ↗</a>
+          <span class="cv-actions-note">Dépôt public · Python · 96 tests · intégration continue</span>
+        </p>
+      </header>
+
+      <div class="kv">
+        <div><span class="k">Primitives</span><span class="v">3</span></div>
+        <div><span class="k">Formats au catalogue</span><span class="v">10</span></div>
+        <div><span class="k">Niveaux de validation</span><span class="v">2</span></div>
+        <div><span class="k">Tests</span><span class="v">96</span></div>
+      </div>
+
+      <section>
+        <div class="section-rule">
+          <h3>Je ne code pas vingt jeux. J'en code trois formes.</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            La règle d'un jeu — comment on y joue — n'a pas besoin d'être générée : elle est fixe,
+            et l'animateur la connaît. Ce qui lui manque, c'est le <strong>contenu</strong>. Or vingt
+            jeux différents ne produisent que quelques formes de contenu.
+          </p>
+        </div>
+        <div class="grid-3" style="margin-top:20px">
+          <div class="cell">
+            <span class="k">question</span>
+            <p>Question, quatre propositions, la bonne réponse, une anecdote.<br>
+              <em>Quiz express, quiz des minis, quiz à thème, speed quiz.</em></p>
+          </div>
+          <div class="cell">
+            <span class="k">enigme</span>
+            <p>Énoncé, solution, indice.<br>
+              <em>Dingbats, personnage mystère, devinettes, anagrammes.</em></p>
+          </div>
+          <div class="cell">
+            <span class="k">vrai_faux</span>
+            <p>Affirmation, verdict, explication.<br>
+              <em>Le scoop, incroyable mais vrai.</em></p>
+          </div>
+        </div>
+        <p class="note" style="margin-top:20px">
+          <strong>Ajouter un format, c'est une ligne en base et un gabarit de prompt — zéro ligne
+          de Python.</strong> Ajouter une primitive, ça c'est du code. Cette frontière entre ce qui
+          se configure et ce qui se développe est le point d'architecture du projet.
+        </p>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>Rien n'entre en base sans avoir passé les deux niveaux</h3>
+          <span class="line"></span>
+        </div>
+        <div class="grid-3">
+          <div class="cell">
+            <span class="k">Niveau 1 — le code</span>
+            <p>
+              Gratuit, instantané, certain, et exécuté <em>en premier</em> : ce qu'il rejette n'a
+              coûté aucun appel de modèle. Exactement quatre propositions, aucun doublon, la bonne
+              réponse présente une fois et une seule ; la solution d'une énigme absente de son
+              énoncé et de son indice ; 30 à 70 % de vraies sur un lot de vrai/faux.
+            </p>
+          </div>
+          <div class="cell">
+            <span class="k">Niveau 2 — le juge</span>
+            <p>
+              Un second appel, qui ne tranche <em>que</em> ce que le code ne peut pas trancher :
+              exactitude factuelle et adéquation au public. Verdict binaire, plus un motif.
+              Un juge injoignable rejette tout le lot — du contenu non contrôlé ne doit jamais
+              passer par défaut.
+            </p>
+          </div>
+          <div class="cell">
+            <span class="k">Le bug qui a tout appris</span>
+            <p>
+              La comparaison se fait <strong>mot à mot</strong>, pas par sous-chaîne. Sinon la
+              solution « or » est détectée dans le mot « corps », et toutes les énigmes sont
+              rejetées à tort. C'est la première fonction couverte par les tests.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>La preuve que la validation sert à quelque chose</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            Le taux de rejet par format est affiché dans l'interface. Sur cette campagne :
+            <strong>Dingbats rejette 40 % de ce que le modèle produit</strong>, Quiz express 38 %,
+            Le scoop 20 %. Ce ne sont pas des chiffres de démonstration — ce sont des items que
+            le modèle a réellement écrits et que la validation a réellement refusés.
+            Au-delà de 20 %, le format est candidat à une escalade vers un modèle plus capable,
+            et la raison est notée dans le journal du projet.
+          </p>
+        </div>
+        <figure class="shot">
+          <img src="assets/img/jeux/metriques.jpg" alt="Tableau des taux de rejet par format : Dingbats 40 %, Quiz express 38 %, Le scoop 20 %." loading="lazy">
+          <figcaption>Taux de rejet par format, avec la part imputable au code et celle imputable au juge.</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>L'outil, côté animateur</h3>
+          <span class="line"></span>
+        </div>
+        <div class="shot-grid">
+          <figure class="shot">
+            <img src="assets/img/jeux/accueil.jpg" alt="Page d'accueil : filtres par public, moment et matériel, puis le catalogue des dix formats." loading="lazy">
+            <figcaption>On filtre par public, moment de la journée et matériel disponible, puis on choisit un format et on lance la génération.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection.jpg" alt="Mode projection : une question et ses quatre propositions en grand, sur fond sombre." loading="lazy">
+            <figcaption>Mode projection : gros texte, fond sombre, navigation aux flèches. C'est l'écran que la salle voit.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection-dingbats.jpg" alt="Un dingbat composé d'emojis, avec son indice." loading="lazy">
+            <figcaption>Un dingbat : le modèle compose le rébus en emojis, affichables tels quels — pas une image à dessiner.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection-vrai-faux.jpg" alt="Une affirmation vrai/faux et sa révélation." loading="lazy">
+            <figcaption>Un vrai/faux, avec sa révélation et l'explication que l'animateur lit ensuite.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>Ce qu'il y a sous le capot</h3>
+          <span class="line"></span>
+        </div>
+        <div class="grid-3">
+          <div class="cell">
+            <span class="k">Pile</span>
+            <p>Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, Alembic. Interface en Jinja2 et
+              JavaScript natif, servie par FastAPI. Pas de front Next.js : ici, l'objet de la
+              démonstration est le back-end.</p>
+          </div>
+          <div class="cell">
+            <span class="k">Tests et intégration continue</span>
+            <p>96 tests sous pytest, joués à chaque push par GitHub Actions — contre un vrai
+              Postgres, parce que les tableaux, le <span class="mono">jsonb</span> et l'opérateur
+              de contenance ne s'émulent pas en SQLite.</p>
+          </div>
+          <div class="cell">
+            <span class="k">Coût</span>
+            <p>Haiku 4.5 pour la génération et pour le juge : sur une sortie JSON fortement
+              contrainte, il suffit. De l'ordre du demi-centime par jeu. Le déterministe passe
+              avant le juge, et un jeu déjà en base est resservi plutôt que régénéré.</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="disclaimer">
+        <b>Pourquoi cette planche ne contient pas de démonstration jouable :</b> l'application a
+        besoin d'un serveur Python, d'une base Postgres et d'une clé d'API — trois choses qu'une
+        page statique n'a pas. Le dépôt est public et se lance en quatre commandes, elles sont
+        dans son README. Une démonstration en ligne viendra quand la génération réelle sera
+        protégée par un code : sinon ma clé paie pour les visiteurs.
+      </p>
 
     </div>
   </section>

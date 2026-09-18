@@ -1150,3 +1150,33 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   font-size: 10.5px;
   color: var(--ink-3);
 }
+
+/* ---------- captures d'écran d'application ---------- */
+
+.shot {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--rule);
+}
+.shot figcaption {
+  padding: 11px 14px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: start;
+}

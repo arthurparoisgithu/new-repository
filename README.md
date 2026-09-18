@@ -1,13 +1,14 @@
 # Dossier Arthur Parois — candidature alternance
 
-Site statique qui regroupe mes travaux en quatre planches : parcours et CV,
-sites web, n8n, et une démonstration de workflow multi-agents.
+Site statique qui regroupe mes travaux en cinq planches : parcours et CV,
+sites web, n8n, une démonstration de workflow multi-agents et un générateur
+de jeux d'animation en Python.
 
 Aucune dépendance, aucune étape de build : ouvrez `index.html`, ou servez le
 dossier tel quel (GitHub Pages, Netlify, n'importe quel hébergeur statique).
 
 ```
-index.html                              les quatre planches (onglets côté client)
+index.html                              les cinq planches (onglets côté client)
 cv.html                                 le CV seul, mis en page pour l'impression A4
 assets/cv/arthur-parois-cv.pdf          le même CV en PDF, texte sélectionnable
 scripts/generer-cv-pdf.sh               refabrique ce PDF à partir de cv.html
@@ -15,7 +16,7 @@ assets/css/dossier.css                  feuille de style unique, thèmes clair e
 assets/js/dossier.js                    onglets, thème, chargement différé des pièces jointes
 assets/js/audit-agents.js               rejeu du workflow d'agents + les trois dossiers figés
 assets/n8n/webreset-audit-agents.json   le workflow n8n, importable tel quel (17 nœuds)
-assets/img/                             visuels des projets kiné et Myrtille Sauvage
+assets/img/                             portrait, visuels du projet kiné et captures du générateur de jeux
 demos/n8n-fonctions.html                cours interactif « Les fonctions n8n, en pratique »
 ```
 
@@ -80,3 +81,13 @@ Pour le mettre en ligne : rendre le dépôt public, puis
 Settings → Pages → Source : *Deploy from a branch* → `gh-pages` / `(root)`.
 
 Adresse obtenue : https://arthurparoisgithu.github.io/new-repository/
+
+## Le générateur de jeux d'animation
+
+La planche 05 présente https://github.com/arthurparoisgithu/animation — une
+application Python (FastAPI, PostgreSQL, pytest) qui génère des jeux pour
+animateurs et **valide** ce que le modèle produit avant de l'enregistrer.
+
+Elle n'est pas jouable depuis le dossier : il lui faut un serveur, une base et
+une clé d'API. La planche montre l'architecture, les règles de validation, les
+taux de rejet réels et des captures de l'outil.
