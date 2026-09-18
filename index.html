@@ -226,17 +226,17 @@
         </div>
         <div class="timeline">
           <div class="tl-row">
-            <span class="tl-when">2026</span>
-            <div class="tl-what">
-              <h4>ALT — Animateur Loisir Tourisme <span class="xp-where">Diplôme d'animation</span></h4>
-              <p>Diplôme d'animation.</p>
-            </div>
-          </div>
-          <div class="tl-row">
             <span class="tl-when">2025 → 2026</span>
             <div class="tl-what">
               <h4>Parcours autodidacte no-code &amp; IA <span class="xp-where">Formation Millénium</span></h4>
               <p>Développement web, automatisation, IA générative. Appris en construisant : les travaux de ce dossier en sont le programme et l'examen.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-when">2024 → 2025</span>
+            <div class="tl-what">
+              <h4>ALT — Animateur Loisir Tourisme <span class="xp-where">Diplôme d'animation</span></h4>
+              <p>Diplôme d'animation.</p>
             </div>
           </div>
           <div class="tl-row">
@@ -440,16 +440,16 @@
 
               <p class="cv-rub">Formation</p>
               <div class="cv-skill">
+                <p class="cv-skill-t">Parcours autodidacte no-code &amp; IA</p>
+                <p class="cv-meta">2025 → 2026 · formation Millénium · développement web, automatisation, IA générative</p>
+              </div>
+              <div class="cv-skill">
                 <p class="cv-skill-t">ALT — Animateur Loisir Tourisme</p>
-                <p class="cv-meta">2026 · diplôme d'animation</p>
+                <p class="cv-meta">2024 → 2025 · diplôme d'animation</p>
               </div>
               <div class="cv-skill">
                 <p class="cv-skill-t">Licence LEA — Langues et cultures étrangères</p>
                 <p class="cv-meta">2019 → 2021 · 2 années validées</p>
-              </div>
-              <div class="cv-skill">
-                <p class="cv-skill-t">Parcours autodidacte no-code &amp; IA</p>
-                <p class="cv-meta">2025 → 2026 · formation Millénium · développement web, automatisation, IA générative</p>
               </div>
 
               <p class="cv-rub">Langues</p>
@@ -876,27 +876,27 @@
         </div>
         <div class="grid-3">
           <div class="cell">
-            <span class="k">Un agent = un référentiel</span>
+            <span class="k">Trois regards, pas un</span>
             <p>
-              Un modèle unique à qui l'on demande « audite ce site » produit une liste plate et mélangée.
-              Trois agents porteurs chacun d'un barème séparé produisent trois notes comparables d'un
-              cabinet à l'autre.
+              Demander à un seul modèle «&nbsp;audite ce site&nbsp;», c'est comme demander son avis à une seule
+              personne : on obtient une impression générale. J'ai préféré trois spécialistes qui
+              regardent chacun une chose et ne se mêlent pas du reste.
             </p>
           </div>
           <div class="cell">
-            <span class="k">Le superviseur arbitre</span>
+            <span class="k">Quelqu'un doit trancher</span>
             <p>
-              Il fusionne les constats qui désignent la même cause sous deux vocabulaires, pondère
-              (conversion 45 %, visibilité 35 %, conformité 20 %) et classe par impact divisé par
-              effort — pas par gravité.
+              Les trois disent souvent la même chose avec des mots différents. Le quatrième agent
+              relit tout, met les doublons ensemble et classe les chantiers selon ce qu'ils rapportent
+              par rapport au travail qu'ils demandent.
             </p>
           </div>
           <div class="cell">
-            <span class="k">Le garde-fou est écrit</span>
+            <span class="k">Le droit de dire «&nbsp;je ne sais pas&nbsp;»</span>
             <p>
-              Chaque agent a l'interdiction explicite d'inventer un chiffre : une information absente
-              des signaux se dit « non mesuré ». Et le superviseur n'a pas le droit de promettre
-              « +40 % de rendez-vous ».
+              Un modèle qui n'a pas la réponse a tendance à l'inventer. Ici chacun a la consigne
+              écrite de répondre «&nbsp;non mesuré&nbsp;» plutôt que de meubler, et personne n'a le droit de
+              promettre un résultat chiffré à un client.
             </p>
           </div>
         </div>
@@ -908,6 +908,28 @@
           <span class="line"></span>
         </div>
         <div class="stack-tight">
+
+          <details class="prompt-block">
+            <summary>Agent 1 — Visibilité locale<span class="tagline">system message</span></summary>
+            <div class="prompt-body">
+<pre>Tu es l'agent VISIBILITÉ du cabinet WebReset. Tu audites la visibilité locale
+d'un site de profession libérale française.
+
+Règles absolues :
+1. Tu ne juges QUE les signaux fournis. Si une information n'y figure pas, tu
+   écris « non mesuré » — tu n'inventes jamais un chiffre, un classement ni un
+   volume de recherche.
+2. Tu raisonnes en référentiel local : le requêteur type tape
+   « &lt;métier&gt; &lt;ville&gt; », pas le nom du cabinet.
+3. Chaque problème doit citer le signal exact qui te le fait dire.
+
+Barème /100 : balise title orientée métier+ville (25), méta description incitative
+(15), un seul H1 explicite (15), structure H2 couvrant les prestations (15),
+accessibilité des images (10), poids de page (10), HTTPS + viewport (10).
+
+Rends un problème critique en premier. Maximum 4 problèmes.</pre>
+            </div>
+          </details>
 
           <details class="prompt-block">
             <summary>Agent 2 — Conversion<span class="tagline">system message</span></summary>
