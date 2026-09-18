@@ -35,33 +35,34 @@ IMPRESSION = """
 html, body { background: #fff !important; background-image: none !important; }
 body { font-size: 12px; }
 
-.cv { border: 0; border-radius: 0; background: #fff; padding: 0; gap: 6px; max-width: 190mm; margin: 0 auto; }
-.cv-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; }
+.cv { border: 0; border-radius: 0; background: #fff; padding: 0; gap: 9px; max-width: 190mm; margin: 0 auto; }
+.cv-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; }
 
 /* Rien ne se coupe au milieu d'un poste ou d'un bloc. */
 .cv-job, .cv-skill, .cv-built-grid > div { break-inside: avoid; }
 .cv-rub { break-after: avoid; }
 
-.cv-name { font-size: 25px; }
-.cv-photo { flex-basis: 84px; width: 84px; height: 84px; }
-.cv-head { padding-bottom: 8px; }
+.cv-name { font-size: 26px; }
+.cv-photo { flex-basis: 106px; width: 106px; height: 106px; }
+/* Pas de filet noir sous l'en-tete : sur papier il coupe la page en deux. */
+.cv-head { border-bottom: 0; padding-bottom: 4px; }
+.cv-head > div { padding-top: 3px; }
 .cv-contact a { border-bottom: 0; }
-.cv-intro { font-size: 11.3px; line-height: 1.42; padding-left: 13px; max-width: none; }
-.cv-rub { margin: 0 0 7px; padding-bottom: 4px; }
-.cv-side .cv-rub:not(:first-child) { margin-top: 12px; }
-.cv-job { margin-bottom: 7px; }
+.cv-intro { font-size: 11.4px; line-height: 1.46; padding-left: 14px; max-width: none; }
+.cv-rub { margin: 0 0 8px; padding-bottom: 5px; }
+.cv-side .cv-rub:not(:first-child) { margin-top: 17px; }
+.cv-job { margin-bottom: 8px; }
 .cv-job h4 { font-size: 13.5px; }
-.cv-job ul { margin-top: 4px; gap: 2px; padding-left: 13px; }
-.cv-job li { font-size: 11.1px; line-height: 1.28; }
+.cv-job ul { margin-top: 4px; gap: 2.5px; padding-left: 13px; }
+.cv-job li { font-size: 11.1px; line-height: 1.32; }
 .cv-meta, .xp-where { font-size: 9.5px; }
-.cv-skill { margin-bottom: 6px; }
-.cv-skill p { font-size: 11.4px; line-height: 1.4; }
+.cv-skill { margin-bottom: 9px; }
+.cv-skill p { font-size: 11.4px; line-height: 1.46; }
 .cv-skill-t { font-size: 12.6px !important; }
-.cv-built { padding-top: 7px; }
-.cv-built-grid { gap: 18px; }
+.cv-built { padding-top: 2px; }
+.cv-built-grid { gap: 20px; }
 .cv-built-grid h4 { font-size: 13px; }
-.cv-built-grid p { font-size: 11.4px; line-height: 1.45; margin: 4px 0 0; }
-.cv-search { padding-top: 7px; font-size: 11.4px; line-height: 1.45; }
+.cv-built-grid p { font-size: 11.4px; line-height: 1.46; margin: 5px 0 0; }
 
 .cv-source {
   margin: 0;
@@ -189,9 +190,10 @@ def main() -> None:
         pg.goto(temporaire.as_uri(), wait_until="load")
         pg.emulate_media(media="print")
         pg.wait_for_timeout(1200)
-        # 0.96 : le contenu dépasse d'une douzaine de pixels une page A4.
-        # C'est l'« ajuster à la page » d'un navigateur ; le texte reste vectoriel.
-        pg.pdf(path=str(sortie), format="A4", print_background=True, scale=0.96,
+        # 0.94 : le CV est composé plus aéré qu'il ne tient sur une A4, et on
+        # le réduit de 6 % plutôt que de resserrer les blancs. C'est l'« ajuster
+        # à la page » d'un navigateur ; le texte reste vectoriel et sélectionnable.
+        pg.pdf(path=str(sortie), format="A4", print_background=True, scale=0.94,
                margin={"top": "10mm", "bottom": "10mm", "left": "10mm", "right": "10mm"})
         navigateur.close()
     print(f"PDF écrit : {sortie.stat().st_size // 1024} Ko")

@@ -1018,17 +1018,6 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 }
 .cv-built-grid a:hover { border-bottom-color: var(--accent); }
 
-.cv-search {
-  margin: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 16px;
-  font-family: var(--serif);
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
-}
-.cv-search strong { color: var(--accent-ink); font-weight: 600; }
-
 
 /* la photo de l'en-tête du CV */
 
@@ -1064,39 +1053,70 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   color: var(--ink-3);
 }
 
+/* ---------- captures d'écran d'application ---------- */
+
+.shot {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--rule);
+}
+.shot figcaption {
+  padding: 11px 14px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
 
 @page { size: A4; margin: 10mm 10mm; }
 
 html, body { background: #fff !important; background-image: none !important; }
 body { font-size: 12px; }
 
-.cv { border: 0; border-radius: 0; background: #fff; padding: 0; gap: 6px; max-width: 190mm; margin: 0 auto; }
-.cv-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; }
+.cv { border: 0; border-radius: 0; background: #fff; padding: 0; gap: 9px; max-width: 190mm; margin: 0 auto; }
+.cv-cols { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; }
 
 /* Rien ne se coupe au milieu d'un poste ou d'un bloc. */
 .cv-job, .cv-skill, .cv-built-grid > div { break-inside: avoid; }
 .cv-rub { break-after: avoid; }
 
-.cv-name { font-size: 25px; }
-.cv-photo { flex-basis: 84px; width: 84px; height: 84px; }
-.cv-head { padding-bottom: 8px; }
+.cv-name { font-size: 26px; }
+.cv-photo { flex-basis: 106px; width: 106px; height: 106px; }
+/* Pas de filet noir sous l'en-tete : sur papier il coupe la page en deux. */
+.cv-head { border-bottom: 0; padding-bottom: 4px; }
+.cv-head > div { padding-top: 3px; }
 .cv-contact a { border-bottom: 0; }
-.cv-intro { font-size: 11.3px; line-height: 1.42; padding-left: 13px; max-width: none; }
-.cv-rub { margin: 0 0 7px; padding-bottom: 4px; }
-.cv-side .cv-rub:not(:first-child) { margin-top: 12px; }
-.cv-job { margin-bottom: 7px; }
+.cv-intro { font-size: 11.4px; line-height: 1.46; padding-left: 14px; max-width: none; }
+.cv-rub { margin: 0 0 8px; padding-bottom: 5px; }
+.cv-side .cv-rub:not(:first-child) { margin-top: 17px; }
+.cv-job { margin-bottom: 8px; }
 .cv-job h4 { font-size: 13.5px; }
-.cv-job ul { margin-top: 4px; gap: 2px; padding-left: 13px; }
-.cv-job li { font-size: 11.1px; line-height: 1.28; }
+.cv-job ul { margin-top: 4px; gap: 2.5px; padding-left: 13px; }
+.cv-job li { font-size: 11.1px; line-height: 1.32; }
 .cv-meta, .xp-where { font-size: 9.5px; }
-.cv-skill { margin-bottom: 6px; }
-.cv-skill p { font-size: 11.4px; line-height: 1.4; }
+.cv-skill { margin-bottom: 9px; }
+.cv-skill p { font-size: 11.4px; line-height: 1.46; }
 .cv-skill-t { font-size: 12.6px !important; }
-.cv-built { padding-top: 7px; }
-.cv-built-grid { gap: 18px; }
+.cv-built { padding-top: 2px; }
+.cv-built-grid { gap: 20px; }
 .cv-built-grid h4 { font-size: 13px; }
-.cv-built-grid p { font-size: 11.4px; line-height: 1.45; margin: 4px 0 0; }
-.cv-search { padding-top: 7px; font-size: 11.4px; line-height: 1.45; }
+.cv-built-grid p { font-size: 11.4px; line-height: 1.46; margin: 5px 0 0; }
 
 .cv-source {
   margin: 0;
@@ -1255,12 +1275,6 @@ body { font-size: 12px; }
               </div>
             </div>
           </div>
-
-          <p class="cv-search">
-            <strong>Recherche :</strong> alternance en contrat de professionnalisation à Paris — chef de projet
-            digital, développeur no-code, chargé de projet automatisation et IA, chargé de communication
-            digitale. Disponible immédiatement.
-          </p>
 
           <p class="cv-source">
     <span>Dossier complet, travaux ouverts : github.com/arthurparoisgithu</span>

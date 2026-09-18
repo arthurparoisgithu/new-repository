@@ -1096,17 +1096,6 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 }
 .cv-built-grid a:hover { border-bottom-color: var(--accent); }
 
-.cv-search {
-  margin: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 16px;
-  font-family: var(--serif);
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
-}
-.cv-search strong { color: var(--accent-ink); font-weight: 600; }
-
 @media (max-width: 820px) {
   .cv { padding: 22px 20px; }
   .cv-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; }
