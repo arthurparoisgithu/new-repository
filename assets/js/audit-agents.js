@@ -489,10 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = "Lancer l'exécution";
   });
 
-  /* ---- export du workflow ---- */
-
   const WORKFLOW = "assets/n8n/webreset-audit-agents.json";
-  const NOM_FICHIER = "WebReset-audit-multi-agents.json";
 
   const copyBtn = $("#copyWorkflow");
   if (copyBtn) {
@@ -507,53 +504,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const dlBtn = $("#downloadWorkflow");
-  if (dlBtn) {
-    dlBtn.addEventListener("click", async () => {
-      let txt;
-      try {
-        txt = await (await fetch(WORKFLOW)).text();
-      } catch (err) {
-        toast("Fichier introuvable — utilisez « Ouvrir le fichier »");
-        return;
-      }
-
-      /* Sur claude.ai, seul l'hôte peut écrire un fichier : on passe par lui.
-         Ailleurs (GitHub Pages, ouverture locale), le lien de téléchargement
-         classique fonctionne. */
-      const downloads = await window.claude?.use?.("downloads").catch(() => null);
-      if (downloads) {
-        try {
-          await downloads.save({ filename: NOM_FICHIER, data: txt });
-          toast("Workflow enregistré");
-        } catch (err) {
-          if (err?.code !== "declined") {
-            toast("Enregistrement impossible — utilisez « Copier le workflow »");
-          }
-        }
-        return;
-      }
-
-      const url = URL.createObjectURL(new Blob([txt], { type: "application/json" }));
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = NOM_FICHIER;
-      a.click();
-      URL.revokeObjectURL(url);
-      toast("Workflow téléchargé");
-    });
-  }
+  /* Le téléchargement passe par le marquage data-telecharger (telechargement.js). */
 });
-
-function toast(msg) {
-  let t = document.querySelector(".toast");
-  if (!t) {
-    t = document.createElement("div");
-    t.className = "toast";
-    document.body.appendChild(t);
-  }
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove("show"), 3200);
-}

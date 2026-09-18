@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dossier Arthur Parois</title>
-<meta name="description" content="Dossier de candidature en alternance : deux sites livrés et en ligne, un cours interactif sur n8n et un workflow n8n multi-agents rejouable dans la page.">
+<meta name="description" content="Dossier de candidature en alternance : deux sites livrés et en ligne, un cours interactif sur n8n, un workflow n8n multi-agents rejouable et un générateur de jeux d'animation en Python.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181C'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23DE3E68'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..120,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/css/dossier.css">
 <script src="assets/js/dossier.js"></script>
+<script src="assets/js/telechargement.js" defer></script>
 </head>
 <body>
 
@@ -44,6 +45,11 @@
         <span class="nav-label">Démo agents</span>
         <span class="nav-num">04</span>
       </button>
+      <button class="nav-item" data-go="jeux">
+        <span class="nav-dot" aria-hidden="true"></span>
+        <span class="nav-label">Générateur de jeux</span>
+        <span class="nav-num">05</span>
+      </button>
     </nav>
 
     <div class="rail-foot">
@@ -69,16 +75,21 @@
     <div class="stack">
 
       <header class="hero">
-        <h1 id="t-parcours">Huit ans à faire tenir des groupes.<br><span class="hl">Maintenant, je construis leurs outils.</span></h1>
+        <h1 id="t-parcours">Huit ans au contact du public.<br><span class="hl">Depuis un an, je construis des outils web.</span></h1>
         <p class="lede">
-          Aéroport, clubs de vacances, EHPAD, plateaux de tournage : mes métiers précédents consistaient
-          tous à faire circuler de l'information entre des gens qui ne se connaissaient pas. Je fais
-          désormais la même chose avec des sites, des automatisations et des agents — et ce dossier
-          les ouvre plutôt qu'il ne les décrit.
+          Aéroport, clubs de vacances, EHPAD, tournages : mon travail a toujours consisté à faire
+          circuler de l'information entre des gens qui ne se connaissaient pas. Depuis un an, je le
+          fais avec des sites, des automatisations et des workflows d'agents, appris en autodidacte
+          et en livrant de vrais projets. Ce dossier rassemble ce que j'ai construit jusqu'ici : tout
+          s'ouvre et se manipule depuis cette page.
+        </p>
+        <p class="lede quiet">
+          Ce que je viens chercher en alternance, c'est une équipe, des projets plus grands que les
+          miens et quelqu'un pour relire mon travail.
         </p>
 
         <div class="hero-meta">
-          <span class="tag on">Alternance à Paris — disponible immédiatement</span>
+          <span class="tag on">Alternance — disponible dès maintenant</span>
           <span class="tag">Nantes · mobilité Paris</span>
           <span class="tag">Next.js · Tailwind · Prisma</span>
           <span class="tag">n8n · Make · agents IA</span>
@@ -89,6 +100,9 @@
         <div class="cta-row">
           <a class="btn" href="#sites" data-go="sites">Ouvrir les projets</a>
           <a class="btn ghost" href="#agents" data-go="agents">Rejouer le workflow d'agents</a>
+          <button class="btn ghost" type="button"
+                  data-telecharger="assets/cv/CV-Arthur-Parois.pdf"
+                  data-nom="CV-Arthur-Parois.pdf">Télécharger le CV</button>
         </div>
       </header>
 
@@ -112,9 +126,9 @@
           <p>
             <strong>Ce que j'apporte n'est pas seulement technique.</strong> Je sais écouter un besoin
             flou, le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien — c'est
-            exactement ce que je faisais en escale et en animation, avec d'autres outils. Ce que je
-            viens chercher en alternance, c'est <em>le cadre d'une équipe, la contrainte d'un client
-            réel, et quelqu'un pour relire mon travail.</em>
+            exactement ce que je faisais en escale et en animation, avec d'autres outils. C'est aussi
+            ce que je sais faire du côté technique : <em>traduire une demande en quelque chose qui
+            tourne, puis l'expliquer à celui qui devra s'en servir.</em>
           </p>
         </div>
       </section>
@@ -212,17 +226,17 @@
         </div>
         <div class="timeline">
           <div class="tl-row">
-            <span class="tl-when">2026</span>
-            <div class="tl-what">
-              <h4>ALT — Animateur Loisir Tourisme <span class="xp-where">Diplôme d'animation</span></h4>
-              <p>Diplôme d'animation.</p>
-            </div>
-          </div>
-          <div class="tl-row">
             <span class="tl-when">2025 → 2026</span>
             <div class="tl-what">
               <h4>Parcours autodidacte no-code &amp; IA <span class="xp-where">Formation Millénium</span></h4>
               <p>Développement web, automatisation, IA générative. Appris en construisant : les travaux de ce dossier en sont le programme et l'examen.</p>
+            </div>
+          </div>
+          <div class="tl-row">
+            <span class="tl-when">2024 → 2025</span>
+            <div class="tl-what">
+              <h4>ALT — Animateur Loisir Tourisme <span class="xp-where">Diplôme d'animation</span></h4>
+              <p>Diplôme d'animation.</p>
             </div>
           </div>
           <div class="tl-row">
@@ -258,8 +272,8 @@
             <span class="k">Refuser d'inventer</span>
             <p>
               J'ai supprimé la section « statistiques » du site WebReset faute de chiffres vérifiables
-              à y mettre. Sur le site du kiné, les témoignages sont de vrais avis Google publics —
-              les quatre patients fictifs du jeu de données initial ont été effacés.
+              à y mettre. Sur le site du kiné, les témoignages affichés sont de vrais avis Google
+              publics du cabinet.
             </p>
           </div>
           <div class="cell">
@@ -322,6 +336,12 @@
           <h2>Le CV, en entier</h2>
           <span class="line"></span>
         </div>
+        <div class="cv-actions">
+          <button class="btn" type="button"
+                  data-telecharger="assets/cv/CV-Arthur-Parois.pdf"
+                  data-nom="CV-Arthur-Parois.pdf">Télécharger le CV (PDF)</button>
+          <span class="cv-actions-note">Une page A4, texte sélectionnable</span>
+        </div>
         <article class="cv">
 
           <header class="cv-head">
@@ -346,9 +366,7 @@
             d'un même secteur.
             <br><br>
             Ce que j'apporte n'est pas seulement technique. Je sais <strong>écouter un besoin mal formulé,
-            le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien</strong>. Je cherche une
-            alternance ou un contrat de professionnalisation à Paris pour structurer cette pratique et la
-            mettre au service d'une équipe.
+            le traduire en process, et l'expliquer à quelqu'un qui n'y connaît rien</strong>.
           </p>
 
           <div class="cv-cols">
@@ -422,16 +440,16 @@
 
               <p class="cv-rub">Formation</p>
               <div class="cv-skill">
+                <p class="cv-skill-t">Parcours autodidacte no-code &amp; IA</p>
+                <p class="cv-meta">2025 → 2026 · formation Millénium · développement web, automatisation, IA générative</p>
+              </div>
+              <div class="cv-skill">
                 <p class="cv-skill-t">ALT — Animateur Loisir Tourisme</p>
-                <p class="cv-meta">2026 · diplôme d'animation</p>
+                <p class="cv-meta">2024 → 2025 · diplôme d'animation</p>
               </div>
               <div class="cv-skill">
                 <p class="cv-skill-t">Licence LEA — Langues et cultures étrangères</p>
                 <p class="cv-meta">2019 → 2021 · 2 années validées</p>
-              </div>
-              <div class="cv-skill">
-                <p class="cv-skill-t">Parcours autodidacte no-code &amp; IA</p>
-                <p class="cv-meta">2025 → 2026 · formation Millénium · développement web, automatisation, IA générative</p>
               </div>
 
               <p class="cv-rub">Langues</p>
@@ -461,12 +479,6 @@
               </div>
             </div>
           </div>
-
-          <p class="cv-search">
-            <strong>Recherche :</strong> alternance en contrat de professionnalisation à Paris — chef de projet
-            digital, développeur no-code, chargé de projet automatisation et IA, chargé de communication
-            digitale. Disponible immédiatement.
-          </p>
 
         </article>
       </section>
@@ -499,13 +511,7 @@
     <div class="stack">
 
       <header class="stack-tight">
-        <h2 id="t-sites">Deux clients, deux univers, une même exigence</h2>
-        <p class="lede">
-          Un kinésithérapeute, une agence. Rien de commun dans l'esthétique — et c'est le but :
-          un site doit ressembler à celui dont il parle. Ce qui ne bouge pas, c'est la structure
-          dessous. Les deux sont en ligne et leur code est ouvert : les liens sont sous le nom
-          du projet.
-        </p>
+        <h2 id="t-sites">Deux projets, une même exigence</h2>
       </header>
 
       <!-- ─── WebReset ─── -->
@@ -515,13 +521,15 @@
             <span class="client">Projet fondateur · Agence</span>
             <h3>WebReset</h3>
             <p class="live">
-              <a href="https://arthurparoisgithu.github.io/web-rest/" target="_blank" rel="noopener">Voir le site <span aria-hidden="true">↗</span></a>
-              <a class="repo" href="https://github.com/arthurparoisgithu/web-rest" target="_blank" rel="noopener">github.com/arthurparoisgithu/web-rest <span aria-hidden="true">↗</span></a>
+              <a href="https://arthurparoisgithu.github.io/web-rest/" target="_blank" rel="noopener">arthurparoisgithu.github.io/web-rest <span aria-hidden="true">↗</span></a>
             </p>
             <p>
-              Mon agence. Refonte de sites pour professions libérales françaises — notaires, avocats,
-              CGP, experts-comptables, architectes. Positionnement assumé : je ne vends pas un site,
-              je vends le passage d'une plaquette à une machine à rendez-vous.
+              Sur mon temps libre, j'ai pour projet de créer une agence qui aide les professions
+              libérales à moderniser leur infrastructure. Cela va de la refonte d'un site internet à
+              la mise en place d'automatisations — relance clients, comptabilité, présence sur les
+              réseaux — par le biais d'agents, pour les aider à développer leur clientèle.
+              Positionnement assumé : <strong>je ne vends pas un site, je vends le passage d'une
+              plaquette à une machine à rendez-vous.</strong>
             </p>
             <div class="swatches" aria-hidden="true">
               <span class="sw" style="background:#F5F2EC"></span>
@@ -574,17 +582,6 @@
             </p>
           </div>
         </div>
-        <div class="project-body" style="border-top:1px solid var(--rule)">
-          <div class="pb-col" style="grid-column:1/-1">
-            <h4>La décision dont je suis le plus content</h4>
-            <p class="note" style="border-color:var(--accent)">
-              Le module d'avis <strong>n'empêche jamais la publication d'un avis négatif</strong>. Une note
-              basse mène au canal privé, mais la page écrit noir sur blanc : « vous restez bien sûr libre de
-              publier votre avis sur Google ou ailleurs ». C'est plus coûteux commercialement, et c'est la
-              seule version défendable — juridiquement comme humainement.
-            </p>
-          </div>
-        </div>
       </article>
 
       <!-- ─── Thibaud Chiffoleau ─── -->
@@ -594,13 +591,14 @@
             <span class="client">Client · Santé</span>
             <h3>Thibaud Chiffoleau</h3>
             <p class="live">
-              <a href="https://arthurparoisgithu.github.io/kin-/" target="_blank" rel="noopener">Voir le site <span aria-hidden="true">↗</span></a>
-              <a class="repo" href="https://github.com/arthurparoisgithu/kin-" target="_blank" rel="noopener">github.com/arthurparoisgithu/kin- <span aria-hidden="true">↗</span></a>
+              <a href="https://arthurparoisgithu.github.io/kin-/" target="_blank" rel="noopener">arthurparoisgithu.github.io/kin- <span aria-hidden="true">↗</span></a>
             </p>
             <p>
-              Masseur-kinésithérapeute à Nantes. Objectif : exister ailleurs que dans l'annuaire Doctolib,
-              en se positionnant sur les pathologies qu'il traite vraiment — épaule, lombalgie chronique,
-              névralgies, réathlétisation — plutôt que sur le métier générique.
+              La création d'un site internet pour mon ami kinésithérapeute, adapté dans sa direction
+              aux couleurs que l'on associe au milieu médical, avec un accent mis sur ce qui le
+              démarque de ses confrères pour que les recherches Google mènent plus rapidement à lui.
+              Ce site me sert de prémices pour expliquer à un prospect comment moderniser sa présence
+              en ligne, avant d'aborder les automatisations.
             </p>
             <div class="swatches" aria-hidden="true">
               <span class="sw" style="background:#FAFCFF"></span>
@@ -652,17 +650,6 @@
           <img src="assets/img/kine/sports-rehab.jpg" alt="Matériel de réathlétisation.">
           <img src="assets/img/kine/spine-anatomy.jpg" alt="Planche anatomique du rachis.">
         </div>
-        <div class="project-body" style="border-top:1px solid var(--rule)">
-          <div class="pb-col" style="grid-column:1/-1">
-            <h4>La règle que je me suis donnée</h4>
-            <p class="note">
-              <strong>Aucun témoignage inventé.</strong> Le jeu de données initial contenait quatre patients
-              fictifs ; je les ai supprimés et remplacés par les vrais avis Google publics du cabinet,
-              prénoms abrégés par respect de la vie privée. L'avis sans texte n'est pas affiché plutôt que
-              d'être meublé.
-            </p>
-          </div>
-        </div>
       </article>
 
     </div>
@@ -683,8 +670,8 @@
         <h2 id="t-n8n">Les fonctions n8n, expliquées par l'exemple</h2>
         <p class="lede">
           La documentation de n8n liste une centaine de fonctions et n'en montre presque aucune à l'œuvre.
-          J'ai écrit le cours qui manquait : chaque expression affichée y est réellement évaluée par le
-          navigateur, et les six exercices sont corrigés en exécutant la réponse de l'élève.
+          Lors de mon apprentissage de la plateforme, retenir chacune d'entre elles était donc un vrai
+          casse-tête. Écrire ce document m'a permis de progresser beaucoup plus vite.
         </p>
       </header>
 
@@ -803,7 +790,9 @@
         <button class="btn" id="runBtn" type="button">Lancer l'exécution</button>
         <span class="spacer"></span>
         <button class="btn ghost" id="copyWorkflow" type="button">Copier le workflow n8n</button>
-        <button class="btn ghost" id="downloadWorkflow" type="button">Télécharger le JSON</button>
+        <button class="btn ghost" type="button"
+                data-telecharger="assets/n8n/webreset-audit-agents.json"
+                data-nom="WebReset-audit-multi-agents.json">Télécharger le JSON</button>
         <a class="btn ghost" href="assets/n8n/webreset-audit-agents.json" target="_blank" rel="noopener">Ouvrir le fichier ↗</a>
       </div>
 
@@ -887,27 +876,27 @@
         </div>
         <div class="grid-3">
           <div class="cell">
-            <span class="k">Un agent = un référentiel</span>
+            <span class="k">Trois regards, pas un</span>
             <p>
-              Un modèle unique à qui l'on demande « audite ce site » produit une liste plate et mélangée.
-              Trois agents porteurs chacun d'un barème séparé produisent trois notes comparables d'un
-              cabinet à l'autre.
+              Demander à un seul modèle «&nbsp;audite ce site&nbsp;», c'est comme demander son avis à une seule
+              personne : on obtient une impression générale. J'ai préféré trois spécialistes qui
+              regardent chacun une chose et ne se mêlent pas du reste.
             </p>
           </div>
           <div class="cell">
-            <span class="k">Le superviseur arbitre</span>
+            <span class="k">Quelqu'un doit trancher</span>
             <p>
-              Il fusionne les constats qui désignent la même cause sous deux vocabulaires, pondère
-              (conversion 45 %, visibilité 35 %, conformité 20 %) et classe par impact divisé par
-              effort — pas par gravité.
+              Les trois disent souvent la même chose avec des mots différents. Le quatrième agent
+              relit tout, met les doublons ensemble et classe les chantiers selon ce qu'ils rapportent
+              par rapport au travail qu'ils demandent.
             </p>
           </div>
           <div class="cell">
-            <span class="k">Le garde-fou est écrit</span>
+            <span class="k">Le droit de dire «&nbsp;je ne sais pas&nbsp;»</span>
             <p>
-              Chaque agent a l'interdiction explicite d'inventer un chiffre : une information absente
-              des signaux se dit « non mesuré ». Et le superviseur n'a pas le droit de promettre
-              « +40 % de rendez-vous ».
+              Un modèle qui n'a pas la réponse a tendance à l'inventer. Ici chacun a la consigne
+              écrite de répondre «&nbsp;non mesuré&nbsp;» plutôt que de meubler, et personne n'a le droit de
+              promettre un résultat chiffré à un client.
             </p>
           </div>
         </div>
@@ -919,6 +908,28 @@
           <span class="line"></span>
         </div>
         <div class="stack-tight">
+
+          <details class="prompt-block">
+            <summary>Agent 1 — Visibilité locale<span class="tagline">system message</span></summary>
+            <div class="prompt-body">
+<pre>Tu es l'agent VISIBILITÉ du cabinet WebReset. Tu audites la visibilité locale
+d'un site de profession libérale française.
+
+Règles absolues :
+1. Tu ne juges QUE les signaux fournis. Si une information n'y figure pas, tu
+   écris « non mesuré » — tu n'inventes jamais un chiffre, un classement ni un
+   volume de recherche.
+2. Tu raisonnes en référentiel local : le requêteur type tape
+   « &lt;métier&gt; &lt;ville&gt; », pas le nom du cabinet.
+3. Chaque problème doit citer le signal exact qui te le fait dire.
+
+Barème /100 : balise title orientée métier+ville (25), méta description incitative
+(15), un seul H1 explicite (15), structure H2 couvrant les prestations (15),
+accessibilité des images (10), poids de page (10), HTTPS + viewport (10).
+
+Rends un problème critique en premier. Maximum 4 problèmes.</pre>
+            </div>
+          </details>
 
           <details class="prompt-block">
             <summary>Agent 2 — Conversion<span class="tagline">system message</span></summary>
@@ -1041,6 +1052,195 @@ const faits = {
         </p>
         <p class="mono" style="color:var(--ink-3);margin:0">Dossier de candidature — alternance Alegria Academy</p>
       </footer>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       PLANCHE 05 — GÉNÉRATEUR DE JEUX
+       ══════════════════════════════════════════════════════ -->
+  <section class="plate" id="plate-jeux" aria-labelledby="t-jeux">
+    <div class="plate-head">
+      <p class="k">Planche 05<span class="sep">/</span>Générateur de jeux</p>
+      <p class="meta">Python · FastAPI · PostgreSQL · pytest</p>
+    </div>
+
+    <div class="stack">
+
+      <header class="stack-tight">
+        <h2 id="t-jeux">Ce n'est pas un projet de génération. C'est un projet de validation.</h2>
+        <p class="lede">
+          J'ai été animateur pendant trois ans. Préparer les jeux prend des soirées entières,
+          et tout recommence à chaque nouveau groupe. Un modèle écrit un quiz en dix secondes —
+          mais il l'écrit avec un aplomb total, et la bonne réponse est parfois fausse, absente
+          des propositions, ou présente deux fois. L'animateur, lui, est devant cinquante
+          personnes quand il le découvre.
+        </p>
+        <p class="cv-actions">
+          <a class="btn" href="https://github.com/arthurparoisgithu/animation" target="_blank" rel="noopener">Le code sur GitHub ↗</a>
+          <span class="cv-actions-note">Dépôt public · Python · 96 tests · intégration continue</span>
+        </p>
+      </header>
+
+      <div class="kv">
+        <div><span class="k">Primitives</span><span class="v">3</span></div>
+        <div><span class="k">Formats au catalogue</span><span class="v">10</span></div>
+        <div><span class="k">Niveaux de validation</span><span class="v">2</span></div>
+        <div><span class="k">Tests</span><span class="v">96</span></div>
+      </div>
+
+      <section>
+        <div class="section-rule">
+          <h3>Je ne code pas vingt jeux. J'en code trois formes.</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            La règle d'un jeu — comment on y joue — n'a pas besoin d'être générée : elle est fixe,
+            et l'animateur la connaît. Ce qui lui manque, c'est le <strong>contenu</strong>. Or vingt
+            jeux différents ne produisent que quelques formes de contenu.
+          </p>
+        </div>
+        <div class="grid-3" style="margin-top:20px">
+          <div class="cell">
+            <span class="k">question</span>
+            <p>Question, quatre propositions, la bonne réponse, une anecdote.<br>
+              <em>Quiz express, quiz des minis, quiz à thème, speed quiz.</em></p>
+          </div>
+          <div class="cell">
+            <span class="k">enigme</span>
+            <p>Énoncé, solution, indice.<br>
+              <em>Dingbats, personnage mystère, devinettes, anagrammes.</em></p>
+          </div>
+          <div class="cell">
+            <span class="k">vrai_faux</span>
+            <p>Affirmation, verdict, explication.<br>
+              <em>Le scoop, incroyable mais vrai.</em></p>
+          </div>
+        </div>
+        <p class="note" style="margin-top:20px">
+          <strong>Ajouter un format, c'est une ligne en base et un gabarit de prompt — zéro ligne
+          de Python.</strong> Ajouter une primitive, ça c'est du code. Cette frontière entre ce qui
+          se configure et ce qui se développe est le point d'architecture du projet.
+        </p>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>Rien n'entre en base sans avoir passé les deux niveaux</h3>
+          <span class="line"></span>
+        </div>
+        <div class="grid-3">
+          <div class="cell">
+            <span class="k">Niveau 1 — le code</span>
+            <p>
+              Gratuit, instantané, certain, et exécuté <em>en premier</em> : ce qu'il rejette n'a
+              coûté aucun appel de modèle. Exactement quatre propositions, aucun doublon, la bonne
+              réponse présente une fois et une seule ; la solution d'une énigme absente de son
+              énoncé et de son indice ; 30 à 70 % de vraies sur un lot de vrai/faux.
+            </p>
+          </div>
+          <div class="cell">
+            <span class="k">Niveau 2 — le juge</span>
+            <p>
+              Un second appel, qui ne tranche <em>que</em> ce que le code ne peut pas trancher :
+              exactitude factuelle et adéquation au public. Verdict binaire, plus un motif.
+              Un juge injoignable rejette tout le lot — du contenu non contrôlé ne doit jamais
+              passer par défaut.
+            </p>
+          </div>
+          <div class="cell">
+            <span class="k">Le bug qui a tout appris</span>
+            <p>
+              La comparaison se fait <strong>mot à mot</strong>, pas par sous-chaîne. Sinon la
+              solution « or » est détectée dans le mot « corps », et toutes les énigmes sont
+              rejetées à tort. C'est la première fonction couverte par les tests.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>La preuve que la validation sert à quelque chose</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            Le taux de rejet par format est affiché dans l'interface. Sur cette campagne :
+            <strong>Dingbats rejette 40 % de ce que le modèle produit</strong>, Quiz express 38 %,
+            Le scoop 20 %. Ce ne sont pas des chiffres de démonstration — ce sont des items que
+            le modèle a réellement écrits et que la validation a réellement refusés.
+            Au-delà de 20 %, le format est candidat à une escalade vers un modèle plus capable,
+            et la raison est notée dans le journal du projet.
+          </p>
+        </div>
+        <figure class="shot">
+          <img src="assets/img/jeux/metriques.jpg" alt="Tableau des taux de rejet par format : Dingbats 40 %, Quiz express 38 %, Le scoop 20 %." loading="lazy">
+          <figcaption>Taux de rejet par format, avec la part imputable au code et celle imputable au juge.</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>L'outil, côté animateur</h3>
+          <span class="line"></span>
+        </div>
+        <div class="shot-grid">
+          <figure class="shot">
+            <img src="assets/img/jeux/accueil.jpg" alt="Page d'accueil : filtres par public, moment et matériel, puis le catalogue des dix formats." loading="lazy">
+            <figcaption>On filtre par public, moment de la journée et matériel disponible, puis on choisit un format et on lance la génération.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection.jpg" alt="Mode projection : une question et ses quatre propositions en grand, sur fond sombre." loading="lazy">
+            <figcaption>Mode projection : gros texte, fond sombre, navigation aux flèches. C'est l'écran que la salle voit.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection-dingbats.jpg" alt="Un dingbat composé d'emojis, avec son indice." loading="lazy">
+            <figcaption>Un dingbat : le modèle compose le rébus en emojis, affichables tels quels — pas une image à dessiner.</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="assets/img/jeux/projection-vrai-faux.jpg" alt="Une affirmation vrai/faux et sa révélation." loading="lazy">
+            <figcaption>Un vrai/faux, avec sa révélation et l'explication que l'animateur lit ensuite.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>Ce qu'il y a sous le capot</h3>
+          <span class="line"></span>
+        </div>
+        <div class="grid-3">
+          <div class="cell">
+            <span class="k">Pile</span>
+            <p>Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, Alembic. Interface en Jinja2 et
+              JavaScript natif, servie par FastAPI. Pas de front Next.js : ici, l'objet de la
+              démonstration est le back-end.</p>
+          </div>
+          <div class="cell">
+            <span class="k">Tests et intégration continue</span>
+            <p>96 tests sous pytest, joués à chaque push par GitHub Actions — contre un vrai
+              Postgres, parce que les tableaux, le <span class="mono">jsonb</span> et l'opérateur
+              de contenance ne s'émulent pas en SQLite.</p>
+          </div>
+          <div class="cell">
+            <span class="k">Coût</span>
+            <p>Haiku 4.5 pour la génération et pour le juge : sur une sortie JSON fortement
+              contrainte, il suffit. De l'ordre du demi-centime par jeu. Le déterministe passe
+              avant le juge, et un jeu déjà en base est resservi plutôt que régénéré.</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="disclaimer">
+        <b>Pourquoi cette planche ne contient pas de démonstration jouable :</b> l'application a
+        besoin d'un serveur Python, d'une base Postgres et d'une clé d'API — trois choses qu'une
+        page statique n'a pas. Le dépôt est public et se lance en quatre commandes, elles sont
+        dans son README. Une démonstration en ligne viendra quand la génération réelle sera
+        protégée par un code : sinon ma clé paie pour les visiteurs.
+      </p>
 
     </div>
   </section>

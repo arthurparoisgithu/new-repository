@@ -180,6 +180,13 @@ h4 {
   max-width: 58ch;
   margin: 0;
 }
+/* seconde phrase de l'accroche : même voix, un cran en retrait */
+.lede.quiet {
+  font-size: clamp(16px, 1.7vw, 18px);
+  color: var(--ink-2);
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+}
 
 .mono { font-family: var(--mono); font-size: 12.5px; letter-spacing: -.01em; }
 
@@ -354,7 +361,7 @@ h4 {
 /* ---------- planche 01 — parcours ---------- */
 
 .hero { display: grid; gap: 26px; }
-.hero h1 { max-width: 20ch; }
+.hero h1 { max-width: 26ch; }
 .hero h1 .quiet { color: var(--ink-3); }
 .hero h1 .hl {
   font-size: .86em;
@@ -364,6 +371,8 @@ h4 {
   color: var(--accent-ink);
   letter-spacing: -.01em;
 }
+
+.hero-meta-group { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; }
 
 .hero-meta {
   display: flex;
@@ -382,6 +391,8 @@ h4 {
   white-space: nowrap;
 }
 .tag.on { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-wash); }
+/* seconde rangée : les outils, volontairement plus discrets que la disponibilité */
+.tag.quiet { background: transparent; color: var(--ink-3); border-color: var(--rule-2); }
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
@@ -949,6 +960,14 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 
 /* ---------- le CV, rendu comme un document ---------- */
 
+.cv-actions { margin: -4px 0 22px; align-items: center; }
+.cv-actions-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--ink-3);
+}
+
 .cv {
   border: 1px solid var(--rule);
   border-radius: 6px;
@@ -1077,17 +1096,6 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 }
 .cv-built-grid a:hover { border-bottom-color: var(--accent); }
 
-.cv-search {
-  margin: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 16px;
-  font-family: var(--serif);
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
-}
-.cv-search strong { color: var(--accent-ink); font-weight: 600; }
-
 @media (max-width: 820px) {
   .cv { padding: 22px 20px; }
   .cv-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; }
@@ -1115,4 +1123,49 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 @media (max-width: 560px) {
   .cv-head { flex-direction: column-reverse; align-items: flex-start; gap: 16px; }
   .cv-photo { flex-basis: 86px; width: 86px; height: 86px; }
+}
+
+/* ---------- barre d'actions du CV ---------- */
+
+.cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 18px;
+}
+.cv-actions-note {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+/* ---------- captures d'écran d'application ---------- */
+
+.shot {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--rule);
+}
+.shot figcaption {
+  padding: 11px 14px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: start;
 }
