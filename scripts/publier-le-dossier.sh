@@ -11,8 +11,9 @@ set -euo pipefail
 
 RACINE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BRANCHE_SOURCE="$(git -C "$RACINE" rev-parse --abbrev-ref HEAD)"
-ATELIER="$(mktemp -d)"
-trap 'rm -rf "$ATELIER"' EXIT
+ATELIER="$(mktemp -d)"   # les fichiers a servir
+SORTIE="$(mktemp -d)"    # la copie de travail de la branche gh-pages
+trap 'rm -rf "$ATELIER" "$SORTIE"' EXIT
 
 cd "$RACINE"
 
@@ -43,14 +44,14 @@ MD
 
 echo "→ écriture de la branche gh-pages"
 git fetch origin gh-pages --quiet || true
-git worktree add --quiet --force "$ATELIER/.sortie" -B gh-pages origin/gh-pages 2>/dev/null \
-  || git worktree add --quiet --force "$ATELIER/.sortie" -B gh-pages
+rmdir "$SORTIE"
+git worktree add --quiet --force "$SORTIE" -B gh-pages origin/gh-pages 2>/dev/null \
+  || git worktree add --quiet --force "$SORTIE" -B gh-pages
 
-find "$ATELIER/.sortie" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-cp -r "$ATELIER"/. "$ATELIER/.sortie/"
-rm -rf "$ATELIER/.sortie/.sortie"
+find "$SORTIE" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+cp -r "$ATELIER"/. "$SORTIE/"
 
-cd "$ATELIER/.sortie"
+cd "$SORTIE"
 git add -A
 if git diff --cached --quiet; then
   echo "Rien de nouveau à publier."
@@ -63,5 +64,5 @@ else
 fi
 
 cd "$RACINE"
-git worktree remove --force "$ATELIER/.sortie"
+git worktree remove --force "$SORTIE"
 echo "Publié."
