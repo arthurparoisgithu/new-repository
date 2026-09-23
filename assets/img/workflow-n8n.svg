@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-64 -60 2728 858" role="img" aria-label="Schéma du workflow n8n : dix-huit nœuds, du formulaire d'audit à la réponse" class="schema-n8n">
+<style>
+  .schema-n8n text { font-family: ui-sans-serif, system-ui, sans-serif; }
+  .sn-fond   { fill: var(--sn-fond, #F7F6F2); }
+  .sn-point  { fill: var(--sn-point, #D8D5CC); }
+  .sn-boite  { fill: var(--sn-boite, #FFFFFF); stroke: var(--sn-bord, #D8D5CC); stroke-width: 2; }
+  .sn-lien   { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2.5; }
+  .sn-lien-sous { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2; stroke-dasharray: 5 6; }
+  .sn-nom    { fill: var(--sn-nom, #2B2B2B); font-size: 19px; font-weight: 600; text-anchor: middle; }
+  .sn-glyphe { font-size: 34px; text-anchor: middle; dominant-baseline: central; }
+  .sn-etiq   { fill: var(--sn-etiq, #6E6A60); font-size: 16px; font-weight: 600;
+               text-anchor: middle; letter-spacing: .04em; }
+  .f-declencheur .sn-glyphe { fill: #B45309; }
+  .f-declencheur rect       { stroke: #E7B168; }
+  .f-code   .sn-glyphe { fill: #4338CA; }
+  .f-reseau .sn-glyphe { fill: #0369A1; }
+  .f-agent  .sn-glyphe { fill: #BE185D; }
+  .f-agent  rect       { stroke: #E79FBE; stroke-width: 2.5; }
+  .f-modele .sn-glyphe { fill: #6D28D9; }
+  .f-flux   .sn-glyphe { fill: #0F766E; }
+  .f-sortie .sn-glyphe { fill: #15803D; }
+</style>
+<rect x="-64" y="-60" width="2728" height="858" class="sn-fond"/>
+<defs><pattern id="sn-grille" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.5" class="sn-point"/></pattern></defs>
+<rect x="-64" y="-60" width="2728" height="858" fill="url(#sn-grille)"/>
+<path d="M 951 224 C 951 164, 948 164, 948 104" class="sn-lien-sous"/>
+<path d="M 951 224 C 951 164, 948 564, 948 504" class="sn-lien-sous"/>
+<path d="M 951 224 C 951 164, 948 756, 948 696" class="sn-lien-sous"/>
+<path d="M 1079 224 C 1079 164, 948 164, 948 104" class="sn-lien-sous"/>
+<path d="M 1079 224 C 1079 164, 948 564, 948 504" class="sn-lien-sous"/>
+<path d="M 1079 224 C 1079 164, 948 756, 948 696" class="sn-lien-sous"/>
+<path d="M 1527 624 C 1527 564, 1524 564, 1524 504" class="sn-lien-sous"/>
+<path d="M 1655 624 C 1655 564, 1524 564, 1524 504" class="sn-lien-sous"/>
+<path d="M 104 452 C 154 452, 174 452, 224 452" class="sn-lien"/>
+<path d="M 328 452 C 378 452, 398 452, 448 452" class="sn-lien"/>
+<path d="M 552 452 C 602 452, 622 452, 672 452" class="sn-lien"/>
+<path d="M 776 452 C 826 452, 846 52, 896 52" class="sn-lien"/>
+<path d="M 776 452 C 826 452, 846 452, 896 452" class="sn-lien"/>
+<path d="M 776 452 C 826 452, 846 644, 896 644" class="sn-lien"/>
+<path d="M 1000 52 C 1104 52, 1144 436, 1248 436" class="sn-lien"/>
+<path d="M 1352 436 C 1402 436, 1422 452, 1472 452" class="sn-lien"/>
+<path d="M 1000 452 C 1104 452, 1144 436, 1248 436" class="sn-lien"/>
+<path d="M 1000 644 C 1104 644, 1144 436, 1248 436" class="sn-lien"/>
+<path d="M 1576 452 C 1680 452, 1720 452, 1824 452" class="sn-lien"/>
+<path d="M 1928 452 C 1978 452, 1998 388, 2048 388" class="sn-lien"/>
+<path d="M 1928 452 C 2072 452, 2128 644, 2272 644" class="sn-lien"/>
+<path d="M 2152 388 C 2202 388, 2222 644, 2272 644" class="sn-lien"/>
+<path d="M 2376 644 C 2424 644, 2224 452, 2272 452" class="sn-lien"/>
+<path d="M 2376 452 C 2426 452, 2446 452, 2496 452" class="sn-lien"/>
+<g class="f-declencheur">
+<rect x="0" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="52" y="452" class="sn-glyphe">⇥</text>
+<text x="52" y="530" class="sn-nom">Formulaire</text>
+<text x="52" y="553" class="sn-nom">d'audit</text>
+</g>
+<g class="f-code">
+<rect x="224" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="276" y="452" class="sn-glyphe">JS</text>
+<text x="276" y="530" class="sn-nom">Normaliser la</text>
+<text x="276" y="553" class="sn-nom">demande</text>
+</g>
+<g class="f-reseau">
+<rect x="448" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="500" y="452" class="sn-glyphe">↗</text>
+<text x="500" y="530" class="sn-nom">Récupérer la page</text>
+<text x="500" y="553" class="sn-nom">d'accueil</text>
+</g>
+<g class="f-code">
+<rect x="672" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="724" y="452" class="sn-glyphe">JS</text>
+<text x="724" y="530" class="sn-nom">Extraire les</text>
+<text x="724" y="553" class="sn-nom">faits mesurables</text>
+</g>
+<g class="f-agent">
+<rect x="896" y="0" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="948" y="52" class="sn-glyphe">◇</text>
+<text x="948" y="130" class="sn-nom">Agent 1 —</text>
+<text x="948" y="153" class="sn-nom">Visibilité locale</text>
+</g>
+<g class="f-modele">
+<rect x="912" y="224" width="78" height="78" rx="16" class="sn-boite"/>
+<text x="951" y="263" class="sn-glyphe">✳</text>
+<text x="951" y="328" class="sn-etiq">Modèle</text>
+</g>
+<g class="f-modele">
+<rect x="1040" y="224" width="78" height="78" rx="16" class="sn-boite"/>
+<text x="1079" y="263" class="sn-glyphe">{}</text>
+<text x="1079" y="328" class="sn-etiq">Format</text>
+</g>
+<g class="f-flux">
+<rect x="1248" y="384" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="1300" y="436" class="sn-glyphe">⋈</text>
+<text x="1300" y="514" class="sn-nom">Fusionner les</text>
+<text x="1300" y="537" class="sn-nom">trois avis</text>
+</g>
+<g class="f-agent">
+<rect x="896" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="948" y="452" class="sn-glyphe">◇</text>
+<text x="948" y="530" class="sn-nom">Agent 2 —</text>
+<text x="948" y="553" class="sn-nom">Conversion</text>
+</g>
+<g class="f-agent">
+<rect x="896" y="592" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="948" y="644" class="sn-glyphe">◇</text>
+<text x="948" y="722" class="sn-nom">Agent 3 —</text>
+<text x="948" y="745" class="sn-nom">Conformité</text>
+<text x="948" y="768" class="sn-nom">ordinale</text>
+</g>
+<g class="f-agent">
+<rect x="1472" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="1524" y="452" class="sn-glyphe">◇</text>
+<text x="1524" y="530" class="sn-nom">Agent 4 —</text>
+<text x="1524" y="553" class="sn-nom">Superviseur</text>
+</g>
+<g class="f-modele">
+<rect x="1488" y="624" width="78" height="78" rx="16" class="sn-boite"/>
+<text x="1527" y="663" class="sn-glyphe">✳</text>
+<text x="1527" y="728" class="sn-etiq">Modèle</text>
+</g>
+<g class="f-modele">
+<rect x="1616" y="624" width="78" height="78" rx="16" class="sn-boite"/>
+<text x="1655" y="663" class="sn-glyphe">{}</text>
+<text x="1655" y="728" class="sn-etiq">Format</text>
+</g>
+<g class="f-flux">
+<rect x="1824" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="1876" y="452" class="sn-glyphe">⋔</text>
+<text x="1876" y="530" class="sn-nom">Score sous 55 ?</text>
+</g>
+<g class="f-sortie">
+<rect x="2048" y="336" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="2100" y="388" class="sn-glyphe">@</text>
+<text x="2100" y="466" class="sn-nom">Alerte interne</text>
+</g>
+<g class="f-code">
+<rect x="2272" y="592" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="2324" y="644" class="sn-glyphe">JS</text>
+<text x="2324" y="722" class="sn-nom">Préparer la ligne</text>
+</g>
+<g class="f-sortie">
+<rect x="2272" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="2324" y="452" class="sn-glyphe">▦</text>
+<text x="2324" y="530" class="sn-nom">Archiver le</text>
+<text x="2324" y="553" class="sn-nom">dossier</text>
+</g>
+<g class="f-declencheur">
+<rect x="2496" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+<text x="2548" y="452" class="sn-glyphe">↩</text>
+<text x="2548" y="530" class="sn-nom">Répondre au</text>
+<text x="2548" y="553" class="sn-nom">formulaire</text>
+</g>
+</svg>

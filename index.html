@@ -780,6 +780,170 @@
         </p>
       </header>
 
+      <figure class="schema">
+        <!-- Engendré par scripts/schema-workflow.py depuis l'export n8n.
+             Ne pas modifier à la main : relancer le script. -->
+        <!-- schema:debut -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-64 -60 2728 858" role="img" aria-label="Schéma du workflow n8n : dix-huit nœuds, du formulaire d'audit à la réponse" class="schema-n8n">
+        <style>
+          .schema-n8n text { font-family: ui-sans-serif, system-ui, sans-serif; }
+          .sn-fond   { fill: var(--sn-fond, #F7F6F2); }
+          .sn-point  { fill: var(--sn-point, #D8D5CC); }
+          .sn-boite  { fill: var(--sn-boite, #FFFFFF); stroke: var(--sn-bord, #D8D5CC); stroke-width: 2; }
+          .sn-lien   { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2.5; }
+          .sn-lien-sous { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2; stroke-dasharray: 5 6; }
+          .sn-nom    { fill: var(--sn-nom, #2B2B2B); font-size: 19px; font-weight: 600; text-anchor: middle; }
+          .sn-glyphe { font-size: 34px; text-anchor: middle; dominant-baseline: central; }
+          .sn-etiq   { fill: var(--sn-etiq, #6E6A60); font-size: 16px; font-weight: 600;
+                       text-anchor: middle; letter-spacing: .04em; }
+          .f-declencheur .sn-glyphe { fill: #B45309; }
+          .f-declencheur rect       { stroke: #E7B168; }
+          .f-code   .sn-glyphe { fill: #4338CA; }
+          .f-reseau .sn-glyphe { fill: #0369A1; }
+          .f-agent  .sn-glyphe { fill: #BE185D; }
+          .f-agent  rect       { stroke: #E79FBE; stroke-width: 2.5; }
+          .f-modele .sn-glyphe { fill: #6D28D9; }
+          .f-flux   .sn-glyphe { fill: #0F766E; }
+          .f-sortie .sn-glyphe { fill: #15803D; }
+        </style>
+        <rect x="-64" y="-60" width="2728" height="858" class="sn-fond"/>
+        <defs><pattern id="sn-grille" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.5" class="sn-point"/></pattern></defs>
+        <rect x="-64" y="-60" width="2728" height="858" fill="url(#sn-grille)"/>
+        <path d="M 951 224 C 951 164, 948 164, 948 104" class="sn-lien-sous"/>
+        <path d="M 951 224 C 951 164, 948 564, 948 504" class="sn-lien-sous"/>
+        <path d="M 951 224 C 951 164, 948 756, 948 696" class="sn-lien-sous"/>
+        <path d="M 1079 224 C 1079 164, 948 164, 948 104" class="sn-lien-sous"/>
+        <path d="M 1079 224 C 1079 164, 948 564, 948 504" class="sn-lien-sous"/>
+        <path d="M 1079 224 C 1079 164, 948 756, 948 696" class="sn-lien-sous"/>
+        <path d="M 1527 624 C 1527 564, 1524 564, 1524 504" class="sn-lien-sous"/>
+        <path d="M 1655 624 C 1655 564, 1524 564, 1524 504" class="sn-lien-sous"/>
+        <path d="M 104 452 C 154 452, 174 452, 224 452" class="sn-lien"/>
+        <path d="M 328 452 C 378 452, 398 452, 448 452" class="sn-lien"/>
+        <path d="M 552 452 C 602 452, 622 452, 672 452" class="sn-lien"/>
+        <path d="M 776 452 C 826 452, 846 52, 896 52" class="sn-lien"/>
+        <path d="M 776 452 C 826 452, 846 452, 896 452" class="sn-lien"/>
+        <path d="M 776 452 C 826 452, 846 644, 896 644" class="sn-lien"/>
+        <path d="M 1000 52 C 1104 52, 1144 436, 1248 436" class="sn-lien"/>
+        <path d="M 1352 436 C 1402 436, 1422 452, 1472 452" class="sn-lien"/>
+        <path d="M 1000 452 C 1104 452, 1144 436, 1248 436" class="sn-lien"/>
+        <path d="M 1000 644 C 1104 644, 1144 436, 1248 436" class="sn-lien"/>
+        <path d="M 1576 452 C 1680 452, 1720 452, 1824 452" class="sn-lien"/>
+        <path d="M 1928 452 C 1978 452, 1998 388, 2048 388" class="sn-lien"/>
+        <path d="M 1928 452 C 2072 452, 2128 644, 2272 644" class="sn-lien"/>
+        <path d="M 2152 388 C 2202 388, 2222 644, 2272 644" class="sn-lien"/>
+        <path d="M 2376 644 C 2424 644, 2224 452, 2272 452" class="sn-lien"/>
+        <path d="M 2376 452 C 2426 452, 2446 452, 2496 452" class="sn-lien"/>
+        <g class="f-declencheur">
+        <rect x="0" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="52" y="452" class="sn-glyphe">⇥</text>
+        <text x="52" y="530" class="sn-nom">Formulaire</text>
+        <text x="52" y="553" class="sn-nom">d'audit</text>
+        </g>
+        <g class="f-code">
+        <rect x="224" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="276" y="452" class="sn-glyphe">JS</text>
+        <text x="276" y="530" class="sn-nom">Normaliser la</text>
+        <text x="276" y="553" class="sn-nom">demande</text>
+        </g>
+        <g class="f-reseau">
+        <rect x="448" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="500" y="452" class="sn-glyphe">↗</text>
+        <text x="500" y="530" class="sn-nom">Récupérer la page</text>
+        <text x="500" y="553" class="sn-nom">d'accueil</text>
+        </g>
+        <g class="f-code">
+        <rect x="672" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="724" y="452" class="sn-glyphe">JS</text>
+        <text x="724" y="530" class="sn-nom">Extraire les</text>
+        <text x="724" y="553" class="sn-nom">faits mesurables</text>
+        </g>
+        <g class="f-agent">
+        <rect x="896" y="0" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="948" y="52" class="sn-glyphe">◇</text>
+        <text x="948" y="130" class="sn-nom">Agent 1 —</text>
+        <text x="948" y="153" class="sn-nom">Visibilité locale</text>
+        </g>
+        <g class="f-modele">
+        <rect x="912" y="224" width="78" height="78" rx="16" class="sn-boite"/>
+        <text x="951" y="263" class="sn-glyphe">✳</text>
+        <text x="951" y="328" class="sn-etiq">Modèle</text>
+        </g>
+        <g class="f-modele">
+        <rect x="1040" y="224" width="78" height="78" rx="16" class="sn-boite"/>
+        <text x="1079" y="263" class="sn-glyphe">{}</text>
+        <text x="1079" y="328" class="sn-etiq">Format</text>
+        </g>
+        <g class="f-flux">
+        <rect x="1248" y="384" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="1300" y="436" class="sn-glyphe">⋈</text>
+        <text x="1300" y="514" class="sn-nom">Fusionner les</text>
+        <text x="1300" y="537" class="sn-nom">trois avis</text>
+        </g>
+        <g class="f-agent">
+        <rect x="896" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="948" y="452" class="sn-glyphe">◇</text>
+        <text x="948" y="530" class="sn-nom">Agent 2 —</text>
+        <text x="948" y="553" class="sn-nom">Conversion</text>
+        </g>
+        <g class="f-agent">
+        <rect x="896" y="592" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="948" y="644" class="sn-glyphe">◇</text>
+        <text x="948" y="722" class="sn-nom">Agent 3 —</text>
+        <text x="948" y="745" class="sn-nom">Conformité</text>
+        <text x="948" y="768" class="sn-nom">ordinale</text>
+        </g>
+        <g class="f-agent">
+        <rect x="1472" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="1524" y="452" class="sn-glyphe">◇</text>
+        <text x="1524" y="530" class="sn-nom">Agent 4 —</text>
+        <text x="1524" y="553" class="sn-nom">Superviseur</text>
+        </g>
+        <g class="f-modele">
+        <rect x="1488" y="624" width="78" height="78" rx="16" class="sn-boite"/>
+        <text x="1527" y="663" class="sn-glyphe">✳</text>
+        <text x="1527" y="728" class="sn-etiq">Modèle</text>
+        </g>
+        <g class="f-modele">
+        <rect x="1616" y="624" width="78" height="78" rx="16" class="sn-boite"/>
+        <text x="1655" y="663" class="sn-glyphe">{}</text>
+        <text x="1655" y="728" class="sn-etiq">Format</text>
+        </g>
+        <g class="f-flux">
+        <rect x="1824" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="1876" y="452" class="sn-glyphe">⋔</text>
+        <text x="1876" y="530" class="sn-nom">Score sous 55 ?</text>
+        </g>
+        <g class="f-sortie">
+        <rect x="2048" y="336" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="2100" y="388" class="sn-glyphe">@</text>
+        <text x="2100" y="466" class="sn-nom">Alerte interne</text>
+        </g>
+        <g class="f-code">
+        <rect x="2272" y="592" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="2324" y="644" class="sn-glyphe">JS</text>
+        <text x="2324" y="722" class="sn-nom">Préparer la ligne</text>
+        </g>
+        <g class="f-sortie">
+        <rect x="2272" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="2324" y="452" class="sn-glyphe">▦</text>
+        <text x="2324" y="530" class="sn-nom">Archiver le</text>
+        <text x="2324" y="553" class="sn-nom">dossier</text>
+        </g>
+        <g class="f-declencheur">
+        <rect x="2496" y="400" width="104" height="104" rx="16" class="sn-boite"/>
+        <text x="2548" y="452" class="sn-glyphe">↩</text>
+        <text x="2548" y="530" class="sn-nom">Répondre au</text>
+        <text x="2548" y="553" class="sn-nom">formulaire</text>
+        </g>
+        </svg>
+        <!-- schema:fin -->
+        <figcaption>
+          Le workflow tel qu'il se présente dans n8n. Ce schéma est engendré à partir du fichier
+          téléchargeable ci-dessous — positions des nœuds et liens compris — il ne peut donc pas
+          en diverger.
+        </figcaption>
+      </figure>
+
       <div class="console-bar" style="border:1px solid var(--rule);border-radius:6px">
         <label for="dossierSelect">Dossier de démonstration</label>
         <select id="dossierSelect">
@@ -1071,24 +1235,61 @@ const faits = {
       <header class="stack-tight">
         <h2 id="t-jeux">Ce n'est pas un projet de génération. C'est un projet de validation.</h2>
         <p class="lede">
-          J'ai été animateur pendant trois ans. Préparer les jeux prend des soirées entières,
-          et tout recommence à chaque nouveau groupe. Un modèle écrit un quiz en dix secondes —
-          mais il l'écrit avec un aplomb total, et la bonne réponse est parfois fausse, absente
-          des propositions, ou présente deux fois. L'animateur, lui, est devant cinquante
-          personnes quand il le découvre.
+          L'application produit deux choses : <strong>le jeu</strong>, et <strong>la fiche
+          technique qui va avec</strong> — le déroulé, le public visé, le minutage, les solutions.
+          De quoi détailler précisément l'organisation de chaque activité selon le groupe qu'on a
+          en face, et garder une trace de ce qui a été animé, quand, et avec qui.
+        </p>
+        <p class="lede quiet">
+          J'ai été animateur trois ans. Un modèle écrit un quiz en dix secondes — mais il l'écrit
+          avec aplomb, et la bonne réponse est parfois fausse, absente des propositions, ou
+          présente deux fois. L'animateur, lui, est devant cinquante personnes quand il le
+          découvre. D'où le vrai sujet : tout vérifier avant de livrer.
         </p>
         <p class="cv-actions">
           <a class="btn" href="https://github.com/arthurparoisgithu/animation" target="_blank" rel="noopener">Le code sur GitHub ↗</a>
-          <span class="cv-actions-note">Dépôt public · Python · 96 tests · intégration continue</span>
+          <span class="cv-actions-note">Dépôt public · 171 tests · intégration continue</span>
         </p>
       </header>
 
+      <figure class="shot">
+        <img src="assets/img/jeux/accueil.jpg" alt="L'accueil de l'application : filtres par public, moment et matériel, puis les onze formats du catalogue sous forme de cartes." loading="lazy">
+        <figcaption>
+          On filtre par public, moment de la journée et matériel disponible, on choisit un format,
+          on donne un thème. Onze formats au catalogue, trois formes de contenu.
+        </figcaption>
+      </figure>
+
       <div class="kv">
+        <div><span class="k">Formats</span><span class="v">11</span></div>
         <div><span class="k">Primitives</span><span class="v">3</span></div>
-        <div><span class="k">Formats au catalogue</span><span class="v">10</span></div>
         <div><span class="k">Niveaux de validation</span><span class="v">2</span></div>
-        <div><span class="k">Tests</span><span class="v">96</span></div>
+        <div><span class="k">Tests</span><span class="v">171</span></div>
       </div>
+
+      <section>
+        <div class="section-rule">
+          <h3>La fiche technique, autant que le jeu</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            Un jeu généré ne sert à rien s'il faut le réorganiser à la main devant le groupe.
+            Chaque jeu sort donc avec sa fiche animateur, imprimable : la règle, le minutage,
+            le public visé, le nombre d'items, et les solutions — signalées comme telles, pour
+            qu'elles ne finissent pas entre les mains des équipes.
+          </p>
+          <p>
+            Chaque jeu reste daté et archivé en base avec son format, son public et son thème.
+            Retrouver ce qui a été animé la semaine dernière, et pour quel groupe, se fait en
+            une recherche.
+          </p>
+        </div>
+        <figure class="shot" style="margin-top:20px">
+          <img src="assets/img/jeux/fiche.jpg" alt="Fiche animateur imprimable d'un escape game : règle, minutage, public, nombre d'items, puis les étapes avec leurs indices et leurs solutions." loading="lazy">
+          <figcaption>La fiche animateur d'un escape game : le déroulé, le minutage, puis chaque étape avec son indice et sa solution.</figcaption>
+        </figure>
+      </section>
 
       <section>
         <div class="section-rule">
@@ -1111,7 +1312,7 @@ const faits = {
           <div class="cell">
             <span class="k">enigme</span>
             <p>Énoncé, solution, indice.<br>
-              <em>Dingbats, personnage mystère, devinettes, anagrammes.</em></p>
+              <em>Dingbats, personnage mystère, devinettes, anagrammes, escape game.</em></p>
           </div>
           <div class="cell">
             <span class="k">vrai_faux</span>
@@ -1138,108 +1339,86 @@ const faits = {
               Gratuit, instantané, certain, et exécuté <em>en premier</em> : ce qu'il rejette n'a
               coûté aucun appel de modèle. Exactement quatre propositions, aucun doublon, la bonne
               réponse présente une fois et une seule ; la solution d'une énigme absente de son
-              énoncé et de son indice ; 30 à 70 % de vraies sur un lot de vrai/faux.
+              énoncé et de son indice.
             </p>
           </div>
           <div class="cell">
             <span class="k">Niveau 2 — le juge</span>
             <p>
               Un second appel, qui ne tranche <em>que</em> ce que le code ne peut pas trancher :
-              exactitude factuelle et adéquation au public. Verdict binaire, plus un motif.
-              Un juge injoignable rejette tout le lot — du contenu non contrôlé ne doit jamais
-              passer par défaut.
+              exactitude factuelle et adéquation au public. Un juge injoignable rejette tout le
+              lot — du contenu non contrôlé ne doit jamais passer par défaut.
             </p>
           </div>
           <div class="cell">
-            <span class="k">Le bug qui a tout appris</span>
+            <span class="k">Le taux de rejet est affiché</span>
             <p>
-              La comparaison se fait <strong>mot à mot</strong>, pas par sous-chaîne. Sinon la
-              solution « or » est détectée dans le mot « corps », et toutes les énigmes sont
-              rejetées à tort. C'est la première fonction couverte par les tests.
+              L'application mesure, format par format, la part de ce que le modèle produit et que
+              la validation refuse. Au-delà de 20 %, le format passe sur un modèle plus capable.
+              Un outil qui ne mesure pas ses propres échecs ne prouve rien.
             </p>
           </div>
         </div>
+        <p class="note" style="margin-top:20px">
+          <strong>La comparaison se fait mot à mot, pas par sous-chaîne.</strong> Sinon la solution
+          « or » est détectée dans le mot « corps » et toutes les énigmes sont rejetées à tort.
+          C'est la première fonction couverte par les tests, et c'est un bug qui m'a appris à
+          écrire le test avant la règle.
+        </p>
       </section>
 
       <section>
         <div class="section-rule">
-          <h3>La preuve que la validation sert à quelque chose</h3>
-          <span class="line"></span>
-        </div>
-        <div class="prose">
-          <p>
-            Le taux de rejet par format est affiché dans l'interface. Sur cette campagne :
-            <strong>Dingbats rejette 40 % de ce que le modèle produit</strong>, Quiz express 38 %,
-            Le scoop 20 %. Ce ne sont pas des chiffres de démonstration — ce sont des items que
-            le modèle a réellement écrits et que la validation a réellement refusés.
-            Au-delà de 20 %, le format est candidat à une escalade vers un modèle plus capable,
-            et la raison est notée dans le journal du projet.
-          </p>
-        </div>
-        <figure class="shot">
-          <img src="assets/img/jeux/metriques.jpg" alt="Tableau des taux de rejet par format : Dingbats 40 %, Quiz express 38 %, Le scoop 20 %." loading="lazy">
-          <figcaption>Taux de rejet par format, avec la part imputable au code et celle imputable au juge.</figcaption>
-        </figure>
-      </section>
-
-      <section>
-        <div class="section-rule">
-          <h3>L'outil, côté animateur</h3>
+          <h3>Ce que la salle voit</h3>
           <span class="line"></span>
         </div>
         <div class="shot-grid">
           <figure class="shot">
-            <img src="assets/img/jeux/accueil.jpg" alt="Page d'accueil : filtres par public, moment et matériel, puis le catalogue des dix formats." loading="lazy">
-            <figcaption>On filtre par public, moment de la journée et matériel disponible, puis on choisit un format et on lance la génération.</figcaption>
-          </figure>
-          <figure class="shot">
             <img src="assets/img/jeux/projection.jpg" alt="Mode projection : une question et ses quatre propositions en grand, sur fond sombre." loading="lazy">
-            <figcaption>Mode projection : gros texte, fond sombre, navigation aux flèches. C'est l'écran que la salle voit.</figcaption>
+            <figcaption>Mode projection : gros texte, fond sombre, navigation aux flèches. Le fond reste sombre parce qu'on projette dans une salle.</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/img/jeux/projection-dingbats.jpg" alt="Un dingbat composé d'emojis, avec son indice." loading="lazy">
-            <figcaption>Un dingbat : le modèle compose le rébus en emojis, affichables tels quels — pas une image à dessiner.</figcaption>
+            <img src="assets/img/jeux/projection-escape.jpg" alt="Une étape d'escape game projetée, avec son indice." loading="lazy">
+            <figcaption>Une étape d'escape game : les énigmes se résolvent dans l'ordre, chacune ouvre la suivante.</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/img/jeux/projection-vrai-faux.jpg" alt="Une affirmation vrai/faux et sa révélation." loading="lazy">
-            <figcaption>Un vrai/faux, avec sa révélation et l'explication que l'animateur lit ensuite.</figcaption>
+            <img src="assets/img/jeux/jeu.jpg" alt="La page d'un jeu enregistré : ses étiquettes, la règle, puis le contenu item par item." loading="lazy">
+            <figcaption>La page d'un jeu enregistré, d'où l'on lance la projection ou l'on imprime la fiche.</figcaption>
           </figure>
         </div>
       </section>
 
       <section>
         <div class="section-rule">
-          <h3>Ce qu'il y a sous le capot</h3>
+          <h3>Sous le capot</h3>
           <span class="line"></span>
         </div>
         <div class="grid-3">
           <div class="cell">
             <span class="k">Pile</span>
             <p>Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, Alembic. Interface en Jinja2 et
-              JavaScript natif, servie par FastAPI. Pas de front Next.js : ici, l'objet de la
-              démonstration est le back-end.</p>
+              JavaScript natif. Pas de front Next.js : ici, l'objet de la démonstration est le
+              back-end.</p>
           </div>
           <div class="cell">
-            <span class="k">Tests et intégration continue</span>
-            <p>96 tests sous pytest, joués à chaque push par GitHub Actions — contre un vrai
-              Postgres, parce que les tableaux, le <span class="mono">jsonb</span> et l'opérateur
-              de contenance ne s'émulent pas en SQLite.</p>
+            <span class="k">Tests</span>
+            <p>171 tests sous pytest, joués à chaque push par GitHub Actions — dont 21 contre un
+              vrai Postgres, parce que les tableaux, le <span class="mono">jsonb</span> et
+              l'opérateur de contenance ne s'émulent pas en SQLite.</p>
           </div>
           <div class="cell">
             <span class="k">Coût</span>
-            <p>Haiku 4.5 pour la génération et pour le juge : sur une sortie JSON fortement
-              contrainte, il suffit. De l'ordre du demi-centime par jeu. Le déterministe passe
-              avant le juge, et un jeu déjà en base est resservi plutôt que régénéré.</p>
+            <p>Haiku 4.5 pour la génération comme pour le juge : sur une sortie JSON fortement
+              contrainte, il suffit. Le déterministe passe avant le juge, et un jeu déjà en base
+              est resservi plutôt que régénéré.</p>
           </div>
         </div>
       </section>
 
       <p class="disclaimer">
-        <b>Pourquoi cette planche ne contient pas de démonstration jouable :</b> l'application a
-        besoin d'un serveur Python, d'une base Postgres et d'une clé d'API — trois choses qu'une
-        page statique n'a pas. Le dépôt est public et se lance en quatre commandes, elles sont
-        dans son README. Une démonstration en ligne viendra quand la génération réelle sera
-        protégée par un code : sinon ma clé paie pour les visiteurs.
+        <b>Pas de démonstration jouable sur cette page :</b> l'application a besoin d'un serveur
+        Python, d'une base Postgres et d'une clé d'API — trois choses qu'une page statique n'a pas.
+        Le dépôt est public et démarre en une commande, <span class="mono">docker compose up</span>.
       </p>
 
     </div>
