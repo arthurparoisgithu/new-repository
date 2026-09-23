@@ -1083,6 +1083,38 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   align-items: start;
 }
 
+/* ---------- schéma du workflow n8n ---------- */
+
+/* Le SVG porte ses propres variables : on les câble sur la palette du
+   dossier pour qu'il suive le thème clair comme le thème sombre. */
+.schema {
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+  --sn-fond: var(--surface);
+  --sn-boite: var(--paper);
+  --sn-bord: var(--rule);
+  --sn-point: var(--rule);
+  --sn-lien: var(--ink-3);
+  --sn-nom: var(--ink);
+  --sn-etiq: var(--ink-3);
+}
+.schema svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--rule);
+}
+.schema figcaption {
+  padding: 11px 14px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
 
 @page { size: A4; margin: 10mm 10mm; }
 
