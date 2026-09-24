@@ -1174,6 +1174,14 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   gap: 18px;
   align-items: start;
 }
+/* En rangée, une capture en portrait doublerait la hauteur de ses
+   voisines. On les cadre toutes pareil, par le haut : c'est l'en-tête
+   de l'écran qui porte l'information, pas son pied. */
+.shot-grid .shot img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+}
 
 /* ---------- schéma du workflow n8n ---------- */
 
