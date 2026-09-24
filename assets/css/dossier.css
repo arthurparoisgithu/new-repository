@@ -5,16 +5,16 @@
 
 :root {
   /* — surfaces — */
-  --paper:    #F1F2EE;
-  --paper-2:  #E7E9E2;
-  --surface:  #FBFBF9;
-  --surface-2:#F5F6F2;
+  --paper:    #F4F5F6;
+  --paper-2:  #E9EBEE;
+  --surface:  #FFFFFF;
+  --surface-2:#F8F9FB;
   /* — encres — */
-  --ink:      #16181C;
-  --ink-2:    #51555D;
-  --ink-3:    #898F98;
-  --rule:     #D4D7CF;
-  --rule-2:   #E2E4DC;
+  --ink:      #14161A;
+  --ink-2:    #545A63;
+  --ink-3:    #868D97;
+  --rule:     #DEE1E6;
+  --rule-2:   #E9ECF0;
   /* — accent unique — */
   --accent:   #DE3E68;
   --accent-ink: #A9254A;
@@ -94,9 +94,6 @@
 body {
   margin: 0;
   background-color: var(--paper);
-  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
-  background-size: 26px 26px;
-  background-position: -13px -13px;
   color: var(--ink);
   font-family: var(--display);
   font-size: 16px;
@@ -125,7 +122,7 @@ a { color: inherit; }
 .eyebrow {
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: .16em;
+  letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--ink-3);
   margin: 0;
@@ -224,7 +221,7 @@ h4 {
 .rail-id .role {
   font-family: var(--mono);
   font-size: 10.5px;
-  letter-spacing: .12em;
+  letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
@@ -329,7 +326,7 @@ h4 {
 
 .main {
   min-width: 0;
-  padding: 34px 40px 96px;
+  padding: 44px 48px 124px;
 }
 
 .plate { display: none; }
@@ -342,21 +339,21 @@ h4 {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 34px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 46px;
 }
 .plate-head .k {
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: .16em;
+  letter-spacing: .09em;
   text-transform: uppercase;
 }
 .plate-head .k .sep { color: var(--accent); padding: 0 .4em; }
 .plate-head .meta { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
 
-.stack { display: flex; flex-direction: column; gap: 56px; }
-.stack-tight { display: flex; flex-direction: column; gap: 26px; }
+.stack { display: flex; flex-direction: column; gap: 72px; }
+.stack-tight { display: flex; flex-direction: column; gap: 28px; }
 
 /* ---------- planche 01 — parcours ---------- */
 
@@ -439,18 +436,24 @@ h4 {
 .tl-what p { margin: 0; font-family: var(--serif); font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
 
 /* trois compétences */
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--rule-2); border: 1px solid var(--rule-2); border-radius: 5px; overflow: hidden; }
-.cell { background: var(--surface); padding: 22px 20px; display: flex; flex-direction: column; gap: 9px; }
-.cell .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 34px 30px; }
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 13px;
+  border-top: 2px solid var(--ink);
+}
+.cell .k { font-family: var(--mono); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--accent-ink); }
 .cell p { margin: 0; font-family: var(--serif); font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
 
 .section-rule {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
-.section-rule .line { flex: 1; height: 1px; background: var(--rule); }
+.section-rule .line { display: none; }
 
 /* ---------- planche 02 — sites web ---------- */
 
@@ -579,9 +582,11 @@ h4 {
 .viewer-bar a:hover { text-decoration: underline; }
 .viewer iframe { display: block; width: 100%; height: 620px; border: 0; background: var(--surface); }
 
-.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule-2); border: 1px solid var(--rule-2); border-radius: 5px; overflow: hidden; }
-.kv > div { background: var(--surface); padding: 15px 17px; display: flex; flex-direction: column; gap: 4px; }
-.kv dt, .kv .k { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+/* Les chiffres posent sur la page comme les cellules : un filet de tête,
+   du blanc, rien d'autre. Un encadré par bloc ferait dix boîtes par planche. */
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 28px 30px; }
+.kv > div { display: flex; flex-direction: column; gap: 5px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.kv dt, .kv .k { font-family: var(--mono); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
 .kv .v { font-size: 20px; font-variation-settings: "wdth" 102, "wght" 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .kv .v small { font-size: 12px; color: var(--ink-3); font-variation-settings: "wght" 400; }
 
