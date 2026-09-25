@@ -1194,6 +1194,50 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 :root[data-theme="dark"] .outil { --marque: var(--marque-sombre, var(--ink)); }
 
 
+/* ---------- la lettre et son cachet ---------- */
+
+.lettre {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: start;
+}
+.lettre-texte { display: grid; gap: 26px; min-width: 0; }
+
+/* Un cachet, pas un badge : encre sur papier, aucune couleur d'accent. */
+.cachet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 20px 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  color: var(--ink);
+  text-align: center;
+  white-space: nowrap;
+}
+.cachet-nombre {
+  font-size: 34px;
+  line-height: 1;
+  font-variation-settings: "wdth" 104, "wght" 680;
+  letter-spacing: -.02em;
+}
+.cachet-nombre small {
+  font-size: 17px;
+  font-variation-settings: "wght" 600;
+  margin-left: 2px;
+}
+.cachet-mot {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+
+
 @page { size: A4; margin: 10mm 10mm; }
 
 html, body { background: #fff !important; background-image: none !important; }
