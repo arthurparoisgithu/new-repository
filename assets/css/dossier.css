@@ -965,6 +965,22 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 .project-brief .live a.repo { color: var(--ink-2); border-bottom-color: var(--rule); }
 .project-brief .live a.repo:hover { color: var(--ink); border-bottom-color: var(--ink-3); }
 
+/* Une adresse en petites capitales monospace ne dit pas qu'elle est cliquable.
+   La flèche pointe dessus ; le mot est en retrait pour ne pas s'y confondre. */
+.live-invite {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  align-self: center;
+}
+
+/* Une carte sans colonne droite occupe toute la largeur plutôt que
+   d'ouvrir un vide à côté du texte. */
+.project-head.seul { grid-template-columns: minmax(0, 1fr); }
+.project-head.seul .project-brief { max-width: 74ch; }
+
 /* ---------- le CV, rendu comme un document ---------- */
 
 .cv-actions { margin: -4px 0 22px; align-items: center; }
