@@ -1302,6 +1302,9 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   display: grid;
   justify-items: center;
   gap: 12px;
+  /* Décalé vers le bas : aligné sur le haut du texte, le panneau semblait
+     appartenir au titre plutôt qu'à la lettre. */
+  margin-top: 76px;
 }
 .cachet-panneau {
   width: 40px;
@@ -1346,7 +1349,7 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 
 @media (max-width: 900px) {
   .lettre { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-  .cachet-bloc { justify-self: start; justify-items: start; }
+  .cachet-bloc { justify-self: start; justify-items: start; margin-top: 0; }
 }
 
 /* ---------- sur-titre ---------- */
