@@ -47,7 +47,7 @@
       </button>
       <button class="nav-item" data-go="jeux">
         <span class="nav-dot" aria-hidden="true"></span>
-        <span class="nav-label">Générateur de jeux</span>
+        <span class="nav-label">AnimApp</span>
         <span class="nav-num">05</span>
       </button>
     </nav>
@@ -765,7 +765,7 @@
   <section class="plate" id="plate-agents" aria-labelledby="t-agents">
     <div class="plate-head">
       <p class="k">Planche 04<span class="sep">/</span>Workflow multi-agents</p>
-      <p class="meta">18 nœuds · 4 agents · n8n + Claude Sonnet 5</p>
+      <p class="meta">18 nœuds · 4 agents · n8n + agents Claude</p>
     </div>
 
     <div class="stack">
@@ -780,167 +780,12 @@
         </p>
       </header>
 
-      <figure class="schema">
-        <!-- Engendré par scripts/schema-workflow.py depuis l'export n8n.
-             Ne pas modifier à la main : relancer le script. -->
-        <!-- schema:debut -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-64 -60 2728 858" role="img" aria-label="Schéma du workflow n8n : dix-huit nœuds, du formulaire d'audit à la réponse" class="schema-n8n">
-        <style>
-          .schema-n8n text { font-family: ui-sans-serif, system-ui, sans-serif; }
-          .sn-fond   { fill: var(--sn-fond, #F7F6F2); }
-          .sn-point  { fill: var(--sn-point, #D8D5CC); }
-          .sn-boite  { fill: var(--sn-boite, #FFFFFF); stroke: var(--sn-bord, #D8D5CC); stroke-width: 2; }
-          .sn-lien   { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2.5; }
-          .sn-lien-sous { fill: none; stroke: var(--sn-lien, #B9B5AA); stroke-width: 2; stroke-dasharray: 5 6; }
-          .sn-nom    { fill: var(--sn-nom, #2B2B2B); font-size: 19px; font-weight: 600; text-anchor: middle; }
-          .sn-glyphe { font-size: 34px; text-anchor: middle; dominant-baseline: central; }
-          .sn-etiq   { fill: var(--sn-etiq, #6E6A60); font-size: 16px; font-weight: 600;
-                       text-anchor: middle; letter-spacing: .04em; }
-          .f-declencheur .sn-glyphe { fill: #B45309; }
-          .f-declencheur rect       { stroke: #E7B168; }
-          .f-code   .sn-glyphe { fill: #4338CA; }
-          .f-reseau .sn-glyphe { fill: #0369A1; }
-          .f-agent  .sn-glyphe { fill: #BE185D; }
-          .f-agent  rect       { stroke: #E79FBE; stroke-width: 2.5; }
-          .f-modele .sn-glyphe { fill: #6D28D9; }
-          .f-flux   .sn-glyphe { fill: #0F766E; }
-          .f-sortie .sn-glyphe { fill: #15803D; }
-        </style>
-        <rect x="-64" y="-60" width="2728" height="858" class="sn-fond"/>
-        <defs><pattern id="sn-grille" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.5" class="sn-point"/></pattern></defs>
-        <rect x="-64" y="-60" width="2728" height="858" fill="url(#sn-grille)"/>
-        <path d="M 951 224 C 951 164, 948 164, 948 104" class="sn-lien-sous"/>
-        <path d="M 951 224 C 951 164, 948 564, 948 504" class="sn-lien-sous"/>
-        <path d="M 951 224 C 951 164, 948 756, 948 696" class="sn-lien-sous"/>
-        <path d="M 1079 224 C 1079 164, 948 164, 948 104" class="sn-lien-sous"/>
-        <path d="M 1079 224 C 1079 164, 948 564, 948 504" class="sn-lien-sous"/>
-        <path d="M 1079 224 C 1079 164, 948 756, 948 696" class="sn-lien-sous"/>
-        <path d="M 1527 624 C 1527 564, 1524 564, 1524 504" class="sn-lien-sous"/>
-        <path d="M 1655 624 C 1655 564, 1524 564, 1524 504" class="sn-lien-sous"/>
-        <path d="M 104 452 C 154 452, 174 452, 224 452" class="sn-lien"/>
-        <path d="M 328 452 C 378 452, 398 452, 448 452" class="sn-lien"/>
-        <path d="M 552 452 C 602 452, 622 452, 672 452" class="sn-lien"/>
-        <path d="M 776 452 C 826 452, 846 52, 896 52" class="sn-lien"/>
-        <path d="M 776 452 C 826 452, 846 452, 896 452" class="sn-lien"/>
-        <path d="M 776 452 C 826 452, 846 644, 896 644" class="sn-lien"/>
-        <path d="M 1000 52 C 1104 52, 1144 436, 1248 436" class="sn-lien"/>
-        <path d="M 1352 436 C 1402 436, 1422 452, 1472 452" class="sn-lien"/>
-        <path d="M 1000 452 C 1104 452, 1144 436, 1248 436" class="sn-lien"/>
-        <path d="M 1000 644 C 1104 644, 1144 436, 1248 436" class="sn-lien"/>
-        <path d="M 1576 452 C 1680 452, 1720 452, 1824 452" class="sn-lien"/>
-        <path d="M 1928 452 C 1978 452, 1998 388, 2048 388" class="sn-lien"/>
-        <path d="M 1928 452 C 2072 452, 2128 644, 2272 644" class="sn-lien"/>
-        <path d="M 2152 388 C 2202 388, 2222 644, 2272 644" class="sn-lien"/>
-        <path d="M 2376 644 C 2424 644, 2224 452, 2272 452" class="sn-lien"/>
-        <path d="M 2376 452 C 2426 452, 2446 452, 2496 452" class="sn-lien"/>
-        <g class="f-declencheur">
-        <rect x="0" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="52" y="452" class="sn-glyphe">⇥</text>
-        <text x="52" y="530" class="sn-nom">Formulaire</text>
-        <text x="52" y="553" class="sn-nom">d'audit</text>
-        </g>
-        <g class="f-code">
-        <rect x="224" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="276" y="452" class="sn-glyphe">JS</text>
-        <text x="276" y="530" class="sn-nom">Normaliser la</text>
-        <text x="276" y="553" class="sn-nom">demande</text>
-        </g>
-        <g class="f-reseau">
-        <rect x="448" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="500" y="452" class="sn-glyphe">↗</text>
-        <text x="500" y="530" class="sn-nom">Récupérer la page</text>
-        <text x="500" y="553" class="sn-nom">d'accueil</text>
-        </g>
-        <g class="f-code">
-        <rect x="672" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="724" y="452" class="sn-glyphe">JS</text>
-        <text x="724" y="530" class="sn-nom">Extraire les</text>
-        <text x="724" y="553" class="sn-nom">faits mesurables</text>
-        </g>
-        <g class="f-agent">
-        <rect x="896" y="0" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="948" y="52" class="sn-glyphe">◇</text>
-        <text x="948" y="130" class="sn-nom">Agent 1 —</text>
-        <text x="948" y="153" class="sn-nom">Visibilité locale</text>
-        </g>
-        <g class="f-modele">
-        <rect x="912" y="224" width="78" height="78" rx="16" class="sn-boite"/>
-        <text x="951" y="263" class="sn-glyphe">✳</text>
-        <text x="951" y="328" class="sn-etiq">Modèle</text>
-        </g>
-        <g class="f-modele">
-        <rect x="1040" y="224" width="78" height="78" rx="16" class="sn-boite"/>
-        <text x="1079" y="263" class="sn-glyphe">{}</text>
-        <text x="1079" y="328" class="sn-etiq">Format</text>
-        </g>
-        <g class="f-flux">
-        <rect x="1248" y="384" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="1300" y="436" class="sn-glyphe">⋈</text>
-        <text x="1300" y="514" class="sn-nom">Fusionner les</text>
-        <text x="1300" y="537" class="sn-nom">trois avis</text>
-        </g>
-        <g class="f-agent">
-        <rect x="896" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="948" y="452" class="sn-glyphe">◇</text>
-        <text x="948" y="530" class="sn-nom">Agent 2 —</text>
-        <text x="948" y="553" class="sn-nom">Conversion</text>
-        </g>
-        <g class="f-agent">
-        <rect x="896" y="592" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="948" y="644" class="sn-glyphe">◇</text>
-        <text x="948" y="722" class="sn-nom">Agent 3 —</text>
-        <text x="948" y="745" class="sn-nom">Conformité</text>
-        <text x="948" y="768" class="sn-nom">ordinale</text>
-        </g>
-        <g class="f-agent">
-        <rect x="1472" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="1524" y="452" class="sn-glyphe">◇</text>
-        <text x="1524" y="530" class="sn-nom">Agent 4 —</text>
-        <text x="1524" y="553" class="sn-nom">Superviseur</text>
-        </g>
-        <g class="f-modele">
-        <rect x="1488" y="624" width="78" height="78" rx="16" class="sn-boite"/>
-        <text x="1527" y="663" class="sn-glyphe">✳</text>
-        <text x="1527" y="728" class="sn-etiq">Modèle</text>
-        </g>
-        <g class="f-modele">
-        <rect x="1616" y="624" width="78" height="78" rx="16" class="sn-boite"/>
-        <text x="1655" y="663" class="sn-glyphe">{}</text>
-        <text x="1655" y="728" class="sn-etiq">Format</text>
-        </g>
-        <g class="f-flux">
-        <rect x="1824" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="1876" y="452" class="sn-glyphe">⋔</text>
-        <text x="1876" y="530" class="sn-nom">Score sous 55 ?</text>
-        </g>
-        <g class="f-sortie">
-        <rect x="2048" y="336" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="2100" y="388" class="sn-glyphe">@</text>
-        <text x="2100" y="466" class="sn-nom">Alerte interne</text>
-        </g>
-        <g class="f-code">
-        <rect x="2272" y="592" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="2324" y="644" class="sn-glyphe">JS</text>
-        <text x="2324" y="722" class="sn-nom">Préparer la ligne</text>
-        </g>
-        <g class="f-sortie">
-        <rect x="2272" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="2324" y="452" class="sn-glyphe">▦</text>
-        <text x="2324" y="530" class="sn-nom">Archiver le</text>
-        <text x="2324" y="553" class="sn-nom">dossier</text>
-        </g>
-        <g class="f-declencheur">
-        <rect x="2496" y="400" width="104" height="104" rx="16" class="sn-boite"/>
-        <text x="2548" y="452" class="sn-glyphe">↩</text>
-        <text x="2548" y="530" class="sn-nom">Répondre au</text>
-        <text x="2548" y="553" class="sn-nom">formulaire</text>
-        </g>
-        </svg>
-        <!-- schema:fin -->
+      <figure class="shot">
+        <img src="assets/img/animation/n8n-workflow.jpg" alt="Le workflow ouvert dans l'éditeur n8n : dix-huit nœuds, du formulaire d'audit à la réponse, avec trois agents en parallèle et un superviseur." loading="lazy">
         <figcaption>
-          Le workflow tel qu'il se présente dans n8n. Ce schéma est engendré à partir du fichier
-          téléchargeable ci-dessous — positions des nœuds et liens compris — il ne peut donc pas
-          en diverger.
+          Le workflow ouvert dans n8n. Chaque agent porte son modèle et son analyseur de sortie ;
+          les trois analystes travaillent en parallèle, le superviseur les fusionne, et
+          l'aiguillage <span class="mono">Score &lt; 55 ?</span> décide de l'alerte interne.
         </figcaption>
       </figure>
 
@@ -1226,8 +1071,8 @@ const faits = {
        ══════════════════════════════════════════════════════ -->
   <section class="plate" id="plate-jeux" aria-labelledby="t-jeux">
     <div class="plate-head">
-      <p class="k">Planche 05<span class="sep">/</span>Générateur de jeux</p>
-      <p class="meta">Python · FastAPI · PostgreSQL · pytest</p>
+      <p class="k">Planche 05<span class="sep">/</span>AnimApp</p>
+      <p class="meta">Générateur d'activités · agent IA · déployé sur Abacus.AI</p>
     </div>
 
     <div class="stack">
@@ -1247,178 +1092,109 @@ const faits = {
           constituer une base qu'il complète lui-même.
         </p>
         <p class="cv-actions">
-          <a class="btn" href="https://github.com/arthurparoisgithu/animation" target="_blank" rel="noopener">Le code sur GitHub ↗</a>
-          <span class="cv-actions-note">Dépôt public · 171 tests · intégration continue</span>
+          <a class="btn" href="https://ksjs.abacusai.app/" target="_blank" rel="noopener">Ouvrir AnimApp ↗</a>
+          <span class="cv-actions-note">En ligne sur Abacus.AI · sept catégories d'activités</span>
         </p>
       </header>
 
-      <figure class="shot">
-        <img src="assets/img/jeux/accueil.jpg" alt="L'accueil de l'application : filtres par public, moment et matériel, puis les onze formats du catalogue sous forme de cartes." loading="lazy">
-        <figcaption>
-          On filtre par public, moment de la journée et matériel disponible, on choisit un format,
-          on donne un thème. Onze formats au catalogue, trois formes de contenu.
-        </figcaption>
-      </figure>
-
-      <div class="kv">
-        <div><span class="k">Formats</span><span class="v">11</span></div>
-        <div><span class="k">Primitives</span><span class="v">3</span></div>
-        <div><span class="k">Niveaux de validation</span><span class="v">2</span></div>
-        <div><span class="k">Tests</span><span class="v">171</span></div>
-      </div>
-
       <section>
         <div class="section-rule">
-          <h3>La fiche technique, autant que le jeu</h3>
+          <h3>Sept catégories, pour les sept moments d'un séjour</h3>
           <span class="line"></span>
         </div>
         <div class="prose">
           <p>
-            Un jeu généré ne sert à rien s'il faut le réorganiser à la main devant le groupe.
-            Chaque jeu sort donc avec sa fiche animateur, imprimable : la règle, le minutage,
-            le public visé, le nombre d'items, et les solutions — signalées comme telles, pour
-            qu'elles ne finissent pas entre les mains des équipes.
-          </p>
-          <p>
-            Chaque jeu reste daté et archivé en base avec son format, son public et son thème.
-            Retrouver ce qui a été animé la semaine dernière, et pour quel groupe, se fait en
-            une recherche.
+            Grands jeux du soir, instants apéro, quiz, dingbats, concours, escape game, karaoké.
+            L'animateur ouvre la catégorie qui correspond au créneau qu'il doit remplir, et arrive
+            directement sur le formulaire de configuration.
           </p>
         </div>
-        <figure class="shot" style="margin-top:20px">
-          <img src="assets/img/jeux/fiche.jpg" alt="Fiche animateur imprimable d'un escape game : règle, minutage, public, nombre d'items, puis les étapes avec leurs indices et leurs solutions." loading="lazy">
-          <figcaption>La fiche animateur d'un escape game : le déroulé, le minutage, puis chaque étape avec son indice et sa solution.</figcaption>
+        <figure class="shot" style="margin-top:22px">
+          <img src="assets/img/animation/app-accueil.jpg" alt="Accueil d'AnimApp : sept cartes de catégories d'activités, colorées, avec un bouton Créer sur chacune." loading="lazy">
+          <figcaption>L'accueil : une carte par catégorie, chacune menant à son formulaire.</figcaption>
         </figure>
       </section>
 
       <section>
         <div class="section-rule">
-          <h3>Je ne code pas vingt jeux. J'en code trois formes.</h3>
+          <h3>On décrit le groupe qu'on a en face</h3>
           <span class="line"></span>
         </div>
         <div class="prose">
           <p>
-            La règle d'un jeu — comment on y joue — n'a pas besoin d'être générée : elle est fixe,
-            et l'animateur la connaît. Ce qui lui manque, c'est le <strong>contenu</strong>. Or vingt
-            jeux différents ne produisent que quelques formes de contenu.
+            C'est ici que se joue l'adaptation au groupe : le thème, l'âge du public, <strong>le
+            nombre de participants</strong>, la durée disponible, le niveau de difficulté et
+            l'ambiance recherchée. Une activité pour trente adultes sur deux heures ne ressemble
+            pas à la même pour douze enfants sur trente minutes — l'outil en tient compte avant
+            de produire quoi que ce soit.
           </p>
         </div>
-        <div class="grid-3" style="margin-top:20px">
-          <div class="cell">
-            <span class="k">question</span>
-            <p>Question, quatre propositions, la bonne réponse, une anecdote.<br>
-              <em>Quiz express, quiz des minis, quiz à thème, speed quiz.</em></p>
-          </div>
-          <div class="cell">
-            <span class="k">enigme</span>
-            <p>Énoncé, solution, indice.<br>
-              <em>Dingbats, personnage mystère, devinettes, anagrammes, escape game.</em></p>
-          </div>
-          <div class="cell">
-            <span class="k">vrai_faux</span>
-            <p>Affirmation, verdict, explication.<br>
-              <em>Le scoop, incroyable mais vrai.</em></p>
-          </div>
-        </div>
-        <p class="note" style="margin-top:20px">
-          <strong>Ajouter un format, c'est une ligne en base et un gabarit de prompt — zéro ligne
-          de Python.</strong> Ajouter une primitive, ça c'est du code. Cette frontière entre ce qui
-          se configure et ce qui se développe est le point d'architecture du projet.
-        </p>
-      </section>
-
-      <section>
-        <div class="section-rule">
-          <h3>Rien n'entre en base sans avoir passé les deux niveaux</h3>
-          <span class="line"></span>
-        </div>
-        <div class="grid-3">
-          <div class="cell">
-            <span class="k">Niveau 1 — le code</span>
-            <p>
-              Gratuit, instantané, certain, et exécuté <em>en premier</em> : ce qu'il rejette n'a
-              coûté aucun appel de modèle. Exactement quatre propositions, aucun doublon, la bonne
-              réponse présente une fois et une seule ; la solution d'une énigme absente de son
-              énoncé et de son indice.
-            </p>
-          </div>
-          <div class="cell">
-            <span class="k">Niveau 2 — le juge</span>
-            <p>
-              Un second appel, qui ne tranche <em>que</em> ce que le code ne peut pas trancher :
-              exactitude factuelle et adéquation au public. Un juge injoignable rejette tout le
-              lot — du contenu non contrôlé ne doit jamais passer par défaut.
-            </p>
-          </div>
-          <div class="cell">
-            <span class="k">Le taux de rejet est affiché</span>
-            <p>
-              L'application mesure, format par format, la part de ce que le modèle produit et que
-              la validation refuse. Au-delà de 20 %, le format passe sur un modèle plus capable.
-              Un outil qui ne mesure pas ses propres échecs ne prouve rien.
-            </p>
-          </div>
-        </div>
-        <p class="note" style="margin-top:20px">
-          <strong>La comparaison se fait mot à mot, pas par sous-chaîne.</strong> Sinon la solution
-          « or » est détectée dans le mot « corps » et toutes les énigmes sont rejetées à tort.
-          C'est la première fonction couverte par les tests, et c'est un bug qui m'a appris à
-          écrire le test avant la règle.
-        </p>
-      </section>
-
-      <section>
-        <div class="section-rule">
-          <h3>Ce que la salle voit</h3>
-          <span class="line"></span>
-        </div>
-        <div class="shot-grid">
-          <figure class="shot">
-            <img src="assets/img/jeux/projection.jpg" alt="Mode projection : une question et ses quatre propositions en grand, sur fond sombre." loading="lazy">
-            <figcaption>Mode projection : gros texte, fond sombre, navigation aux flèches. Le fond reste sombre parce qu'on projette dans une salle.</figcaption>
-          </figure>
-          <figure class="shot">
-            <img src="assets/img/jeux/projection-escape.jpg" alt="Une étape d'escape game projetée, avec son indice." loading="lazy">
-            <figcaption>Une étape d'escape game : les énigmes se résolvent dans l'ordre, chacune ouvre la suivante.</figcaption>
-          </figure>
-        </div>
-        <figure class="shot" style="margin-top:18px">
-          <img src="assets/img/jeux/jeu.jpg" alt="La page d'un jeu enregistré : ses étiquettes, la règle, puis le contenu item par item." loading="lazy">
-          <figcaption>La page d'un jeu enregistré, d'où l'on lance la projection ou l'on imprime la fiche animateur.</figcaption>
+        <figure class="shot" style="margin-top:22px">
+          <img src="assets/img/animation/app-generation.jpg" alt="Formulaire de génération : thème, âge du public, nombre de participants, durée, niveau de difficulté, ambiance recherchée." loading="lazy">
+          <figcaption>Le formulaire : six réglages qui décrivent la situation réelle, puis « Générer l'activité ».</figcaption>
         </figure>
       </section>
 
       <section>
         <div class="section-rule">
-          <h3>Sous le capot</h3>
+          <h3>Ce qui sort : une activité entière, pas un texte à retravailler</h3>
           <span class="line"></span>
         </div>
-        <div class="grid-3">
-          <div class="cell">
-            <span class="k">Pile</span>
-            <p>Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, Alembic. Interface en Jinja2 et
-              JavaScript natif. Pas de front Next.js : ici, l'objet de la démonstration est le
-              back-end.</p>
-          </div>
-          <div class="cell">
-            <span class="k">Tests</span>
-            <p>171 tests sous pytest, joués à chaque push par GitHub Actions — dont 21 contre un
-              vrai Postgres, parce que les tableaux, le <span class="mono">jsonb</span> et
-              l'opérateur de contenance ne s'émulent pas en SQLite.</p>
-          </div>
-          <div class="cell">
-            <span class="k">Coût</span>
-            <p>Haiku 4.5 pour la génération comme pour le juge : sur une sortie JSON fortement
-              contrainte, il suffit. Le déterministe passe avant le juge, et un jeu déjà en base
-              est resservi plutôt que régénéré.</p>
-          </div>
+        <div class="prose">
+          <p>
+            Titre, résumé, matériel nécessaire, règles du jeu. Une barre d'onglets donne accès aux
+            autres facettes — déroulé, conseils, quiz, slides, fiches, playlist — et les boutons
+            <strong>Régénérer</strong>, <strong>Modifier</strong>, <strong>Sauvegarder</strong>,
+            <strong>Imprimer</strong> et <strong>Diaporama</strong> prennent la suite. C'est
+            sauvegarder qui fait la traçabilité : l'activité reste, avec ses réglages.
+          </p>
         </div>
+        <figure class="shot" style="margin-top:22px">
+          <img src="assets/img/animation/app-resultat.jpg" alt="Résultat généré : titre, résumé, matériel nécessaire et règles, avec une barre d'onglets et des boutons d'action." loading="lazy">
+          <figcaption>Le résultat, avec ses onglets et ses actions. Ici un quiz sur le cinéma des années 80.</figcaption>
+        </figure>
       </section>
 
-      <p class="disclaimer">
-        <b>Pas de démonstration jouable sur cette page :</b> l'application a besoin d'un serveur
-        Python, d'une base Postgres et d'une clé d'API — trois choses qu'une page statique n'a pas.
-        Le dépôt est public et démarre en une commande, <span class="mono">docker compose up</span>.
+      <section>
+        <div class="section-rule">
+          <h3>Le déroulé minuté, étape par étape</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            C'est la partie qui sert vraiment le jour J. Chaque étape est numérotée, minutée et
+            décrite : accueil, annonce des règles, manches successives, correction, finale,
+            remise des lots. C'est aussi ce qui permet, après coup, de savoir précisément ce qui
+            a été animé et où ça a coincé.
+          </p>
+        </div>
+        <figure class="shot" style="margin-top:22px">
+          <img src="assets/img/animation/app-deroule.jpg" alt="Onglet Déroulé : les étapes numérotées de l'activité, chacune avec sa durée et sa description." loading="lazy">
+          <figcaption>Le déroulé minuté — l'ossature que l'animateur suit, et qu'il peut compléter.</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <div class="section-rule">
+          <h3>Et de quoi projeter devant le groupe</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            Un mode plein écran fabrique le diaporama de l'activité : écran d'accueil, consignes,
+            questions. Rien à préparer sous PowerPoint la veille au soir.
+          </p>
+        </div>
+        <figure class="shot" style="margin-top:22px">
+          <img src="assets/img/animation/app-diaporama.jpg" alt="Mode diaporama plein écran : écran de bienvenue de l'activité, projeté en grand." loading="lazy">
+          <figcaption>Le mode diaporama, prêt à être projeté.</figcaption>
+        </figure>
+      </section>
+
+      <p class="note">
+        <strong>Ce que ce projet m'a appris.</strong> Décrire un besoin assez précisément pour
+        qu'un outil le prenne en charge — l'âge, le nombre, la durée, l'ambiance — et accepter
+        que ce qui sort soit une base, pas un livrable fini. L'animateur reste celui qui décide.
       </p>
 
     </div>
