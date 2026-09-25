@@ -1214,3 +1214,70 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   line-height: 1.5;
   color: var(--ink-2);
 }
+
+
+/* ---------- planche 06 — les outils ---------- */
+
+.outils {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 30px 28px;
+}
+.outil {
+  --marque: var(--marque-clair, var(--ink));
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-top: 15px;
+  border-top: 2px solid var(--marque, var(--ink));
+}
+.outil-logo {
+  width: 30px;
+  height: 30px;
+  display: block;
+  fill: var(--marque, var(--ink));
+  color: var(--marque, var(--ink));
+  margin-bottom: 3px;
+}
+/* Faute de logo libre, un monogramme : il ne prétend pas être la marque. */
+.outil-mono {
+  display: grid;
+  place-items: center;
+  border: 1.5px solid currentColor;
+  border-radius: 7px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-variation-settings: "wght" 700;
+  letter-spacing: .02em;
+}
+.outil h4 { font-size: 16px; font-variation-settings: "wght" 650; letter-spacing: -.01em; }
+.outil p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.outil-preuve {
+  margin-top: auto;
+  padding-top: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--accent-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-wash);
+  align-self: flex-start;
+}
+.outil-preuve:hover { border-bottom-color: var(--accent); }
+
+/* Plusieurs couleurs de marque sont trop sombres pour le fond du thème
+   sombre. Chaque carte porte donc sa variante éclaircie, toutes vérifiées
+   au-dessus de 5:1 sur le fond, plutôt qu'un aplat d'encre qui effacerait
+   les neuf couleurs d'un coup. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .outil { --marque: var(--marque-sombre, var(--ink)); }
+}
+:root[data-theme="dark"] .outil { --marque: var(--marque-sombre, var(--ink)); }
