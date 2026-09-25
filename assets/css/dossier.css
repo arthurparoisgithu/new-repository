@@ -1318,6 +1318,7 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   font-variation-settings: "wght" 600;
   margin-left: 2px;
 }
+.cachet-haut,
 .cachet-mot {
   font-family: var(--mono);
   font-size: 10.5px;
@@ -1325,6 +1326,8 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   text-transform: uppercase;
   color: var(--ink-2);
 }
+/* Le chiffre est le cœur du cachet : c'est lui qu'on lit de loin. */
+.cachet-haut { margin-bottom: 2px; }
 
 @media (max-width: 900px) {
   .lettre { grid-template-columns: minmax(0, 1fr); gap: 26px; }
