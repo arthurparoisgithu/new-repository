@@ -1286,28 +1286,6 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   margin: 0 0 -16px;
 }
 
-/* ---------- planche 07 — formation ---------- */
-
-/* Quatre cellules dans une grille de trois laissent une orpheline :
-   sur large, on les range deux par deux. */
-@media (min-width: 900px) {
-  .grid-3.paire { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-/* Une adresse de chaîne, pas un bouton : elle se lit comme la preuve
-   qu'on peut aller vérifier. */
-.veille-lien {
-  margin-top: auto;
-  padding-top: 4px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--accent-ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--accent-wash);
-  align-self: start;
-}
-.veille-lien:hover { border-bottom-color: var(--accent); }
-
 
 @page { size: A4; margin: 10mm 10mm; }
 
