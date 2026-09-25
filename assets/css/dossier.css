@@ -536,7 +536,9 @@ h4 {
 .stack-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font-family: var(--mono); font-size: 10.5px; padding: 3px 8px; border: 1px solid var(--rule); border-radius: 3px; color: var(--ink-2); background: var(--surface-2); }
 
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 1px; background: var(--rule); border-top: 1px solid var(--rule); }
+/* auto-fit, pas auto-fill : les pistes vides s'effondrent et les cinq vignettes
+   occupent toute la largeur de la carte, qui n'a plus de corps sous elles. */
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 1px; background: var(--rule); border-top: 1px solid var(--rule); }
 .gallery img { aspect-ratio: 1 / 1; object-fit: cover; width: 100%; background: var(--surface-2); }
 
 .note {
@@ -1294,6 +1296,19 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 }
 .lettre-texte { display: grid; gap: 26px; min-width: 0; }
 
+/* Le panneau annonce, la plaque certifie. Le triangle est la seule touche
+   de couleur du bloc : un panneau d'avertissement gris n'avertit personne. */
+.cachet-bloc {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+.cachet-panneau {
+  width: 40px;
+  height: auto;
+  color: var(--accent-ink);
+}
+
 /* Un cachet, pas un badge : encre sur papier, aucune couleur d'accent. */
 .cachet {
   display: flex;
@@ -1331,5 +1346,17 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 
 @media (max-width: 900px) {
   .lettre { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-  .cachet { justify-self: start; }
+  .cachet-bloc { justify-self: start; justify-items: start; }
+}
+
+/* ---------- sur-titre ---------- */
+
+/* Se lit avant le h2 qu'il coiffe : mono, capitales, accent. */
+.sur-titre {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  margin: 0 0 -16px;
 }
