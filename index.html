@@ -121,10 +121,17 @@
             </p>
           </div>
           </div>
-          <aside class="cachet" aria-label="Texte certifié 100 % humain.">
-            <span class="cachet-haut">texte certifié</span>
-            <span class="cachet-nombre">100<small>%</small></span>
-            <span class="cachet-mot">humain</span>
+          <aside class="cachet-bloc" aria-label="Attention : texte certifié 100 % humain.">
+            <svg class="cachet-panneau" viewBox="0 0 52 46" role="img" aria-hidden="true" focusable="false">
+              <path d="M26 4 L49 42 H3 Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round"/>
+              <path d="M26 17 V28" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+              <circle cx="26" cy="35" r="2.1" fill="currentColor"/>
+            </svg>
+            <div class="cachet">
+              <span class="cachet-haut">texte certifié</span>
+              <span class="cachet-nombre">100<small>%</small></span>
+              <span class="cachet-mot">humain</span>
+            </div>
           </aside>
         </div>
 
@@ -353,7 +360,7 @@
     <div class="stack">
 
       <header class="stack-tight">
-        <h2 id="t-sites">Ici-bas siègent deux sites, mais un même projet pilote</h2>
+        <h2 id="t-sites">Attention&nbsp;! Ci-dessous, deux sites mais un même projet</h2>
       </header>
 
       <!-- ─── WebReset ─── -->
@@ -392,38 +399,6 @@
             <p class="mock-caption">Aperçu reconstitué à partir des jetons de design du projet — les images du site sont hébergées hors de ce dépôt.</p>
           </div>
         </div>
-        <div class="project-body">
-          <div class="pb-col">
-            <h4>Le problème</h4>
-            <p>
-              Les sites de cabinets sont commandés par des associés et validés par des associés.
-              Ils décrivent l'organigramme, l'histoire, les valeurs — et laissent le futur client
-              sans chemin vers la prise de contact.
-            </p>
-          </div>
-          <div class="pb-col">
-            <h4>Ce que j'ai construit</h4>
-            <ul>
-              <li>Page unique éditoriale : manifeste, offre pilote, méthode en quatre jours, conformité ordinale</li>
-              <li>Trois études de cas avec comparateurs avant / après au curseur</li>
-              <li>Journal : trois articles de fond sourcés (charte CSN, prix d'une refonte, fuites de conversion)</li>
-              <li>Audit gratuit en trois étapes et module d'avis clients, tous deux persistés en base</li>
-            </ul>
-          </div>
-          <div class="pb-col">
-            <h4>Technique</h4>
-            <div class="stack-list">
-              <span class="chip">Next.js 14</span><span class="chip">App Router</span>
-              <span class="chip">TypeScript</span><span class="chip">Tailwind</span>
-              <span class="chip">Prisma</span><span class="chip">PostgreSQL</span>
-              <span class="chip">Framer Motion</span><span class="chip">API de notification</span>
-            </div>
-            <p style="margin-top:6px">
-              Trois tables : demandes de contact, demandes d'audit, avis clients.
-              Notifications transactionnelles à la soumission.
-            </p>
-          </div>
-        </div>
       </article>
 
       <!-- ─── Thibaud Chiffoleau ─── -->
@@ -454,37 +429,6 @@
             <img src="assets/img/kine/cabinet-2.jpg" alt="Salle de réathlétisation du cabinet : sol tatami, haltères et kettlebells.">
           </div>
         </div>
-        <div class="project-body">
-          <div class="pb-col">
-            <h4>Le problème</h4>
-            <p>
-              Un kiné qui n'a pas de site n'existe que comme une ligne dans une liste. Le patient qui cherche
-              « kiné épaule Nantes » ne voit aucune raison de choisir un cabinet plutôt qu'un autre.
-            </p>
-          </div>
-          <div class="pb-col">
-            <h4>Ce que j'ai construit</h4>
-            <ul>
-              <li>Quinze routes, dont quatre pages de spécialité rédigées depuis le symptôme du patient</li>
-              <li>Huit articles de conseils, en route dynamique</li>
-              <li>Données structurées par page : <span class="mono">Physician</span>, <span class="mono">LocalBusiness</span>, <span class="mono">FAQPage</span>, <span class="mono">Article</span></li>
-              <li>Carte du cabinet en MapLibre, bouton de rendez-vous présent sur toutes les pages</li>
-            </ul>
-          </div>
-          <div class="pb-col">
-            <h4>Technique</h4>
-            <div class="stack-list">
-              <span class="chip">Next.js 14</span><span class="chip">Prisma</span>
-              <span class="chip">PostgreSQL</span><span class="chip">Tailwind</span>
-              <span class="chip">MapLibre</span><span class="chip">JSON-LD</span>
-              <span class="chip">sitemap / robots dynamiques</span>
-            </div>
-            <p style="margin-top:6px">
-              L'intégration Doctolib refuse d'être encadrée (<span class="mono">X-Frame-Options</span>) :
-              le bouton s'ouvre donc dans un onglet, plutôt que de laisser un cadre vide en production.
-            </p>
-          </div>
-        </div>
         <div class="gallery">
           <img src="assets/img/kine/portrait-thibaud.jpg" alt="Portrait du praticien.">
           <img src="assets/img/kine/cabinet-1.jpg" alt="Salle de soin du cabinet.">
@@ -493,6 +437,24 @@
           <img src="assets/img/kine/spine-anatomy.jpg" alt="Planche anatomique du rachis.">
         </div>
       </article>
+
+      <section>
+        <div class="section-rule">
+          <h3>Et après le site&nbsp;?</h3>
+          <span class="line"></span>
+        </div>
+        <div class="prose">
+          <p>
+            Le but est ensuite de diriger ces prospects vers l'automatisation de leurs outils
+            (comptabilité, relance des mails, publications LinkedIn, posts sur les réseaux) en leur
+            présentant des solutions d'automatisation IA.
+          </p>
+          <p>
+            Sur la partie suivante, je vous montre donc un agent que j'ai développé pour moi dans le
+            cadre de ce projet. <a href="#agents" data-go="agents">Le voir, planche 04 →</a>
+          </p>
+        </div>
+      </section>
 
     </div>
   </section>
@@ -509,7 +471,8 @@
     <div class="stack">
 
       <header class="stack-tight">
-        <h2 id="t-n8n">Les fonctions n8n, expliquées par l'exemple</h2>
+        <p class="sur-titre">n8n, la base de l'automatisation</p>
+        <h2 id="t-n8n">Les fonctions n8n, expliquées simplement</h2>
         <p class="lede">
           La documentation de n8n liste une centaine de fonctions et n'en montre presque aucune à l'œuvre.
           Lors de mon apprentissage de la plateforme, retenir chacune d'entre elles était donc un vrai
@@ -536,11 +499,6 @@
             la couleur indique le type de donnée qui circule à chaque étape, et chaque maillon est
             commenté séparément.
           </p>
-          <p>
-            C'est cette décomposition qui fait la différence entre recopier une expression et la
-            comprendre. Un débutant qui voit <em>un tableau d'objets devenir un tableau de nombres
-            puis un seul nombre</em> n'a plus besoin qu'on lui explique la suivante.
-          </p>
         </div>
         <pre class="code" style="margin-top:20px">{{ <b>$json.achats</b>.<b>pluck</b>("montant").<b>sum</b>() }}
 <i>  │            │                │</i>
@@ -562,14 +520,6 @@
               <span class="mono">$input.all()</span>, <span class="mono">$now</span>,
               <span class="mono">$itemIndex</span>, <span class="mono">$execution.id</span> —
               douze mots-clés, chacun avec le cas où il devient indispensable.
-            </p>
-          </div>
-          <div class="cell">
-            <span class="k">Six enchaînements utiles</span>
-            <p>
-              Nettoyer un texte récupéré sur une page, fabriquer un identifiant sans accents,
-              totaliser sans boucle, filtrer sur une ancienneté, se protéger d'un champ absent,
-              découper un envoi en lots de cinquante.
             </p>
           </div>
           <div class="cell">
