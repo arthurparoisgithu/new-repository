@@ -1411,3 +1411,90 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   white-space: nowrap;
   margin-left: 6px;
 }
+
+/* ---------- le mot de la fin ---------- */
+
+/* Le panneau s'inverse : il prend l'encre du thème pour fond et le papier
+   pour texte. En clair il est sombre, en sombre il est clair ; dans les deux
+   cas il tranche sur la page et annonce que le dossier s'arrête ici.
+   L'accent doit s'inverser avec lui, d'où les deux jetons locaux : la
+   variante claire sur fond sombre, la foncée sur fond clair. */
+.mot-fin {
+  --mot-accent: #FF8BA6;
+  --mot-doux:   #9AA1AB;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 6px;
+  padding: 52px 54px 46px;
+  display: grid;
+  gap: 26px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .mot-fin { --mot-accent: #A9254A; --mot-doux: #545A63; }
+}
+:root[data-theme="dark"] .mot-fin { --mot-accent: #A9254A; --mot-doux: #545A63; }
+
+.mot-fin-k {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mot-accent);
+}
+.mot-fin h3 {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.6vw, 29px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -.01em;
+}
+.mot-fin-corps {
+  display: grid;
+  gap: 18px;
+  max-width: 62ch;
+}
+.mot-fin-corps p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.68;
+}
+.mot-fin-salut { color: var(--mot-doux); }
+
+.mot-fin-signature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+  padding-top: 22px;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
+}
+.mot-fin-nom {
+  font-size: 23px;
+  font-variation-settings: "wdth" 104, "wght" 620;
+  letter-spacing: -.015em;
+}
+.mot-fin-contact { font-family: var(--mono); font-size: 12px; color: var(--mot-doux); }
+.mot-fin-contact a { color: var(--mot-accent); text-decoration: none; }
+.mot-fin-contact a:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .mot-fin { padding: 36px 26px 32px; }
+}
+
+/* La mise en scène : le panneau monte à l'entrée dans le champ, ses blocs
+   l'un après l'autre. Purement décoratif, donc désactivé pour qui demande
+   moins de mouvement. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-anime] > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .55s ease, transform .55s cubic-bezier(.2, .7, .3, 1);
+  }
+  [data-anime].vu > * { opacity: 1; transform: none; }
+  [data-anime].vu > :nth-child(2) { transition-delay: .09s; }
+  [data-anime].vu > :nth-child(3) { transition-delay: .18s; }
+  [data-anime].vu > :nth-child(4) { transition-delay: .27s; }
+}
