@@ -1286,6 +1286,24 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   margin: 0 0 -16px;
 }
 
+/* ---------- deux captures côte à côte ---------- */
+
+/* Deux états d'un même outil se comparent côte à côte, pas l'un sous l'autre. */
+.duo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 26px 24px;
+  align-items: start;
+}
+/* Une capture de page entière et une capture d'écran de projection n'ont pas
+   le même format : on les ramène au même cadre, cadré en haut, sinon la
+   première écrase la seconde. */
+.duo .shot img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+}
+
 
 @page { size: A4; margin: 10mm 10mm; }
 
