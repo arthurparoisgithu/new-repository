@@ -10,7 +10,7 @@
 
 const DOSSIERS = {
   notaire: {
-    label: "Étude notariale — Nantes (44)",
+    label: "Étude notariale, Nantes (44)",
     entree: { url: "https://www.etude-xxxxx-nantes.fr", metier: "notaire", ville: "Nantes", email: "contact@etude-xxxxx-nantes.fr" },
     dossier: "notaire_20260118_4417",
     faits: {
@@ -35,10 +35,10 @@ const DOSSIERS = {
     agents: {
       visibilite: {
         score: 28,
-        pensee: "Le title ne contient ni le métier, ni la ville. Sur « notaire Nantes », rien ne rattache cette page à la requête. Je regarde ensuite si la description et le H1 rattrapent — ce n'est pas le cas.",
+        pensee: "Le title ne contient ni le métier, ni la ville. Sur « notaire Nantes », rien ne rattache cette page à la requête. Je regarde ensuite si la description et le H1 rattrapent, ce n'est pas le cas.",
         synthese: "La page ne se déclare nulle part comme une étude notariale nantaise.",
         problemes: [
-          { gravite: "critique", constat: "Le title est « Bienvenue sur le site de l'Étude » : ni métier, ni ville, ni nom d'étude.", signal: "title", correctif: "Réécrire en « Notaire à Nantes — Étude … | Immobilier, succession, famille »." },
+          { gravite: "critique", constat: "Le title est « Bienvenue sur le site de l'Étude » : ni métier, ni ville, ni nom d'étude.", signal: "title", correctif: "Réécrire en « Notaire à Nantes, Étude … | Immobilier, succession, famille »." },
           { gravite: "critique", constat: "Aucune meta description. Google compose alors lui-même l'extrait affiché, à partir du premier texte venu.", signal: "metaDescription", correctif: "Rédiger 150 caractères qui annoncent la spécialité et la ville." },
           { gravite: "notable", constat: "Le H1 « Notaires associés » ne dit ni ce qui est proposé, ni où.", signal: "h1", correctif: "Un H1 unique qui reprend la requête réelle du visiteur." },
           { gravite: "notable", constat: "Pas de balise viewport et 14 images sans texte alternatif : la page n'a pas été pensée pour le mobile.", signal: "viewport, nbImagesSansAlt", correctif: "Ajouter le viewport, décrire les images." }
@@ -50,7 +50,7 @@ const DOSSIERS = {
         synthese: "Un visiteur convaincu n'a aucun moyen simple de vous joindre depuis son téléphone.",
         problemes: [
           { gravite: "critique", constat: "Aucun numéro cliquable (href=\"tel:\"). Sur mobile, appeler suppose de recopier le numéro à la main.", signal: "telCliquable", correctif: "Rendre le numéro cliquable et le remonter dans l'en-tête." },
-          { gravite: "critique", constat: "Ni formulaire, ni prise de rendez-vous en ligne. La seule voie de contact est un lien mailto.", signal: "formulaire, priseRdvEnLigne", correctif: "Un formulaire court — objet, délai souhaité, téléphone." },
+          { gravite: "critique", constat: "Ni formulaire, ni prise de rendez-vous en ligne. La seule voie de contact est un lien mailto.", signal: "formulaire, priseRdvEnLigne", correctif: "Un formulaire court (objet, délai souhaité, téléphone)." },
           { gravite: "notable", constat: "381 mots visibles pour trois rubriques : la page décrit l'étude, elle ne propose jamais rien.", signal: "motsVisibles, h2", correctif: "Un appel à l'action dès le premier écran." },
           { gravite: "notable", constat: "Les trois titres de section sont institutionnels (« L'étude », « Nos actualités »), aucun ne nomme un besoin de client.", signal: "h2", correctif: "Nommer les rubriques par la situation du client : vendre, hériter, se marier." }
         ]
@@ -64,32 +64,32 @@ const DOSSIERS = {
           { gravite: "notable", constat: "Aucun gestionnaire de consentement détecté (ni Axeptio, ni Tarteaucitron, ni Didomi).", signal: "cookiesBanniere", correctif: "Recueillir le consentement avant tout dépôt de traceur." },
           { gravite: "mineur", constat: "Mentions légales présentes : ce point est acquis.", signal: "mentionsLegales", correctif: "Vérifier qu'elles nomment la chambre de rattachement." }
         ],
-        aVerifier: ["Nom de domaine et intitulé du site au regard de la charte de nommage du CSN — à faire valider par la chambre départementale."]
+        aVerifier: ["Nom de domaine et intitulé du site au regard de la charte de nommage du CSN, à faire valider par la chambre départementale."]
       }
     },
     superviseur: {
       scoreGlobal: 31,
       route: "Opportunité forte",
       verdict: "Le site existe, il ne travaille pas. Trois correctifs, dont deux tiennent en une matinée, changent la nature du problème.",
-      pensee: "Visibilité et conversion pointent la même cause : la page a été écrite pour l'étude, pas pour le visiteur. Je fusionne. Puis je classe par impact divisé par effort — le téléphone cliquable passe devant la refonte sémantique, parce qu'il coûte trente minutes.",
+      pensee: "Visibilité et conversion pointent la même cause : la page a été écrite pour l'étude, pas pour le visiteur. Je fusionne. Puis je classe par impact divisé par effort : le téléphone cliquable passe devant la refonte sémantique, parce qu'il coûte trente minutes.",
       chantiers: [
         { titre: "Rendre le téléphone utilisable depuis un mobile", pourquoi: "Aujourd'hui, un visiteur qui veut appeler doit recopier le numéro. C'est la fuite la moins coûteuse à colmater de tout l'audit.", effort: "30 min", impact: "fort" },
         { titre: "Donner à la page d'accueil une adresse claire", pourquoi: "Title, description et H1 doivent nommer le métier et la ville. Sans cela, l'étude reste invisible sur la requête que tapent réellement ses futurs clients.", effort: "2 h", impact: "fort" },
-        { titre: "Ouvrir une voie de contact écrite", pourquoi: "Un formulaire court capte les demandes qui n'appelleront jamais — successions, questions sensibles, horaires de bureau.", effort: "1 j", impact: "moyen" }
+        { titre: "Ouvrir une voie de contact écrite", pourquoi: "Un formulaire court capte les demandes qui n'appelleront jamais (successions, questions sensibles, horaires de bureau).", effort: "1 j", impact: "moyen" }
       ],
       aVerifierAvecLOrdre: ["Nom de domaine et intitulé du site au regard de la charte de nommage du CSN."]
     }
   },
 
   avocat: {
-    label: "Cabinet d'avocats — Rennes (35)",
+    label: "Cabinet d'avocats, Rennes (35)",
     entree: { url: "https://www.cabinet-xxxxx-avocats.fr", metier: "avocat", ville: "Rennes", email: "contact@cabinet-xxxxx-avocats.fr" },
     dossier: "avocat_20260118_4418",
     faits: {
       statut: 200,
       https: true,
       poidsKo: 168,
-      title: "Cabinet XXXXX & Associés — Avocats en droit social à Rennes",
+      title: "Cabinet XXXXX & Associés, Avocats en droit social à Rennes",
       metaDescription: "Cabinet d'avocats en droit social à Rennes. Accompagnement des employeurs et des salariés : ruptures, contentieux prud'homal, négociation.",
       viewport: true,
       h1: ["Avocats en droit social à Rennes"],
@@ -116,7 +116,7 @@ const DOSSIERS = {
       },
       conversion: {
         score: 64,
-        pensee: "Le téléphone est cliquable, le formulaire existe : le chemin de contact est ouvert. Ce qui coince est ailleurs — 1 243 mots avant la prise de contact, et aucune manière de réserver un créneau sans attendre une réponse.",
+        pensee: "Le téléphone est cliquable, le formulaire existe : le chemin de contact est ouvert. Ce qui coince est ailleurs : 1 243 mots avant la prise de contact, et aucune manière de réserver un créneau sans attendre une réponse.",
         synthese: "On peut vous joindre ; on ne peut pas encore réserver.",
         problemes: [
           { gravite: "notable", constat: "Aucune prise de rendez-vous en ligne. Toute demande attend une réponse humaine, y compris le samedi.", signal: "priseRdvEnLigne", correctif: "Ouvrir quelques créneaux de premier entretien réservables." },
@@ -126,20 +126,20 @@ const DOSSIERS = {
       },
       conformite: {
         score: 70,
-        pensee: "Politique de confidentialité présente, mentions légales présentes, discours factuel sans mention comparative ni laudative — conforme à l'esprit de l'article 10 du RIN. Reste le consentement aux traceurs.",
+        pensee: "Politique de confidentialité présente, mentions légales présentes, discours factuel sans mention comparative ni laudative, conforme à l'esprit de l'article 10 du RIN. Reste le consentement aux traceurs.",
         synthese: "Le discours tient ; le consentement aux cookies manque.",
         problemes: [
           { gravite: "notable", constat: "Aucun gestionnaire de consentement détecté alors que la page charge des ressources tierces.", signal: "cookiesBanniere", correctif: "Installer un bandeau de consentement avant dépôt." },
           { gravite: "mineur", constat: "Aucune formulation comparative ou laudative repérée dans le texte visible.", signal: "motsVisibles", correctif: "Point acquis, à préserver lors des prochaines publications." }
         ],
-        aVerifier: ["Mention du barreau de rattachement dans les mentions légales — à confirmer hors page d'accueil."]
+        aVerifier: ["Mention du barreau de rattachement dans les mentions légales, à confirmer hors page d'accueil."]
       }
     },
     superviseur: {
       scoreGlobal: 70,
       route: "Rapport standard",
       verdict: "Un site correct, qui perd des rendez-vous sur la dernière marche plutôt que sur les fondations.",
-      pensee: "Aucun désaccord entre les trois agents : ils décrivent un site sain avec un point de fuite unique, la réservation. Je refuse de proposer une refonte — elle coûterait cher pour un gain marginal.",
+      pensee: "Aucun désaccord entre les trois agents : ils décrivent un site sain avec un point de fuite unique, la réservation. Je refuse de proposer une refonte, elle coûterait cher pour un gain marginal.",
       chantiers: [
         { titre: "Ouvrir la réservation en ligne du premier entretien", pourquoi: "C'est la seule marche qui reste entre un visiteur convaincu et un dossier ouvert. Tout le reste du parcours fonctionne déjà.", effort: "1 j", impact: "fort" },
         { titre: "Remonter contact et honoraires au premier écran", pourquoi: "La transparence sur les honoraires est l'argument le plus rare du secteur : elle est enterrée en cinquième position.", effort: "3 h", impact: "moyen" },
@@ -150,7 +150,7 @@ const DOSSIERS = {
   },
 
   kine: {
-    label: "Cabinet de kinésithérapie — Nantes (44)",
+    label: "Cabinet de kinésithérapie, Nantes (44)",
     entree: { url: "https://www.cabinet-kine-xxxxx.fr", metier: "kinesitherapeute", ville: "Nantes", email: "cabinet@xxxxx.fr" },
     dossier: "kinesitherapeute_20260118_4419",
     faits: {
@@ -203,7 +203,7 @@ const DOSSIERS = {
           { gravite: "notable", constat: "Aucun affichage tarifaire repéré sur la page d'accueil.", signal: "motsVisibles", correctif: "Vérifier la présence de l'affichage des honoraires exigé pour un professionnel de santé conventionné." }
         ],
         aVerifier: [
-          "Affichage des honoraires et du secteur de conventionnement — non vérifiable depuis la page d'accueil.",
+          "Affichage des honoraires et du secteur de conventionnement, non vérifiable depuis la page d'accueil.",
           "Mention du numéro RPPS et du diplôme, à confirmer sur la page « praticiens »."
         ]
       }
@@ -346,28 +346,28 @@ async function run(key) {
   const at = () => clock(Date.now() - t0);
   const alive = () => token === runToken;
 
-  /* 1 — webhook */
+  /* 1 · webhook */
   setNode("webhook", "run", "reçoit");
   let e = entry("Webhook · POST /audit-cabinet", at());
   block(e, JSON.stringify(d.entree, null, 2));
   await sleep(520); if (!alive()) return;
   setNode("webhook", "done", "1 item");
 
-  /* 2 — normalisation */
+  /* 2 · normalisation */
   setNode("code1", "run", "exécute");
   await sleep(430); if (!alive()) return;
   e = entry("Code · Normaliser la demande", at());
   block(e, `dossier : ${d.dossier}\ndomaine : ${d.entree.url.replace(/^https?:\/\//, "")}`);
   setNode("code1", "done", "1 item");
 
-  /* 3 — requête HTTP */
+  /* 3 · requête HTTP */
   setNode("http", "run", "GET…");
   await sleep(900); if (!alive()) return;
   e = entry("HTTP Request · page d'accueil", at());
   block(e, `${d.faits.statut} OK · ${d.faits.poidsKo} Ko reçus`);
   setNode("http", "done", `${d.faits.statut}`);
 
-  /* 4 — extraction des faits */
+  /* 4 · extraction des faits */
   setNode("code2", "run", "analyse");
   await sleep(620); if (!alive()) return;
   e = entry("Code · Extraire les faits mesurables", at());
@@ -376,11 +376,11 @@ async function run(key) {
   block(e, JSON.stringify(d.faits, null, 2));
   setNode("code2", "done", "18 signaux");
 
-  /* 5-7 — trois agents en parallèle */
+  /* 5-7 · trois agents en parallèle */
   const agents = [
-    { id: "agent1", who: "Agent 1 · Visibilité locale", data: d.agents.visibilite, label: "/100 — visibilité" },
-    { id: "agent2", who: "Agent 2 · Conversion", data: d.agents.conversion, label: "/100 — conversion" },
-    { id: "agent3", who: "Agent 3 · Conformité ordinale", data: d.agents.conformite, label: "/100 — conformité" }
+    { id: "agent1", who: "Agent 1 · Visibilité locale", data: d.agents.visibilite, label: "/100 · visibilité" },
+    { id: "agent2", who: "Agent 2 · Conversion", data: d.agents.conversion, label: "/100 · conversion" },
+    { id: "agent3", who: "Agent 3 · Conformité ordinale", data: d.agents.conformite, label: "/100 · conformité" }
   ];
   agents.forEach((a) => setNode(a.id, "run", "raisonne"));
   for (const a of agents) {
@@ -399,12 +399,12 @@ async function run(key) {
     setNode(a.id, "done", a.data.score + "/100");
   }
 
-  /* 8 — fusion */
+  /* 8 · fusion */
   setNode("merge", "run", "fusionne");
   await sleep(430); if (!alive()) return;
   setNode("merge", "done", "3 → 1");
 
-  /* 9 — superviseur */
+  /* 9 · superviseur */
   setNode("agent4", "run", "arbitre");
   const sup = d.superviseur;
   e = entry("Agent 4 · Superviseur", at());
@@ -412,7 +412,7 @@ async function run(key) {
   if (!alive()) return;
   setNode("agent4", "done", sup.scoreGlobal + "/100");
 
-  /* 10 — aiguillage */
+  /* 10 · aiguillage */
   setNode("switch", "run", "évalue");
   await sleep(380); if (!alive()) return;
   setNode("switch", "done", sup.route);
@@ -432,7 +432,7 @@ async function run(key) {
     ? `< 55 → branche « Opportunité forte »\nGmail         : alerte interne à arthur270.parois@gmail.com\nGoogle Sheets : 1 ligne ← ${d.dossier}`
     : `≥ 55 → branche « Rapport standard »\nGmail         : non emprunté\nGoogle Sheets : 1 ligne ← ${d.dossier}`);
 
-  /* 11 — réponse */
+  /* 11 · réponse */
   setNode("respond", "run", "répond");
   await sleep(330); if (!alive()) return;
   setNode("respond", "done", "200");
@@ -469,7 +469,7 @@ async function run(key) {
 
   btn.disabled = false;
   btn.textContent = "Relancer l'exécution";
-  $("#runMeta").textContent = `Dossier ${d.dossier} — exécution terminée en ${((Date.now() - t0) / 1000).toFixed(1)} s`;
+  $("#runMeta").textContent = `Dossier ${d.dossier} · exécution terminée en ${((Date.now() - t0) / 1000).toFixed(1)} s`;
 }
 
 /* ---------- branchement ---------- */
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const txt = await (await fetch(WORKFLOW)).text();
         await navigator.clipboard.writeText(txt);
-        toast("Workflow copié — collez-le dans un canevas n8n vide");
+        toast("Workflow copié, collez-le dans un canevas n8n vide");
       } catch (err) {
         toast("Copie impossible ici : ouvrez le fichier et copiez-le à la main");
       }

@@ -29,7 +29,7 @@
     try {
       donnees = await (await fetch(url)).text();
     } catch (err) {
-      toast("Fichier introuvable — utilisez le lien « Ouvrir »");
+      toast("Fichier introuvable, utilisez le lien « Ouvrir »");
       return;
     }
 
@@ -40,7 +40,7 @@
         toast("Enregistré : " + nom);
       } catch (err) {
         if (err?.code !== "declined") {
-          toast("Enregistrement impossible — ouvrez le fichier dans un onglet");
+          toast("Enregistrement impossible, ouvrez le fichier dans un onglet");
         }
       }
       return;
@@ -61,7 +61,7 @@
     try {
       blob = await (await fetch(url)).blob();
     } catch (err) {
-      toast("Fichier introuvable — utilisez le lien « Ouvrir »");
+      toast("Fichier introuvable, utilisez le lien « Ouvrir »");
       return;
     }
 
@@ -72,7 +72,7 @@
         toast("Enregistré : " + nom);
       } catch (err) {
         if (err?.code !== "declined") {
-          toast("Enregistrement impossible — ouvrez le fichier dans un onglet");
+          toast("Enregistrement impossible, ouvrez le fichier dans un onglet");
         }
       }
       return;
