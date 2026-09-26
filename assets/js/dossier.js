@@ -35,6 +35,23 @@
 
   window.addEventListener("popstate", () => show(location.hash.slice(1), false));
 
+  /* ---------- mise en scène à l'entrée dans le champ ---------- */
+
+  /* Un seul observateur pour tout le dossier : il dévoile un bloc quand il
+     entre, puis l'oublie. Sans IntersectionObserver, tout reste visible. */
+  if ("IntersectionObserver" in window) {
+    const guetteur = new IntersectionObserver((entrees) => {
+      entrees.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("vu");
+        guetteur.unobserve(e.target);
+      });
+    }, { threshold: 0.18 });
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[data-anime]").forEach((el) => guetteur.observe(el));
+    });
+  }
+
   /* ---------- thème ---------- */
 
   const root = document.documentElement;
