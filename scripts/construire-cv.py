@@ -149,8 +149,8 @@ def page(styles_polices: str) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CV — Arthur Parois</title>
-<meta name="description" content="CV d'Arthur Parois — chef de projet digital, automatisation et IA.">
+<title>CV Arthur Parois</title>
+<meta name="description" content="CV d'Arthur Parois, chef de projet digital, automatisation et IA.">
 <!-- Fichier engendré par scripts/construire-cv.py : ne pas modifier à la main,
      le CV se modifie dans l'article .cv de index.html. -->
 {styles_polices}
