@@ -1397,3 +1397,17 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
   object-fit: cover;
   object-position: top center;
 }
+
+/* ---------- portée d'une planche ---------- */
+
+/* Accolée au titre, dans la fonte de service : elle situe, elle ne titre pas. */
+.portee {
+  font-family: var(--mono);
+  font-variation-settings: normal;
+  font-size: 13px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+  margin-left: 6px;
+}
