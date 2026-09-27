@@ -1301,72 +1301,11 @@ ul.xp-list strong { color: var(--ink); font-weight: 600; }
 }
 :root[data-theme="dark"] .outil { --marque: var(--marque-sombre, var(--ink)); }
 
+/* ---------- la lettre ---------- */
 
-/* ---------- la lettre et son cachet ---------- */
-
-.lettre {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 40px;
-  align-items: start;
-}
+/* Une seule colonne depuis que le cachet est retiré : la lettre occupe
+   toute la largeur du texte. */
 .lettre-texte { display: grid; gap: 26px; min-width: 0; }
-
-/* Le panneau annonce, la plaque certifie. Le triangle est la seule touche
-   de couleur du bloc : un panneau d'avertissement gris n'avertit personne. */
-.cachet-bloc {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  /* Décalé vers le bas : aligné sur le haut du texte, le panneau semblait
-     appartenir au titre plutôt qu'à la lettre. */
-  margin-top: 76px;
-}
-.cachet-panneau {
-  width: 40px;
-  height: auto;
-  color: var(--accent-ink);
-}
-
-/* Un cachet, pas un badge : encre sur papier, aucune couleur d'accent. */
-.cachet {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 18px 20px 16px;
-  border: 1.5px solid var(--ink);
-  border-radius: 4px;
-  color: var(--ink);
-  text-align: center;
-  white-space: nowrap;
-}
-.cachet-nombre {
-  font-size: 34px;
-  line-height: 1;
-  font-variation-settings: "wdth" 104, "wght" 680;
-  letter-spacing: -.02em;
-}
-.cachet-nombre small {
-  font-size: 17px;
-  font-variation-settings: "wght" 600;
-  margin-left: 2px;
-}
-.cachet-haut,
-.cachet-mot {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-/* Le chiffre est le cœur du cachet : c'est lui qu'on lit de loin. */
-.cachet-haut { margin-bottom: 2px; }
-
-@media (max-width: 900px) {
-  .lettre { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-  .cachet-bloc { justify-self: start; justify-items: start; margin-top: 0; }
-}
 
 /* ---------- sur-titre ---------- */
 
