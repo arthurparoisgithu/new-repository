@@ -43,70 +43,76 @@ body {{
   font-family: "Archivo", system-ui, sans-serif;
   color: #14161A;
   -webkit-font-smoothing: antialiased;
+  print-color-adjust: exact; -webkit-print-color-adjust: exact;
 }}
 
-.feuille {{
-  width: 210mm; height: 297mm;
-  padding: 26mm 30mm 24mm;
-  display: flex; flex-direction: column;
-}}
+.feuille {{ width: 210mm; height: 297mm; display: flex; flex-direction: column; }}
 
-.entete {{
+/* ---------- le bandeau ---------- */
+
+/* Le même renversement que le mot de la fin du dossier : encre au fond,
+   papier au texte. Une feuille d'adresses se reconnaît de loin. */
+.bandeau {{
+  background: #14161A; color: #F4F5F6;
+  padding: 30mm 26mm 24mm;
+}}
+.bandeau-k {{
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-  color: #868D97;
-  padding-bottom: 12px; border-bottom: 1px solid #DEE1E6;
-  display: flex; justify-content: space-between;
+  font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: #FF8BA6;
+  display: flex; justify-content: space-between; gap: 20px;
 }}
-
-h1 {{
-  margin-top: 30px;
-  font-size: 54px; line-height: 1;
+.bandeau h1 {{
+  margin-top: 22px;
+  font-size: 58px; line-height: .98;
   font-variation-settings: "wdth" 108, "wght" 620;
-  letter-spacing: -.025em;
+  letter-spacing: -.028em;
 }}
-.role {{
-  margin-top: 12px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-  color: #A9254A;
+.filet {{ width: 54px; height: 3px; background: #FF8BA6; margin-top: 20px; }}
+.bandeau .role {{
+  margin-top: 18px;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 17px; line-height: 1.5; color: #C9CDD3;
+  max-width: 46ch;
 }}
 
-/* Deux marges automatiques : l'espace libre se partage entre le haut et le
-   bas, plutôt que de creuser un seul trou au milieu de la page. */
-.liens {{ margin-top: auto; }}
-.lien {{
-  display: block; text-decoration: none; color: inherit;
-  padding: 26px 0; border-top: 2px solid #14161A;
-}}
-.lien {{ border-bottom: 2px solid #14161A; }}
+/* ---------- le corps ---------- */
+
+.corps {{ padding: 22mm 26mm 0; flex: 1; display: flex; flex-direction: column; }}
+
+.lien {{ display: block; text-decoration: none; color: inherit; }}
 .lien-nom {{
-  font-size: 46px; line-height: 1;
+  font-size: 44px; line-height: 1;
   font-variation-settings: "wdth" 104, "wght" 640;
   letter-spacing: -.02em;
 }}
-.lien-et {{
-  font-variation-settings: "wdth" 100, "wght" 420;
-  color: #545A63;
-}}
-.lien-quoi {{
-  margin-top: 8px;
-  font-family: "Newsreader", Georgia, serif;
-  font-size: 15px; line-height: 1.5; color: #545A63;
-  max-width: 54ch;
-}}
+.lien-et {{ font-variation-settings: "wdth" 100, "wght" 420; color: #868D97; }}
 .lien-url {{
-  margin-top: 12px;
+  margin-top: 16px; padding: 12px 15px;
+  border: 1.5px solid #14161A; border-radius: 4px;
+  display: inline-block;
   font-family: "JetBrains Mono", monospace;
-  font-size: 12.5px; color: #A9254A;
-  word-break: break-all;
+  font-size: 13px; color: #A9254A;
 }}
 
+/* Le sommaire reprend la numérotation du rail du dossier. */
+.sommaire {{ margin-top: 30px; border-top: 1px solid #DEE1E6; }}
+.sommaire div {{
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 12.5px 0; border-bottom: 1px solid #EDEFF2;
+  font-size: 14.5px;
+}}
+.sommaire .n {{
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; color: #A9254A; min-width: 22px;
+}}
+.sommaire .quoi {{ margin-left: auto; font-size: 12.5px; color: #868D97; text-align: right; }}
+
 .pied {{
-  margin-top: auto;
-  padding-top: 26px;
+  margin-top: auto; padding: 18px 0 24mm;
   font-family: "JetBrains Mono", monospace;
   font-size: 12px; line-height: 2; color: #545A63;
+  border-top: 2px solid #14161A;
 }}
 .pied b {{ color: #14161A; font-weight: 400; }}
 .pied a {{ color: #545A63; text-decoration: none; }}
@@ -115,29 +121,35 @@ h1 {{
 <body>
 <div class="feuille">
 
-  <div class="entete">
-    <span>Candidature alternance</span>
-    <span>Développement web &amp; IA</span>
+  <div class="bandeau">
+    <p class="bandeau-k"><span>Candidature alternance</span><span>Développement web &amp; IA</span></p>
+    <h1>Arthur Parois</h1>
+    <div class="filet"></div>
+    <p class="role">En reconversion vers le développement web et l'intelligence
+      artificielle. Huit ans au contact du public, puis une année à construire
+      des outils.</p>
   </div>
 
-  <h1>Arthur Parois</h1>
-  <p class="role">En reconversion · Développeur no-code &amp; IA</p>
-
-  <div class="liens">
+  <div class="corps">
     <a class="lien" href="{site}">
       <span class="lien-nom">Book <span class="lien-et">et CV</span></span>
-      <p class="lien-quoi">Six planches&nbsp;: deux sites en ligne, un cours interactif sur les
-        fonctions n8n, un workflow d'audit supervisé par quatre agents et rejouable dans la page,
-        une application pour animateurs, les compétences et la formation. Le CV s'y lit et s'y
-        télécharge.</p>
-      <p class="lien-url">{site}</p>
+      <span class="lien-url">{site}</span>
     </a>
-  </div>
 
-  <p class="pied">
-    <b>06 22 99 86 63</b> · arthur270.parois@gmail.com<br>
-    Dépôts et travaux ouverts&nbsp;: <a href="{depot}">github.com/arthurparoisgithu</a>
-  </p>
+    <div class="sommaire">
+      <div><span class="n">01</span><span>Parcours</span><span class="quoi">la lettre et le CV</span></div>
+      <div><span class="n">02</span><span>Sites web</span><span class="quoi">deux sites en ligne</span></div>
+      <div><span class="n">03</span><span>Automatisation n8n</span><span class="quoi">un cours interactif</span></div>
+      <div><span class="n">04</span><span>Workflow multi-agents</span><span class="quoi">rejouable dans la page</span></div>
+      <div><span class="n">05</span><span>AnimApp</span><span class="quoi">une application en ligne</span></div>
+      <div><span class="n">06</span><span>Compétences et formation</span><span class="quoi">outils et parcours</span></div>
+    </div>
+
+    <p class="pied">
+      <b>06 22 99 86 63</b> · arthur270.parois@gmail.com<br>
+      Dépôts et travaux ouverts&nbsp;: <a href="{depot}">github.com/arthurparoisgithu</a>
+    </p>
+  </div>
 
 </div>
 </body>
