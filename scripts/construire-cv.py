@@ -208,7 +208,7 @@ def main() -> None:
         # 0.94 : le CV est composé plus aéré qu'il ne tient sur une A4, et on
         # le réduit de 6 % plutôt que de resserrer les blancs. C'est l'« ajuster
         # à la page » d'un navigateur ; le texte reste vectoriel et sélectionnable.
-        pg.pdf(path=str(sortie), format="A4", print_background=True, scale=0.94,
+        pg.pdf(path=str(sortie), format="A4", print_background=True, scale=0.93,
                margin={"top": "10mm", "bottom": "10mm", "left": "10mm", "right": "10mm"})
         navigateur.close()
 
