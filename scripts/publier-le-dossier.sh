@@ -26,6 +26,7 @@ fi
 # avant de publier, pour qu'ils ne puissent pas diverger de index.html.
 python3 scripts/construire-cv.py --pdf
 python3 scripts/construire-dossier-pdf.py --pdf
+python3 scripts/construire-carte.py
 
 echo "→ collecte des fichiers servis"
 for chemin in index.html cv.html dossier.html assets demos; do
