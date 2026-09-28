@@ -22,12 +22,13 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# Le CV est engendré : on le régénère avant de publier, pour qu'il ne puisse
-# pas diverger de l'article .cv de index.html.
+# Le CV et la version imprimable du dossier sont engendrés : on les régénère
+# avant de publier, pour qu'ils ne puissent pas diverger de index.html.
 python3 scripts/construire-cv.py --pdf
+python3 scripts/construire-dossier-pdf.py --pdf
 
 echo "→ collecte des fichiers servis"
-for chemin in index.html cv.html assets demos; do
+for chemin in index.html cv.html dossier.html assets demos; do
   mkdir -p "$ATELIER/$(dirname "$chemin")"
   cp -r "$chemin" "$ATELIER/$(dirname "$chemin")/"
 done
