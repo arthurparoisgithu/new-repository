@@ -79,11 +79,15 @@ h1 {{
   display: block; text-decoration: none; color: inherit;
   padding: 26px 0; border-top: 2px solid #14161A;
 }}
-.lien:last-of-type {{ border-bottom: 2px solid #14161A; }}
+.lien {{ border-bottom: 2px solid #14161A; }}
 .lien-nom {{
   font-size: 46px; line-height: 1;
   font-variation-settings: "wdth" 104, "wght" 640;
   letter-spacing: -.02em;
+}}
+.lien-et {{
+  font-variation-settings: "wdth" 100, "wght" 420;
+  color: #545A63;
 }}
 .lien-quoi {{
   margin-top: 8px;
@@ -121,16 +125,12 @@ h1 {{
 
   <div class="liens">
     <a class="lien" href="{site}">
-      <span class="lien-nom">Book</span>
+      <span class="lien-nom">Book <span class="lien-et">et CV</span></span>
       <p class="lien-quoi">Six planches&nbsp;: deux sites en ligne, un cours interactif sur les
         fonctions n8n, un workflow d'audit supervisé par quatre agents et rejouable dans la page,
-        une application pour animateurs, les compétences et la formation.</p>
+        une application pour animateurs, les compétences et la formation. Le CV s'y lit et s'y
+        télécharge.</p>
       <p class="lien-url">{site}</p>
-    </a>
-    <a class="lien" href="{site}assets/cv/CV-Arthur-Parois.pdf">
-      <span class="lien-nom">CV</span>
-      <p class="lien-quoi">Une page A4, texte sélectionnable.</p>
-      <p class="lien-url">{site}assets/cv/CV-Arthur-Parois.pdf</p>
     </a>
   </div>
 
